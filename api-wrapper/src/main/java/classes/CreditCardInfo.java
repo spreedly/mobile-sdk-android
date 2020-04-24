@@ -5,10 +5,12 @@ public class CreditCardInfo extends PaymentMethodMeta {
     public String firstName;
     public String lastName;
     public String fullName;
-    SpreedlySecureOpaqueString number;
+    // public SpreedlySecureOpaqueString number;
+    public String number;
     public String month;
     public String year;
-    SpreedlySecureOpaqueString cvv;
+    // public SpreedlySecureOpaqueString cvv;
+    public String cvv;
     Address billingAddress;
     Address shippingAddress;
     String phoneNumber;
