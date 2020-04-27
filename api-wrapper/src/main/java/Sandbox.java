@@ -7,7 +7,7 @@ import services.SpreedlyClient;
 public class Sandbox {
     public static void main(String[] args) {
         System.out.println("Running!");
-        Start start = new Start(new CreditCardService("xxx", "xxx"));
+        Start start = new Start(new CreditCardService());
         start.run();
     }
 }
@@ -27,7 +27,7 @@ class Start {
         cc.month = "3";
         cc.year = "2032";
         try {
-            TransactionResult<PaymentMethodResult> tokenize = (TransactionResult<PaymentMethodResult>) this.client.tokenize(cc).get();
+            TransactionResult<PaymentMethodResult> tokenize = this.client.tokenize(cc);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
