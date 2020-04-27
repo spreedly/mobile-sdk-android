@@ -4,89 +4,64 @@ import java.util.Date;
 
 public class TransactionResult<T> {
     String token;
-    Date created_at;
-    Date updated_at;
+    Date createdAt;
+    Date updatedAt;
     boolean succeeded;
     String transactionType; // maybe enum
     boolean retained;
     String state; // maybe enum
-    String message_key; // localization?
+    String messageKey; // localization?
     String message;
     T result;
 
-    public void setToken(String token) {
+    public TransactionResult(String token, Date createdAt, Date updatedAt, boolean succeeded, String transactionType, boolean retained, String state, String messageKey, String message, T result) {
         this.token = token;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.succeeded = succeeded;
+        this.transactionType = transactionType;
+        this.retained = retained;
+        this.state = state;
+        this.messageKey = messageKey;
+        this.message = message;
+        this.result = result;
     }
-
     public String getToken() {
         return token;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public Date getCreated_at() {
-        return created_at;
-    }
-
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public Date getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setState(String state) {
-        this.state = state;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    public void setResult(T result) {
-        this.result = result;
     }
 
     public T getResult() {
         return result;
     }
 
-    public void setSucceeded(boolean succeeded) {
-        this.succeeded = succeeded;
-    }
 
     public boolean isSucceeded() {
         return succeeded;
     }
 
-    public void setTransactionType(String transaction_type) {
-        this.transactionType = transaction_type;
-    }
 
-    public String getMessage_key() {
-        return message_key;
-    }
-
-    public void setMessage_key(String message_key) {
-        this.message_key = message_key;
+    public String getMessageKey() {
+        return messageKey;
     }
 
     public boolean isRetained() {
         return retained;
     }
 
-    public void setRetained(boolean retained) {
-        this.retained = retained;
-    }
 }
