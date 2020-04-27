@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.http.nio.client.HttpAsyncClient;
 import org.apache.http.util.EntityUtils;
 
 import java.util.ArrayList;
@@ -16,27 +17,27 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
-    private final String username;
-    private final String password;
     String baseUrl = "https://core.spreedly.com/v1";
+    private CloseableHttpAsyncClient httpClient = null;
+    private String credentials;
+
+
     public SpreedlySecureOpaqueString createString() {
         return null;
     }
-    private CloseableHttpAsyncClient httpClient = HttpAsyncClients.createDefault();
 
     public CreditCardService(String username, String password){
-        this.username = username;
-        this.password = password;
+        this.credentials = "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
+        this.httpClient = HttpAsyncClients.createDefault();
     }
 
     public TransactionResult<PaymentMethodResult> tokenize(CreditCardInfo data) {
         PaymentMethodFinal payment = new PaymentMethodFinal(data);
-        String credentials = "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
         Gson gson = new Gson();
         String requestBody = gson.toJson(payment);
-
+        TransactionResult<PaymentMethodResult> finalResults = null;
         try {
-            this.httpClient.start();
+            httpClient.start();
             HttpPost request = new HttpPost(baseUrl + "/payment_methods.json");
             request.setEntity(new StringEntity(requestBody));
             request.setHeader("Authorization", credentials);
@@ -47,14 +48,18 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
             String responseBody = EntityUtils.toString(response.getEntity());
             Gson responseGson = new Gson();
             Map<String, Object> transactionResult = responseGson.fromJson(responseBody, Map.class);
-            return processMap(transactionResult);
+            finalResults = processMap(transactionResult);
+            httpClient.close();
+            return finalResults;
 
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
         return null;
     }
-
+    public TransactionResult<PaymentMethodResult> recache(String token, SpreedlySecureOpaqueString cvv) {
+       return null;
+    }
     private TransactionResult<PaymentMethodResult> processMap(Map<String, Object> raw) {
         Map<String, Object> rawTransaction = (Map<String, Object>) raw.get("transaction");
         Map<String, Object> rawResult = (Map<String, Object>) rawTransaction.get("payment_method");
@@ -87,10 +92,6 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
         );
 
         return transactionResult;
-
     }
 
-    public Future<TransactionResult<PaymentMethodResult>> recache(String token, SpreedlySecureOpaqueString cvv) {
-        return null;
-    }
 }

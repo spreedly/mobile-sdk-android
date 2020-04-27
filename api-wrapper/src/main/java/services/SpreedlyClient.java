@@ -10,5 +10,5 @@ import java.util.concurrent.Future;
 public interface SpreedlyClient<T extends PaymentMethodMeta> {
     SpreedlySecureOpaqueString createString();
     TransactionResult<PaymentMethodResult> tokenize(T data);
-    Future<TransactionResult<PaymentMethodResult>> recache(String token, SpreedlySecureOpaqueString cvv);
+    TransactionResult<PaymentMethodResult> recache(String token, SpreedlySecureOpaqueString cvv);
 }

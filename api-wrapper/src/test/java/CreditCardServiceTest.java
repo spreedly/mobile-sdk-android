@@ -12,52 +12,36 @@ public class CreditCardServiceTest {
     CreditCardInfo cc = null;
     @Before
     public void initialize(){
-        client =  new CreditCardService();
+        client =  new CreditCardService(secret.getUser(), secret.getPassword());
         cc = new CreditCardInfo();
-    }
-    @Test
-    public void TokenizeSucceeds(){
         cc.fullName = "Joe Jones";
         cc.number = "5555555555554444";
         cc.cvv = "432";
         cc.month = "3";
         cc.year = "2032";
         result = client.tokenize(cc);
+    }
+    @Test
+    public void TokenizeSucceeds(){
         assertTrue(result.isSucceeded());
     }
 
     @Test
     public void TokenizeHasToken(){
-        cc.fullName = "Joe Jones";
-        cc.number = "5555555555554444";
-        cc.cvv = "432";
-        cc.month = "3";
-        cc.year = "2032";
-        result = client.tokenize(cc);
         assertNotNull(result.getToken());
     }
 
     @Test
+    public void TokenHasPaymentResult() {
+        assertNotNull(result.getResult());
+    }
+    @Test
     public void TokenizeHasPaymentToken(){
-        cc.fullName = "Joe Jones";
-        cc.number = "5555555555554444";
-        cc.cvv = "432";
-        cc.month = "3";
-        cc.year = "2032";
-        result = client.tokenize(cc);
         assertNotNull(result.getResult().getToken());
     }
 
     @Test
     public void isCreditCard(){
-        cc.fullName = "Joe Jones";
-        cc.number = "5555555555554444";
-        cc.cvv = "432";
-        cc.month = "3";
-        cc.year = "2032";
-        result = client.tokenize(cc);
         assertEquals("credit_card", result.getResult().getPaymentMethodType());
     }
-
-
 }
