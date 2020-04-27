@@ -58,7 +58,7 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
     private TransactionResult<PaymentMethodResult> processMap(Map<String, Object> raw) {
         Map<String, Object> rawTransaction = (Map<String, Object>) raw.get("transaction");
         Map<String, Object> rawResult = (Map<String, Object>) rawTransaction.get("payment_method");
-        PaymentMethodResult result = new PaymentMethodResult(
+        CreditCardResult result = new CreditCardResult(
                 (String) rawResult.get("token"),
                 (String) rawResult.get("storage_state"),
                 (boolean) rawResult.get("test"),
