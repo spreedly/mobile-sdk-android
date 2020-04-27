@@ -1,3 +1,5 @@
+package services;
+
 import classes.*;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
@@ -6,21 +8,28 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import services.SpreedlyClient;
+
 import java.util.Base64;
 import java.util.Map;
 import java.util.concurrent.Future;
 
 public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
+    private final String username;
+    private final String password;
     String baseUrl = "https://core.spreedly.com/v1";
-    String user = "";
-    String password = "";
     public SpreedlySecureOpaqueString createString() {
         return null;
     }
 
+    public CreditCardService(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
     public Future<TransactionResult<PaymentMethodResult>> tokenize(CreditCardInfo data) {
         PaymentMethodFinal payment = new PaymentMethodFinal(data);
-        String credentials = "Basic " + Base64.getEncoder().encodeToString((user + ":" + password).getBytes());
+        String credentials = "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
         Gson gson = new Gson();
         String requestBody = gson.toJson(payment);
         CloseableHttpClient httpClient = HttpClientBuilder.create().build(); //Use this instead
