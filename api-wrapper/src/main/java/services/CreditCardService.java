@@ -10,6 +10,7 @@ import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.nio.client.HttpAsyncClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
         return null;
     }
 
-    public CreditCardService(String username, String password){
+    public CreditCardService(String username, String password) {
         this.credentials = "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
         this.httpClient = HttpAsyncClients.createDefault();
     }
@@ -49,34 +50,50 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
             Gson responseGson = new Gson();
             Map<String, Object> transactionResult = responseGson.fromJson(responseBody, Map.class);
             finalResults = processMap(transactionResult);
-            httpClient.close();
             return finalResults;
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
+
     public TransactionResult<PaymentMethodResult> recache(String token, SpreedlySecureOpaqueString cvv) {
-       return null;
+        return null;
     }
+
     private TransactionResult<PaymentMethodResult> processMap(Map<String, Object> raw) {
+        TransactionResult<PaymentMethodResult> transactionResult = null;
         Map<String, Object> rawTransaction = (Map<String, Object>) raw.get("transaction");
+        if (rawTransaction == null) {
+            ArrayList<Map<String, String>> errors = (ArrayList) raw.get("errors");
+            ArrayList<SpreedlyError> spreedlyErrors = new ArrayList<SpreedlyError>();
+            for (Map<String, String> error:
+                 errors
+            ) {
+                spreedlyErrors.add(new SpreedlyError(error.getOrDefault("attribute", ""), error.getOrDefault("key", ""), error.getOrDefault("message", "")));
+            }
+            transactionResult = new TransactionResult<PaymentMethodResult>(spreedlyErrors);
+            return transactionResult;
+        }
         Map<String, Object> rawResult = (Map<String, Object>) rawTransaction.get("payment_method");
-        CreditCardResult result = new CreditCardResult(
-                (String) rawResult.get("token"),
-                (String) rawResult.get("storage_state"),
-                (boolean) rawResult.get("test"),
-                (String) rawResult.get("payment_method_type"),
-                (ArrayList) rawResult.get("errors"),
-                (String) rawResult.get("last_four_digits"),
-                (String) rawResult.get("first_six_digits"),
-                (String) rawResult.get("verification_value"),
-                (String) rawResult.get("number"),
-                rawResult.get("month").toString(),
-                rawResult.get("year").toString()
-        );
-        TransactionResult<PaymentMethodResult> transactionResult = new TransactionResult<PaymentMethodResult>(
+        CreditCardResult result = null;
+        if (rawResult != null) {
+            result = new CreditCardResult(
+                    (String) rawResult.get("token"),
+                    (String) rawResult.get("storage_state"),
+                    (boolean) rawResult.get("test"),
+                    (String) rawResult.get("payment_method_type"),
+                    (ArrayList) rawResult.get("errors"),
+                    (String) rawResult.get("last_four_digits"),
+                    (String) rawResult.get("first_six_digits"),
+                    (String) rawResult.get("verification_value"),
+                    (String) rawResult.get("number"),
+                    rawResult.get("month").toString(),
+                    rawResult.get("year").toString()
+            );
+        }
+        transactionResult = new TransactionResult<PaymentMethodResult>(
                 (String) rawTransaction.get("token"),
 /*                (Date) ((String) rawTransaction.get("created_at")),
                 (Date) rawTransaction.get("updated_at"),*/
@@ -90,8 +107,11 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
                 (String) rawTransaction.get("message"),
                 result
         );
-
         return transactionResult;
+    }
+
+    public void stop() throws IOException {
+        httpClient.close();
     }
 
 }

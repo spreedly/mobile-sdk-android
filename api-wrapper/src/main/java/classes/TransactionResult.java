@@ -1,5 +1,6 @@
 package classes;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TransactionResult<T> {
@@ -12,6 +13,7 @@ public class TransactionResult<T> {
     String state; // maybe enum
     String messageKey; // localization?
     String message;
+    ArrayList<SpreedlyError> errors;
     T result;
 
     public TransactionResult(String token, Date createdAt, Date updatedAt, boolean succeeded, String transactionType, boolean retained, String state, String messageKey, String message, T result) {
@@ -26,6 +28,12 @@ public class TransactionResult<T> {
         this.message = message;
         this.result = result;
     }
+
+    public TransactionResult(ArrayList<SpreedlyError> errors) {
+        this.succeeded = false;
+        this.errors = errors;
+    }
+
     public String getToken() {
         return token;
     }
@@ -64,4 +72,7 @@ public class TransactionResult<T> {
         return retained;
     }
 
+    public ArrayList getErrors() {
+        return errors;
+    }
 }
