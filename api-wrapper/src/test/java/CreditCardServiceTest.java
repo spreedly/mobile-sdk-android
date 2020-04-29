@@ -19,7 +19,7 @@ public class CreditCardServiceTest {
 
     @Before
     public void initialize(){
-        client =  new CreditCardService(secret.getUser(), secret.getPassword());
+        client =  new CreditCardService(Secret.getUser(), Secret.getPassword());
         cc = new CreditCardInfo();
         cc.fullName = "Joe Jones";
         cc.number = "5555555555554444";
