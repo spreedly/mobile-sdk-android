@@ -1,6 +1,7 @@
 package classes;
 
 public class CreditCardInfo extends PaymentMethodMeta {
+    public String company;
     String email;
     public String firstName;
     public String lastName;

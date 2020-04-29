@@ -3,6 +3,7 @@ package classes;
 import java.util.Map;
 
 public class BankAccountInfo extends PaymentMethodMeta {
+    public String email;
     String firstName;
     String lastName;
     String fullName;
