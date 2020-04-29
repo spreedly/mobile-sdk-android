@@ -1,9 +1,9 @@
-package spreedlyClient.services;
+package spreedlyclient.services;
 
-import spreedlyCleint.classes.PaymentMethodMeta;
-import spreedlyCleint.classes.PaymentMethodResult;
-import spreedlyCleint.classes.SpreedlySecureOpaqueString;
-import spreedlyCleint.classes.TransactionResult;
+import spreedlyclient.classes.PaymentMethodMeta;
+import spreedlyclient.classes.PaymentMethodResult;
+import spreedlyclient.classes.SpreedlySecureOpaqueString;
+import spreedlyclient.classes.TransactionResult;
 import io.reactivex.rxjava3.core.Single;
 
 import java.io.IOException;

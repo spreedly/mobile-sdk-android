@@ -1,7 +1,7 @@
-package spreedlyCleint.classes;
+package spreedlyclient.classes;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PaymentMethodResult {
     String token;
@@ -9,6 +9,9 @@ public class PaymentMethodResult {
     boolean test;
     String paymentMethodType; //maybe enum
     ArrayList errors;
+    Date createdAt;
+    Date updatedAt;
+    String email;
 
 
     public String getToken() {

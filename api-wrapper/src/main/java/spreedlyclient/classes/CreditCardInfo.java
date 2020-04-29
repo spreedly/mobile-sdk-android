@@ -1,4 +1,4 @@
-package spreedlyCleint.classes;
+package spreedlyclient.classes;
 
 public class CreditCardInfo extends PaymentMethodMeta {
     public String company;

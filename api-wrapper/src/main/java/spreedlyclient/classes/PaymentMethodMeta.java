@@ -1,4 +1,4 @@
-package spreedlyCleint.classes;
+package spreedlyclient.classes;
 
 import java.util.Map;
 

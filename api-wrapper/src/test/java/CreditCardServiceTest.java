@@ -2,13 +2,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import spreedlyCleint.classes.CreditCardInfo;
-import spreedlyCleint.classes.PaymentMethodResult;
-import spreedlyCleint.classes.SpreedlyError;
-import spreedlyCleint.classes.SpreedlySecureOpaqueString;
-import spreedlyCleint.classes.TransactionResult;
-import spreedlyClient.services.CreditCardService;
-import spreedlyClient.services.SpreedlyClient;
+import spreedlyclient.classes.CreditCardInfo;
+import spreedlyclient.classes.PaymentMethodResult;
+import spreedlyclient.classes.SpreedlyError;
+import spreedlyclient.classes.SpreedlySecureOpaqueString;
+import spreedlyclient.classes.TransactionResult;
+import spreedlyclient.services.CreditCardService;
+import spreedlyclient.services.SpreedlyClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,13 +33,13 @@ public class CreditCardServiceTest {
         cc.month = "3";
         cc.year = "2032";
         cc.retained = true;
-        client.tokenize(cc).subscribe((res) -> result = res);
+        client.tokenize(cc).subscribe((res) -> result = res).dispose();
         badCC = new CreditCardInfo();
         badCC.number = "5555555555554444";
         badCC.cvv = "432";
         badCC.month = "3";
-        client.tokenize(badCC).subscribe((res) -> badResult = res);
-        client.recache(result.getResult().getToken(), new SpreedlySecureOpaqueString("423")).subscribe((res) -> recacheResult = res);
+        client.tokenize(badCC).subscribe((res) -> badResult = res).dispose();
+        client.recache(result.getResult().getToken(), new SpreedlySecureOpaqueString("423")).subscribe((res) -> recacheResult = res).dispose();
 
     }
 
