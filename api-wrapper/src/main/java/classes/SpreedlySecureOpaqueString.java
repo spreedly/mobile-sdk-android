@@ -3,6 +3,11 @@ package classes;
 public class SpreedlySecureOpaqueString {
     public int length;
     private String value;
+
+    public SpreedlySecureOpaqueString(String s) {
+        this.value = s;
+    }
+
     public void add(char c) {
 
     }

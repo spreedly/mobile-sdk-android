@@ -16,6 +16,7 @@ public class CreditCardServiceTest {
     CreditCardInfo cc = null;
     CreditCardInfo badCC = null;
     private TransactionResult<PaymentMethodResult> badResult;
+    TransactionResult<PaymentMethodResult> recacheResult;
 
     @Before
     public void initialize(){
@@ -26,12 +27,14 @@ public class CreditCardServiceTest {
         cc.cvv = "432";
         cc.month = "3";
         cc.year = "2032";
+        cc.retained = true;
         result = client.tokenize(cc);
-        badCC = new CreditCardInfo();
-        badCC.number = "5555555555554444";
-        badCC.cvv = "432";
-        badCC.month = "3";
-        badResult = client.tokenize(badCC);
+//        badCC = new CreditCardInfo();
+//        badCC.number = "5555555555554444";
+//        badCC.cvv = "432";
+//        badCC.month = "3";
+//        badResult = client.tokenize(badCC);
+        recacheResult = client.recache(result.getResult().getToken(), new SpreedlySecureOpaqueString("423"));
 
     }
 
@@ -39,6 +42,8 @@ public class CreditCardServiceTest {
     public void stop() throws IOException {
         client.stop();
     }
+
+    //Credit Card Tokenization Tests
     @Test
     public void TokenizeSucceeds(){
         assertTrue(result.isSucceeded());
@@ -78,5 +83,11 @@ public class CreditCardServiceTest {
         ArrayList<SpreedlyError> errors = badResult.getErrors();
         SpreedlyError yearError = errors.get(0);
         assertEquals("year", yearError.getAttribute());
+    }
+
+    //Credit Card Recache Tests
+    @Test
+    public void RecacheSucceeds() {
+        assertTrue(recacheResult.isSucceeded());
     }
 }

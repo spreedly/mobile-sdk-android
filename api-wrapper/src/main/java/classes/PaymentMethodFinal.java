@@ -15,11 +15,13 @@ public class PaymentMethodFinal {
     }
 
     class CreditCardFinal extends PaymentMethodProcess {
+        private final boolean retained;
         CreditCardDetails credit_card;
 
         public CreditCardFinal(CreditCardInfo cc){
             this.email = cc.email;
             this.metadata = cc.data;
+            this.retained = cc.retained;
             this.credit_card = new CreditCardDetails(cc);
         }
     }
@@ -54,6 +56,7 @@ public class PaymentMethodFinal {
         String shipping_state;
         String shipping_zip;
         String shipping_country;
+        boolean retained;
         public CreditCardDetails(CreditCardInfo cc){
             this.first_name = cc.firstName;
             this.last_name = cc.lastName;

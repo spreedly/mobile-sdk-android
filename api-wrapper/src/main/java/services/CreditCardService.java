@@ -59,6 +59,28 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
     }
 
     public TransactionResult<PaymentMethodResult> recache(String token, SpreedlySecureOpaqueString cvv) {
+        Recache recache = new Recache(cvv);
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(recache);
+        TransactionResult<PaymentMethodResult> finalResults = null;
+        try {
+            httpClient.start();
+            HttpPost request = new HttpPost(baseUrl + "/payment_methods/" + token + "/recache.json");
+            request.setEntity(new StringEntity(requestBody));
+            request.setHeader("Authorization", credentials);
+            request.setHeader("Content-Type", "application/json");
+            Future<HttpResponse> future = httpClient.execute(request, null);
+            HttpResponse response = future.get();
+            int statusCode = response.getStatusLine().getStatusCode();
+            String responseBody = EntityUtils.toString(response.getEntity());
+            Gson responseGson = new Gson();
+            Map<String, Object> transactionResult = responseGson.fromJson(responseBody, Map.class);
+            finalResults = processMap(transactionResult);
+            return finalResults;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return null;
     }
 
@@ -80,17 +102,17 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
         CreditCardResult result = null;
         if (rawResult != null) {
             result = new CreditCardResult(
-                    (String) rawResult.get("token"),
-                    (String) rawResult.get("storage_state"),
-                    (boolean) rawResult.get("test"),
-                    (String) rawResult.get("payment_method_type"),
-                    (ArrayList) rawResult.get("errors"),
-                    (String) rawResult.get("last_four_digits"),
-                    (String) rawResult.get("first_six_digits"),
-                    (String) rawResult.get("verification_value"),
-                    (String) rawResult.get("number"),
-                    rawResult.get("month").toString(),
-                    rawResult.get("year").toString()
+                    (String) rawResult.getOrDefault("token", ""),
+                    (String) rawResult.getOrDefault("storage_state", ""),
+                    (boolean) rawResult.getOrDefault("test", true),
+                    (String) rawResult.getOrDefault("payment_method_type", ""),
+                    (ArrayList) rawResult.getOrDefault("errors", null),
+                    (String) rawResult.getOrDefault("last_four_digits", ""),
+                    (String) rawResult.getOrDefault("first_six_digits", ""),
+                    (String) rawResult.getOrDefault("verification_value", ""),
+                    (String) rawResult.getOrDefault("number", ""),
+                    rawResult.getOrDefault("month", "").toString(),
+                    rawResult.getOrDefault("year", "").toString()
             );
         }
         transactionResult = new TransactionResult<PaymentMethodResult>(
@@ -99,12 +121,12 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
                 (Date) rawTransaction.get("updated_at"),*/
                 new Date(),
                 new Date(),
-                (boolean) rawTransaction.get("succeeded"),
-                (String) rawTransaction.get("transaction_type"),
-                (boolean) rawTransaction.get("retained"),
-                (String) rawTransaction.get("state"),
-                (String) rawTransaction.get("messageKey"),
-                (String) rawTransaction.get("message"),
+                (boolean) rawTransaction.getOrDefault("succeeded", false),
+                (String) rawTransaction.getOrDefault("transaction_type", ""),
+                (boolean) rawTransaction.getOrDefault("retained", false),
+                (String) rawTransaction.getOrDefault("state", ""),
+                (String) rawTransaction.getOrDefault("messageKey", ""),
+                (String) rawTransaction.getOrDefault("message", ""),
                 result
         );
         return transactionResult;
