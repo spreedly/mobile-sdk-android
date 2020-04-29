@@ -4,6 +4,7 @@ import classes.PaymentMethodMeta;
 import classes.PaymentMethodResult;
 import classes.SpreedlySecureOpaqueString;
 import classes.TransactionResult;
+import rx.Single;
 
 import java.io.IOException;
 
@@ -14,12 +15,12 @@ public class BankAccountService implements SpreedlyClient {
     }
 
     @Override
-    public TransactionResult<PaymentMethodResult> tokenize(PaymentMethodMeta data) {
+    public Single<TransactionResult<PaymentMethodResult>> tokenize(PaymentMethodMeta data) {
         return null;
     }
 
     @Override
-    public TransactionResult<PaymentMethodResult> recache(String token, SpreedlySecureOpaqueString cvv) {
+    public Single<TransactionResult<PaymentMethodResult>> recache(String token, SpreedlySecureOpaqueString cvv) {
         return null;
     }
 

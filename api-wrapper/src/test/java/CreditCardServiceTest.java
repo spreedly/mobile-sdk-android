@@ -28,13 +28,13 @@ public class CreditCardServiceTest {
         cc.month = "3";
         cc.year = "2032";
         cc.retained = true;
-        result = client.tokenize(cc);
-//        badCC = new CreditCardInfo();
-//        badCC.number = "5555555555554444";
-//        badCC.cvv = "432";
-//        badCC.month = "3";
-//        badResult = client.tokenize(badCC);
-        recacheResult = client.recache(result.getResult().getToken(), new SpreedlySecureOpaqueString("423"));
+        client.tokenize(cc).subscribe((res) -> result = res);
+        badCC = new CreditCardInfo();
+        badCC.number = "5555555555554444";
+        badCC.cvv = "432";
+        badCC.month = "3";
+        client.tokenize(badCC).subscribe((res) -> badResult = res);
+        client.recache(result.getResult().getToken(), new SpreedlySecureOpaqueString("423")).subscribe((res) -> recacheResult = res);
 
     }
 
