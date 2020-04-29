@@ -1,4 +1,4 @@
-package classes;
+package spreedlyCleint.classes;
 
 import java.util.ArrayList;
 import java.util.Date;

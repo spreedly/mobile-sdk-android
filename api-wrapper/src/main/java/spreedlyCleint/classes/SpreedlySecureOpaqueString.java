@@ -1,4 +1,4 @@
-package classes;
+package spreedlyCleint.classes;
 
 public class SpreedlySecureOpaqueString {
     public int length;

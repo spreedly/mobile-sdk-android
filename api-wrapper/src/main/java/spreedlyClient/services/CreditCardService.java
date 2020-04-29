@@ -1,7 +1,14 @@
-package services;
+package spreedlyClient.services;
 
-import classes.*;
 import io.reactivex.rxjava3.core.Single;
+import spreedlyCleint.classes.CreditCardInfo;
+import spreedlyCleint.classes.CreditCardResult;
+import spreedlyCleint.classes.PaymentMethodFinal;
+import spreedlyCleint.classes.PaymentMethodResult;
+import spreedlyCleint.classes.Recache;
+import spreedlyCleint.classes.SpreedlyError;
+import spreedlyCleint.classes.SpreedlySecureOpaqueString;
+import spreedlyCleint.classes.TransactionResult;
 
 import com.google.gson.Gson;
 

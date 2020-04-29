@@ -1,9 +1,14 @@
-import classes.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import services.CreditCardService;
-import services.SpreedlyClient;
+
+import spreedlyCleint.classes.CreditCardInfo;
+import spreedlyCleint.classes.PaymentMethodResult;
+import spreedlyCleint.classes.SpreedlyError;
+import spreedlyCleint.classes.SpreedlySecureOpaqueString;
+import spreedlyCleint.classes.TransactionResult;
+import spreedlyClient.services.CreditCardService;
+import spreedlyClient.services.SpreedlyClient;
 
 import java.io.IOException;
 import java.util.ArrayList;

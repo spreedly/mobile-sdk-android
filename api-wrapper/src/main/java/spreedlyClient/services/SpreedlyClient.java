@@ -1,13 +1,12 @@
-package services;
+package spreedlyClient.services;
 
-import classes.PaymentMethodMeta;
-import classes.PaymentMethodResult;
-import classes.SpreedlySecureOpaqueString;
-import classes.TransactionResult;
+import spreedlyCleint.classes.PaymentMethodMeta;
+import spreedlyCleint.classes.PaymentMethodResult;
+import spreedlyCleint.classes.SpreedlySecureOpaqueString;
+import spreedlyCleint.classes.TransactionResult;
 import io.reactivex.rxjava3.core.Single;
 
 import java.io.IOException;
-import java.util.concurrent.Future;
 
 public interface SpreedlyClient<T extends PaymentMethodMeta> {
     SpreedlySecureOpaqueString createString();

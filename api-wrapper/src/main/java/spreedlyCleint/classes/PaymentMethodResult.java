@@ -1,4 +1,4 @@
-package classes;
+package spreedlyCleint.classes;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

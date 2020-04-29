@@ -1,4 +1,4 @@
-package classes;
+package spreedlyCleint.classes;
 
 public class Recache {
     PaymentMethod payment_method;
