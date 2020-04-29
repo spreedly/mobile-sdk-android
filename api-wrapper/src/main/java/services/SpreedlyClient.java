@@ -4,7 +4,7 @@ import classes.PaymentMethodMeta;
 import classes.PaymentMethodResult;
 import classes.SpreedlySecureOpaqueString;
 import classes.TransactionResult;
-import rx.Single;
+import io.reactivex.rxjava3.core.Single;
 
 import java.io.IOException;
 import java.util.concurrent.Future;

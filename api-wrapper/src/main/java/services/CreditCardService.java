@@ -1,16 +1,17 @@
 package services;
 
 import classes.*;
+import io.reactivex.rxjava3.core.Single;
+
 import com.google.gson.Gson;
+
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
-import org.apache.http.nio.client.HttpAsyncClient;
 import org.apache.http.util.EntityUtils;
-import rx.Single;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
