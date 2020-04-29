@@ -2,12 +2,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import spreedlyclient.classes.BankAccountInfo;
-import spreedlyclient.classes.CreditCardInfo;
 import spreedlyclient.classes.PaymentMethodResult;
 import spreedlyclient.classes.TransactionResult;
 import spreedlyclient.services.BankAccountService;
 import spreedlyclient.services.SpreedlyClient;
-
 import static org.junit.Assert.*;
 
 public class BankAccountServiceTest {

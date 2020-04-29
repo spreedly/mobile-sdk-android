@@ -10,7 +10,6 @@ import java.util.Map;
 import io.reactivex.rxjava3.core.Single;
 import spreedlyclient.classes.BankAccountInfo;
 import spreedlyclient.classes.BankAccountResult;
-import spreedlyclient.classes.CreditCardResult;
 import spreedlyclient.classes.PaymentMethodFinal;
 import spreedlyclient.classes.PaymentMethodResult;
 import spreedlyclient.classes.SpreedlySecureOpaqueString;

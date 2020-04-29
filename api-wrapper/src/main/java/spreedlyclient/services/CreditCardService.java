@@ -1,34 +1,21 @@
 package spreedlyclient.services;
 
 import io.reactivex.rxjava3.core.Single;
-import spreedlyclient.classes.BankAccountInfo;
 import spreedlyclient.classes.CreditCardInfo;
 import spreedlyclient.classes.CreditCardResult;
 import spreedlyclient.classes.PaymentMethodFinal;
 import spreedlyclient.classes.PaymentMethodResult;
 import spreedlyclient.classes.Recache;
-import spreedlyclient.classes.SpreedlyError;
 import spreedlyclient.classes.SpreedlySecureOpaqueString;
 import spreedlyclient.classes.TransactionResult;
 import spreedlyclient.services.utils.RequestHelper;
 
 import com.google.gson.Gson;
 
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClients;
-import org.apache.http.util.EntityUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
 

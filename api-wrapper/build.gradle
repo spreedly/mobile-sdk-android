@@ -6,9 +6,8 @@ dependencies {
     compile "org.apache.httpcomponents:httpclient:4.0.2"
     compile "org.apache.httpcomponents:httpasyncclient:4.1.4"
     compile 'com.google.code.gson:gson:2.8.6'
-    compile 'io.reactivex.rxjava2:rxjava:2.2.0'
 
     testCompile "junit:junit:RELEASE"
     testCompile "junit:junit:4.13"
-    compile 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
 }
