@@ -15,14 +15,20 @@ public class BankAccountResult extends PaymentMethodResult {
     String accountNumber;
 
     public BankAccountResult(
-            String token, String storageState, boolean test, String paymentMethodType, ArrayList errors,
+            String token,
+            String storageState,
+            boolean test,
+            String paymentMethodType,
+            ArrayList errors,
             String bankName,
             String accountType,
             String accountHolderType,
             String routingNumberDisplayDigits,
             String accountNumberDisplayDigits,
             String routingNumber,
-            String accountNumber, String firstName, String lastName) {
+            String accountNumber,
+            String firstName,
+            String lastName) {
         this.token = token;
         this.storageState = storageState;
         this.test = test;

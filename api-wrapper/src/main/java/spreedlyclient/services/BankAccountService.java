@@ -34,7 +34,8 @@ public class BankAccountService implements SpreedlyClient<BankAccountInfo> {
             PaymentMethodFinal paymentMethod = new PaymentMethodFinal(data);
             Gson gson = new Gson();
             String requestBody = gson.toJson(paymentMethod);
-            Map<String, Object> transactionResult = this.request.sendRequest(requestBody);
+            String url = "/payment_methods.json";
+            Map<String, Object> transactionResult = this.request.sendRequest(requestBody, url);
             TransactionResult<PaymentMethodResult> finalResults = processBAMap(transactionResult);
             return finalResults;
         });

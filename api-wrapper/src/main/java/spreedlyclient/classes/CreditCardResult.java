@@ -9,7 +9,8 @@ public class CreditCardResult extends PaymentMethodResult {
     String number;
     String month;
     String year;
-    public CreditCardResult(String token, String storageState, boolean test, String paymentMethodType, ArrayList errors, String lastFourDigits, String firstSixDigits, String cvv, String number, String month, String year){
+
+    public CreditCardResult(String token, String storageState, boolean test, String paymentMethodType, ArrayList errors, String lastFourDigits, String firstSixDigits, String cvv, String number, String month, String year) {
         super();
         this.token = token;
         this.storageState = storageState;
@@ -25,6 +26,7 @@ public class CreditCardResult extends PaymentMethodResult {
 
 
     }
+
     public String getLastFourDigits() {
         return lastFourDigits;
     }

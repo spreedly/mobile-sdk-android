@@ -47,7 +47,8 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
             PaymentMethodFinal paymentMethod = new PaymentMethodFinal(data);
             Gson gson = new Gson();
             String requestBody = gson.toJson(paymentMethod);
-            Map<String, Object> transactionResult = this.request.sendRequest(requestBody);
+            String url = "/payment_methods.json";
+            Map<String, Object> transactionResult = this.request.sendRequest(requestBody, url);
             TransactionResult<PaymentMethodResult> finalResults = processCCMap(transactionResult);
             return finalResults;
         });
@@ -58,7 +59,8 @@ public class CreditCardService implements SpreedlyClient<CreditCardInfo> {
             Recache recache = new Recache(cvv);
             Gson gson = new Gson();
             String requestBody = gson.toJson(recache);
-            Map<String, Object> transactionResult = this.request.sendRequest(requestBody);
+            String url = "/payment_methods/" + token + "/recache.json";
+            Map<String, Object> transactionResult = this.request.sendRequest(requestBody, url);
             TransactionResult<PaymentMethodResult> finalResults = processCCMap(transactionResult);
             return finalResults;
         });

@@ -29,9 +29,9 @@ public class RequestHelper {
         this.credentials = "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
         this.httpClient = HttpAsyncClients.createDefault();
     }
-    public Map sendRequest(String requestBody) throws IOException, ExecutionException, InterruptedException {
+    public Map sendRequest(String requestBody, String url) throws IOException, ExecutionException, InterruptedException {
         httpClient.start();
-        HttpPost request = new HttpPost(baseUrl + "/payment_methods.json");
+        HttpPost request = new HttpPost(baseUrl + url);
         request.setEntity(new StringEntity(requestBody));
         request.setHeader("Authorization", credentials);
         request.setHeader("Content-Type", "application/json");
