@@ -1,4 +1,6 @@
-package spreedlyclient.classes;
+package com.spreedly.client.models.transactions;
+
+import com.spreedly.client.models.SpreedlySecureOpaqueString;
 
 public class Recache {
     PaymentMethod payment_method;
