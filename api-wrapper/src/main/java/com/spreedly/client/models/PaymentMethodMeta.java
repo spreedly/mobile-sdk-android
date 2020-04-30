@@ -4,5 +4,5 @@ import java.util.Map;
 
 public class PaymentMethodMeta {
     public boolean retained;
-    Map<String, Object> data;
+    public Map<String, Object> data;
 }

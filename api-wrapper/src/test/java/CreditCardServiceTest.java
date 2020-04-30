@@ -4,10 +4,10 @@ import org.junit.Test;
 
 import com.spreedly.client.SpreedlyClientImpl;
 import com.spreedly.client.models.CreditCardInfo;
-import com.spreedly.client.models.PaymentMethodResult;
-import com.spreedly.client.models.SpreedlyError;
+import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
-import com.spreedly.client.models.TransactionResult;
+import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.client.SpreedlyClient;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class CreditCardServiceTest {
         badCC.cvv = "432";
         badCC.month = "3";
         client.createCreditCardPaymentMethod(badCC).subscribe((res) -> badResult = res).dispose();
-        client.recache(result.getResult().getToken(), new SpreedlySecureOpaqueString("423")).subscribe((res) -> recacheResult = res).dispose();
+        client.recache(result.result.token, new SpreedlySecureOpaqueString("423")).subscribe((res) -> recacheResult = res).dispose();
 
     }
 
@@ -51,48 +51,48 @@ public class CreditCardServiceTest {
     //Credit Card Tokenization Tests
     @Test
     public void TokenizeSucceeds(){
-        assertTrue(result.isSucceeded());
+        assertTrue(result.succeeded);
     }
 
     @Test
     public void TokenizeHasToken(){
-        assertNotNull(result.getToken());
+        assertNotNull(result.token);
     }
 
     @Test
     public void TokenHasPaymentResult() {
-        assertNotNull(result.getResult());
+        assertNotNull(result.result);
     }
     @Test
     public void TokenizeHasPaymentToken(){
-        assertNotNull(result.getResult().getToken());
+        assertNotNull(result.result.token);
     }
 
     @Test
     public void isCreditCard(){
-        assertEquals("credit_card", result.getResult().getPaymentMethodType());
+        assertEquals("credit_card", result.result.paymentMethodType);
     }
 
     @Test
     public void badCreditCardFails(){
-        assertFalse(badResult.isSucceeded());
+        assertFalse(badResult.succeeded);
     }
 
     @Test
     public void badCreditCardHasErrors(){
-        assertTrue(badResult.getErrors().size() > 0);
+        assertTrue(badResult.errors.size() > 0);
     }
 
     @Test
     public void badCreditCardIsMissingYear(){
-        ArrayList<SpreedlyError> errors = badResult.getErrors();
+        ArrayList<SpreedlyError> errors = badResult.errors;
         SpreedlyError yearError = errors.get(0);
-        assertEquals("year", yearError.getAttribute());
+        assertEquals("year", yearError.attribute);
     }
 
     //Credit Card Recache Tests
     @Test
     public void RecacheSucceeds() {
-        assertTrue(recacheResult.isSucceeded());
+        assertTrue(recacheResult.succeeded);
     }
 }

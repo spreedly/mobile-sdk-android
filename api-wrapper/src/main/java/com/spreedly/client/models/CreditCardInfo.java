@@ -2,7 +2,7 @@ package com.spreedly.client.models;
 
 public class CreditCardInfo extends PaymentMethodMeta {
     public String company;
-    String email;
+    public String email;
     public String firstName;
     public String lastName;
     public String fullName;
@@ -12,9 +12,9 @@ public class CreditCardInfo extends PaymentMethodMeta {
     public String year;
     // public SpreedlySecureOpaqueString cvv;
     public String cvv;
-    Address billingAddress;
-    Address shippingAddress;
-    String phoneNumber;
+    public Address billingAddress;
+    public Address shippingAddress;
+    public String phoneNumber;
     boolean allowBlankName;
     boolean allowExpiredDate;
     boolean allowBlankDate;

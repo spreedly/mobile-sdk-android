@@ -1,9 +1,12 @@
-package com.spreedly.client.models;
+package com.spreedly.client.models.transactions;
+
+import com.spreedly.client.models.BankAccountInfo;
+import com.spreedly.client.models.CreditCardInfo;
 
 import java.util.Map;
 
 public class PaymentMethodFinal {
-    PaymentMethodProcess payment_method;
+    public final PaymentMethodProcess payment_method;
     public PaymentMethodFinal(CreditCardInfo cc){
         this.payment_method = new CreditCardFinal(cc);
 

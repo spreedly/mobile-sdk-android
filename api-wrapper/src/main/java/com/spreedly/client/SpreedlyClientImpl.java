@@ -2,15 +2,15 @@ package com.spreedly.client;
 
 import com.google.gson.Gson;
 import com.spreedly.client.models.BankAccountInfo;
-import com.spreedly.client.models.BankAccountResult;
+import com.spreedly.client.models.results.BankAccountResult;
 import com.spreedly.client.models.CreditCardInfo;
-import com.spreedly.client.models.CreditCardResult;
-import com.spreedly.client.models.PaymentMethodFinal;
-import com.spreedly.client.models.PaymentMethodResult;
-import com.spreedly.client.models.Recache;
-import com.spreedly.client.models.SpreedlyError;
+import com.spreedly.client.models.results.CreditCardResult;
+import com.spreedly.client.models.transactions.PaymentMethodFinal;
+import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.transactions.Recache;
+import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
-import com.spreedly.client.models.TransactionResult;
+import com.spreedly.client.models.results.TransactionResult;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -103,6 +103,12 @@ public class SpreedlyClientImpl implements SpreedlyClient {
                     (boolean) rawResult.getOrDefault("test", true),
                     (String) rawResult.getOrDefault("payment_method_type", ""),
                     (ArrayList) rawResult.getOrDefault("errors", null),
+                                        /*                (Date) ((String) rawTransaction.get("created_at")),
+                (Date) rawTransaction.get("updated_at"),*/
+                    new Date(),
+                    new Date(),
+                    // TODO parse dates
+                    (String) rawResult.getOrDefault("email", ""),
                     (String) rawResult.getOrDefault("last_four_digits", ""),
                     (String) rawResult.getOrDefault("first_six_digits", ""),
                     (String) rawResult.getOrDefault("verification_value", ""),
@@ -143,17 +149,23 @@ public class SpreedlyClientImpl implements SpreedlyClient {
                     (String) rawResult.getOrDefault("storage_state", ""),
                     (boolean) rawResult.getOrDefault("test", true),
                     (String) rawResult.getOrDefault("payment_method_type", ""),
+                    /*                (Date) ((String) rawTransaction.get("created_at")),
+                (Date) rawTransaction.get("updated_at"),*/
+                    new Date(),
+                    new Date(),
+                    // TODO parse dates
+                    (String) rawResult.getOrDefault("email", ""),
                     (ArrayList) rawResult.getOrDefault("errors", null),
                     (String) rawResult.getOrDefault("bank_name", ""),
                     (String) rawResult.getOrDefault("account_type", ""),
                     (String) rawResult.getOrDefault("account_holder_type", ""),
                     (String) rawResult.getOrDefault("routing_number_display_digits", ""),
                     (String) rawResult.getOrDefault("account_number_display_digits", ""),
-                    (String) rawResult.getOrDefault("account_holder_type", ""),
                     (String) rawResult.getOrDefault("routing_number", ""),
                     (String) rawResult.getOrDefault("account_number", ""),
+                    (String) rawResult.getOrDefault("first_name", ""),
+                    (String) rawResult.getOrDefault("last_name", ""),
                     (String) rawResult.getOrDefault("full_name", "")
-
             );
         }
         transactionResult = new TransactionResult<PaymentMethodResult>(

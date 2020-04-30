@@ -3,8 +3,8 @@ import org.junit.Test;
 
 import com.spreedly.client.SpreedlyClientImpl;
 import com.spreedly.client.models.BankAccountInfo;
-import com.spreedly.client.models.PaymentMethodResult;
-import com.spreedly.client.models.TransactionResult;
+import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.client.SpreedlyClient;
 import static org.junit.Assert.*;
 
@@ -25,11 +25,11 @@ public class BankAccountServiceTest {
 
     @Test
     public void TokenizeBankAccountSucceeds(){
-        assertTrue(result.isSucceeded());
+        assertTrue(result.succeeded);
     }
 
     @Test
     public void TokenizeReturnsPaymentToken(){
-        assertNotNull(result.getResult().getToken());
+        assertNotNull(result.result.token);
     }
 }
