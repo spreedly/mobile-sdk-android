@@ -1,4 +1,4 @@
-package classes;
+package spreedlyclient.classes;
 
 import java.util.Map;
 
@@ -8,24 +8,37 @@ public class PaymentMethodFinal {
         this.payment_method = new CreditCardFinal(cc);
 
     }
+
+    public PaymentMethodFinal(BankAccountInfo ba){
+        this.payment_method = new BankAccountFinal(ba);
+    }
     class PaymentMethodProcess {
-        String email;
         Map<String, Object> metadata;
+        String email;
 
     }
 
     class CreditCardFinal extends PaymentMethodProcess {
+        private final boolean retained;
         CreditCardDetails credit_card;
 
         public CreditCardFinal(CreditCardInfo cc){
             this.email = cc.email;
             this.metadata = cc.data;
+            this.retained = cc.retained;
             this.credit_card = new CreditCardDetails(cc);
         }
     }
 
     class BankAccountFinal extends PaymentMethodProcess {
         BankAccountDetails bank_account;
+
+        public BankAccountFinal(BankAccountInfo ba) {
+            super();
+            this.email = ba.email;
+            this.metadata = ba.data;
+            this.bank_account = new BankAccountDetails(ba);
+        }
     }
 
 
@@ -63,6 +76,7 @@ public class PaymentMethodFinal {
             this.year = cc.year;
             this.month = cc.month;
             this.phone_number = cc.phoneNumber;
+            this.company = cc.company;
             if (cc.billingAddress != null){
                 this.address1 = cc.billingAddress.address1;
                 this.address2 = cc.billingAddress.address2;
@@ -88,5 +102,16 @@ public class PaymentMethodFinal {
         String bank_account_number;
         String bank_account_type;
         String bank_account_holder_type;
+
+        public BankAccountDetails(BankAccountInfo ba) {
+            super();
+            this.first_name = ba.firstName;
+            this.last_name = ba.lastName;
+            this.full_name = ba.fullName;
+            this.bank_routing_number = ba.routingNumber;
+            this.bank_account_number = ba.accountNumber;
+            this.bank_account_type = ba.accountType;
+            this.bank_account_holder_type = ba.bankAccountHolderType;
+        }
     }
 }

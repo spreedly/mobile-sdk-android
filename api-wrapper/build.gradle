@@ -9,4 +9,5 @@ dependencies {
 
     testCompile "junit:junit:RELEASE"
     testCompile "junit:junit:4.13"
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
 }
