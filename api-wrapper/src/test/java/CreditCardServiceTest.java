@@ -2,13 +2,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import spreedlyclient.classes.CreditCardInfo;
-import spreedlyclient.classes.PaymentMethodResult;
-import spreedlyclient.classes.SpreedlyError;
-import spreedlyclient.classes.SpreedlySecureOpaqueString;
-import spreedlyclient.classes.TransactionResult;
-import spreedlyclient.services.CreditCardService;
-import spreedlyclient.services.SpreedlyClient;
+import com.spreedly.client.SpreedlyClientImpl;
+import com.spreedly.client.models.CreditCardInfo;
+import com.spreedly.client.models.PaymentMethodResult;
+import com.spreedly.client.models.SpreedlyError;
+import com.spreedly.client.models.SpreedlySecureOpaqueString;
+import com.spreedly.client.models.TransactionResult;
+import com.spreedly.client.SpreedlyClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class CreditCardServiceTest {
-    SpreedlyClient<CreditCardInfo> client = null;
+    SpreedlyClient client = null;
     TransactionResult<PaymentMethodResult> result = null;
     CreditCardInfo cc = null;
     CreditCardInfo badCC = null;
@@ -25,7 +25,7 @@ public class CreditCardServiceTest {
 
     @Before
     public void initialize(){
-        client =  new CreditCardService(TestCredentials.getUser(), TestCredentials.getPassword());
+        client =  new SpreedlyClientImpl(TestCredentials.getUser(), TestCredentials.getPassword());
         cc = new CreditCardInfo();
         cc.fullName = "Joe Jones";
         cc.number = "5555555555554444";
@@ -33,19 +33,19 @@ public class CreditCardServiceTest {
         cc.month = "3";
         cc.year = "2032";
         cc.retained = true;
-        client.tokenize(cc).subscribe((res) -> result = res).dispose();
+        client.createCreditCardPaymentMethod(cc).subscribe((res) -> result = res).dispose();
         badCC = new CreditCardInfo();
         badCC.number = "5555555555554444";
         badCC.cvv = "432";
         badCC.month = "3";
-        client.tokenize(badCC).subscribe((res) -> badResult = res).dispose();
+        client.createCreditCardPaymentMethod(badCC).subscribe((res) -> badResult = res).dispose();
         client.recache(result.getResult().getToken(), new SpreedlySecureOpaqueString("423")).subscribe((res) -> recacheResult = res).dispose();
 
     }
 
     @After
     public void stop() throws IOException {
-        client.stop();
+        client.close();
     }
 
     //Credit Card Tokenization Tests

@@ -1,4 +1,4 @@
-package spreedlyclient.classes;
+package com.spreedly.client.models;
 
 import java.util.ArrayList;
 import java.util.Date;

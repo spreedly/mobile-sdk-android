@@ -1,4 +1,4 @@
-package spreedlyclient.classes;
+package com.spreedly.client.models;
 
 public class SpreedlyError {
     String key;

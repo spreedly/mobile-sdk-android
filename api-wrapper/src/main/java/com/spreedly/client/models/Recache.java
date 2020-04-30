@@ -1,4 +1,4 @@
-package spreedlyclient.classes;
+package com.spreedly.client.models;
 
 public class Recache {
     PaymentMethod payment_method;
