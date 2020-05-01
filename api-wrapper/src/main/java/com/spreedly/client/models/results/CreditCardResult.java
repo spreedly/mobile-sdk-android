@@ -1,19 +1,35 @@
 package com.spreedly.client.models.results;
 
-import com.spreedly.client.models.results.PaymentMethodResult;
-
 import java.util.ArrayList;
 import java.util.Date;
 
-public class CreditCardResult extends PaymentMethodResult {
-    public final String lastFourDigits;
-    public final String firstSixDigits;
-    public final String cvv;
-    public final String number;
-    public final String month;
-    public final String year;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.annotations.Nullable;
 
-    public CreditCardResult(String token, String storageState, boolean test, String paymentMethodType, ArrayList errors, Date createdAt, Date updatedAt, String email, String lastFourDigits, String firstSixDigits, String cvv, String number, String month, String year) {
+public class CreditCardResult extends PaymentMethodResult {
+    public final @Nullable String lastFourDigits;
+    public final @Nullable String firstSixDigits;
+    public final @Nullable String cvv;
+    public final @Nullable String number;
+    public final @Nullable String month;
+    public final @Nullable String year;
+
+    public CreditCardResult(
+            @NonNull String token,
+            @Nullable String storageState,
+            boolean test,
+            @Nullable String paymentMethodType,
+            @Nullable ArrayList errors,
+            @Nullable Date createdAt,
+            @Nullable Date updatedAt,
+            @Nullable String email,
+            @Nullable String lastFourDigits,
+            @Nullable String firstSixDigits,
+            @Nullable String cvv,
+            @Nullable String number,
+            @Nullable String month,
+            @Nullable String year
+    ) {
         super(token, storageState, test, paymentMethodType, createdAt, updatedAt, email, errors);
         this.lastFourDigits = lastFourDigits;
         this.firstSixDigits = firstSixDigits;

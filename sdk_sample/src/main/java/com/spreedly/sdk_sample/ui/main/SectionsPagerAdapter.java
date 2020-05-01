@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.spreedly.sdk_sample.R;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -30,14 +31,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         mContext = context;
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return CoreApiFragment.newInstance();
+        if (position == 0) {
+            return CoreApiFragment.newInstance();
         }
 
-        return PlaceholderFragment.newInstance(position + 1);
+        return PlaceholderFragment.newInstance();
     }
 
     @Nullable

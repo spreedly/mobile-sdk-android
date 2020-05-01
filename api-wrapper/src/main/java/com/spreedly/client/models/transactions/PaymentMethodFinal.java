@@ -5,16 +5,20 @@ import com.spreedly.client.models.CreditCardInfo;
 
 import java.util.Map;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+
 public class PaymentMethodFinal {
     public final PaymentMethodProcess payment_method;
-    public PaymentMethodFinal(CreditCardInfo cc){
+
+    public PaymentMethodFinal(@NonNull CreditCardInfo cc) {
         this.payment_method = new CreditCardFinal(cc);
 
     }
 
-    public PaymentMethodFinal(BankAccountInfo ba){
+    public PaymentMethodFinal(@NonNull BankAccountInfo ba) {
         this.payment_method = new BankAccountFinal(ba);
     }
+
     class PaymentMethodProcess {
         Map<String, Object> metadata;
         String email;
@@ -25,7 +29,7 @@ public class PaymentMethodFinal {
         private final boolean retained;
         CreditCardDetails credit_card;
 
-        public CreditCardFinal(CreditCardInfo cc){
+        public CreditCardFinal(@NonNull CreditCardInfo cc) {
             this.email = cc.email;
             this.metadata = cc.data;
             this.retained = cc.retained;
@@ -36,14 +40,13 @@ public class PaymentMethodFinal {
     class BankAccountFinal extends PaymentMethodProcess {
         BankAccountDetails bank_account;
 
-        public BankAccountFinal(BankAccountInfo ba) {
+        public BankAccountFinal(@NonNull BankAccountInfo ba) {
             super();
             this.email = ba.email;
             this.metadata = ba.data;
             this.bank_account = new BankAccountDetails(ba);
         }
     }
-
 
     class PaymentDetails {
         String first_name;
@@ -70,7 +73,8 @@ public class PaymentMethodFinal {
         String shipping_state;
         String shipping_zip;
         String shipping_country;
-        public CreditCardDetails(CreditCardInfo cc){
+
+        public CreditCardDetails(@NonNull CreditCardInfo cc) {
             this.first_name = cc.firstName;
             this.last_name = cc.lastName;
             this.full_name = cc.fullName;
@@ -80,7 +84,7 @@ public class PaymentMethodFinal {
             this.month = cc.month;
             this.phone_number = cc.phoneNumber;
             this.company = cc.company;
-            if (cc.billingAddress != null){
+            if (cc.billingAddress != null) {
                 this.address1 = cc.billingAddress.address1;
                 this.address2 = cc.billingAddress.address2;
                 this.city = cc.billingAddress.city;
@@ -89,7 +93,7 @@ public class PaymentMethodFinal {
                 this.zip = cc.billingAddress.zip;
 
             }
-            if (cc.shippingAddress != null){
+            if (cc.shippingAddress != null) {
                 this.shipping_address1 = cc.shippingAddress.address1;
                 this.shipping_address2 = cc.shippingAddress.address2;
                 this.shipping_city = cc.shippingAddress.city;
@@ -100,13 +104,13 @@ public class PaymentMethodFinal {
         }
     }
 
-    class BankAccountDetails extends PaymentDetails{
+    class BankAccountDetails extends PaymentDetails {
         String bank_routing_number;
         String bank_account_number;
         String bank_account_type;
         String bank_account_holder_type;
 
-        public BankAccountDetails(BankAccountInfo ba) {
+        public BankAccountDetails(@NonNull BankAccountInfo ba) {
             super();
             this.first_name = ba.firstName;
             this.last_name = ba.lastName;

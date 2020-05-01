@@ -3,17 +3,27 @@ package com.spreedly.client.models.results;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class PaymentMethodResult {
-    public final String token;
-    public final String storageState;
-    public final boolean test;
-    public final String paymentMethodType; //maybe enum
-    public final ArrayList errors;
-    public final Date createdAt;
-    public final Date updatedAt;
-    public final String email;
+import io.reactivex.rxjava3.annotations.Nullable;
 
-    public PaymentMethodResult(String token, String storageState, boolean test, String paymentMethodType, Date createdAt, Date updatedAt, String email, ArrayList errors) {
+public class PaymentMethodResult {
+    public final @Nullable String token;
+    public final @Nullable String storageState;
+    public final boolean test;
+    public final @Nullable String paymentMethodType; //maybe enum
+    public final @Nullable ArrayList errors;
+    public final @Nullable Date createdAt;
+    public final @Nullable Date updatedAt;
+    public final @Nullable String email;
+
+    public PaymentMethodResult(
+            @Nullable String token,
+            @Nullable String storageState,
+            boolean test,
+            @Nullable String paymentMethodType,
+            @Nullable Date createdAt,
+            @Nullable Date updatedAt,
+            @Nullable String email,
+            @Nullable ArrayList errors) {
         this.token = token;
         this.storageState = storageState;
         this.test = test;

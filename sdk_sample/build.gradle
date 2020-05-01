@@ -29,7 +29,18 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude("META-INF/*.kotlin_module")
     }
+
+    lintOptions {
+        abortOnError true
+        warningsAsErrors true
+        htmlReport false
+        xmlReport false
+        textOutput 'stdout'
+        textReport true
+        checkAllWarnings true
+    }
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

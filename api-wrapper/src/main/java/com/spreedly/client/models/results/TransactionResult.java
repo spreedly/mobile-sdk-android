@@ -3,20 +3,32 @@ package com.spreedly.client.models.results;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TransactionResult<T> {
-    public final String token;
-    public final Date createdAt;
-    public final Date updatedAt;
-    public final boolean succeeded;
-    public final String transactionType; // maybe enum
-    public final boolean retained;
-    public final String state; // maybe enum
-    public final String messageKey; // localization?
-    public final String message;
-    public final ArrayList<SpreedlyError> errors;
-    public final T result;
+import io.reactivex.rxjava3.annotations.Nullable;
 
-    public TransactionResult(String token, Date createdAt, Date updatedAt, boolean succeeded, String transactionType, boolean retained, String state, String messageKey, String message, T result) {
+public class TransactionResult<T> {
+    public final @Nullable String token;
+    public final @Nullable Date createdAt;
+    public final @Nullable Date updatedAt;
+    public final boolean succeeded;
+    public final @Nullable String transactionType; // maybe enum
+    public final boolean retained;
+    public final @Nullable String state; // maybe enum
+    public final @Nullable String messageKey; // localization?
+    public final @Nullable String message;
+    public final @Nullable ArrayList<SpreedlyError> errors;
+    public final @Nullable T result;
+
+    public TransactionResult(
+            @Nullable String token,
+            @Nullable Date createdAt,
+            @Nullable Date updatedAt,
+            boolean succeeded,
+            @Nullable String transactionType,
+            boolean retained,
+            @Nullable String state,
+            @Nullable String messageKey,
+            @Nullable String message,
+            @Nullable T result) {
         this.token = token;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
