@@ -1,0 +1,13 @@
+
+apply plugin: 'java-library'
+
+dependencies {
+    compile 'org.apache.httpcomponents:httpcore:4.4.10'
+    compile "org.apache.httpcomponents:httpclient:4.0.2"
+    compile "org.apache.httpcomponents:httpasyncclient:4.1.4"
+    compile 'com.google.code.gson:gson:2.8.6'
+
+    testCompile "junit:junit:RELEASE"
+    testCompile "junit:junit:4.13"
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+}
