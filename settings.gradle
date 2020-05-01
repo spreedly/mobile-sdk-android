@@ -1,2 +1,3 @@
 include ':api-wrapper'
 include ':sample_service'
+include ':sdk_sample'
