@@ -1,6 +1,5 @@
 package com.spreedly.client;
 
-import com.google.gson.Gson;
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
@@ -9,7 +8,6 @@ import com.spreedly.client.models.results.CreditCardResult;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.results.TransactionResult;
-import com.spreedly.client.models.transactions.PaymentMethodFinal;
 import com.spreedly.client.models.transactions.Recache;
 
 import org.apache.http.HttpResponse;
@@ -24,14 +22,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.xml.bind.DatatypeConverter;
 
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
 
 public class SpreedlyClientImpl implements SpreedlyClient {
@@ -45,19 +41,17 @@ public class SpreedlyClientImpl implements SpreedlyClient {
     }
 
     @Override
-    @NonNull public SpreedlySecureOpaqueString createString() {
-        return null;
+    @NonNull public SpreedlySecureOpaqueString createString(String string) {
+        SpreedlySecureOpaqueString spreedlySecureOpaqueString = new SpreedlySecureOpaqueString();
+        spreedlySecureOpaqueString.append(string);
+        return spreedlySecureOpaqueString;
     }
 
     @Override
     @NonNull public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info) {
         return Single.fromCallable(() -> {
-            PaymentMethodFinal paymentMethod = new PaymentMethodFinal(info);
-            Gson gson = new Gson();
-            String requestBody = gson.toJson(paymentMethod);
-            //String requestBody = new JSONObject(paymentMethod).toString();
             String url = "/payment_methods.json";
-            JSONObject transactionResult = sendRequest(requestBody, url);
+            JSONObject transactionResult = sendRequest(info.encode(), url);
             TransactionResult<PaymentMethodResult> finalResults = processCCMap(transactionResult);
             return finalResults;
         });
@@ -66,12 +60,8 @@ public class SpreedlyClientImpl implements SpreedlyClient {
     @Override
     @NonNull public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info) {
         return Single.fromCallable(() -> {
-            PaymentMethodFinal paymentMethod = new PaymentMethodFinal(info);
-            //String requestBody = new JSONObject(paymentMethod).toString();
-            Gson gson = new Gson();
-            String requestBody = gson.toJson(paymentMethod);
             String url = "/payment_methods.json";
-            JSONObject transactionResult = sendRequest(requestBody, url);
+            JSONObject transactionResult = sendRequest(info.encode(), url);
             TransactionResult<PaymentMethodResult> finalResults = processBAMap(transactionResult);
             return finalResults;
         });

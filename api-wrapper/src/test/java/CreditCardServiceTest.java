@@ -26,20 +26,20 @@ public class CreditCardServiceTest {
     @Before
     public void initialize(){
         client =  new SpreedlyClientImpl(TestCredentials.getUser(), TestCredentials.getPassword());
-//        cc = new CreditCardInfo();
-//        cc.fullName = "Joe Jones";
-//        cc.number = "5555555555554444";
-//        cc.cvv = "432";
-//        cc.month = "3";
-//        cc.year = "2032";
-//        cc.retained = true;
-//        client.createCreditCardPaymentMethod(cc).subscribe((res) -> result = res).dispose();
+        cc = new CreditCardInfo();
+        cc.fullName = "Joe Jones";
+        cc.number = client.createString("5555555555554444");
+        cc.cvv = client.createString("432");
+        cc.month = "3";
+        cc.year = "2032";
+        cc.retained = true;
+        client.createCreditCardPaymentMethod(cc).subscribe((res) -> result = res).dispose();
         badCC = new CreditCardInfo();
-        badCC.number = "5555555555554444";
-        badCC.cvv = "432";
+        badCC.number = client.createString("5555555555554444");
+        badCC.cvv = client.createString("432");
         badCC.month = "3";
         client.createCreditCardPaymentMethod(badCC).subscribe((res) -> badResult = res).dispose();
-        // client.recache(result.result.token, new SpreedlySecureOpaqueString("423")).subscribe((res) -> recacheResult = res).dispose();
+        client.recache(result.result.token, client.createString("423")).subscribe((res) -> recacheResult = res).dispose();
 
     }
 

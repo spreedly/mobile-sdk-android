@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.core.Single;
 import java.io.Closeable;
 
 public interface SpreedlyClient extends Closeable {
-    @NonNull SpreedlySecureOpaqueString createString();
+    @NonNull SpreedlySecureOpaqueString createString(String string);
     @NonNull Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info);
     @NonNull Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info);
     @NonNull Single<TransactionResult<PaymentMethodResult>> recache(@NonNull String token, @NonNull SpreedlySecureOpaqueString cvv);
