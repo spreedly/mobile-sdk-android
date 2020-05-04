@@ -18,7 +18,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
     @NonNull public String bankAccountHolderType; //maybe enum
     @Nullable public Map<String, Object> additionalInformation;
 
-    public BankAccountInfo(String firstName, String lastName, String routingNumber, String accountNumber, String accountType, String bankAccountHolderType){
+    public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType){
         this.firstName = firstName;
         this.lastName = lastName;
         this.routingNumber = routingNumber;
@@ -27,7 +27,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
         this.bankAccountHolderType = bankAccountHolderType;
     }
 
-    public BankAccountInfo(String fullName, String routingNumber, String accountNumber, String accountType, String bankAccountHolderType){
+    public BankAccountInfo(@NonNull String fullName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType){
         this.fullName = fullName;
         this.routingNumber = routingNumber;
         this.accountNumber = accountNumber;
@@ -35,7 +35,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
         this.bankAccountHolderType = bankAccountHolderType;
     }
 
-    public BankAccountInfo(String firstName, String lastName, String routingNumber, String accountNumber, String accountType, String bankAccountHolderType, String email, Map<String, Object> metadata, Map<String, Object> additionalInformation){
+    public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType, @NonNull String email, @Nullable Map<String, Object> metadata, @Nullable Map<String, Object> additionalInformation){
         this.firstName = firstName;
         this.lastName = lastName;
         this.routingNumber = routingNumber;
@@ -47,7 +47,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
         this.additionalInformation = additionalInformation;
     }
 
-    public BankAccountInfo(String fullName, String routingNumber, String accountNumber, String accountType, String bankAccountHolderType, String email, Map<String, Object> metadata, Map<String, Object> additionalInformation){
+    public BankAccountInfo(@NonNull String fullName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType, @NonNull String email, @Nullable Map<String, Object> metadata, @Nullable Map<String, Object> additionalInformation){
         this.fullName = fullName;
         this.routingNumber = routingNumber;
         this.accountNumber = accountNumber;

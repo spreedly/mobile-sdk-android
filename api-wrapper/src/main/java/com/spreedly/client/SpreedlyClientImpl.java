@@ -41,7 +41,7 @@ public class SpreedlyClientImpl implements SpreedlyClient {
     }
 
     @Override
-    @NonNull public SpreedlySecureOpaqueString createString(String string) {
+    @NonNull public SpreedlySecureOpaqueString createString(@NonNull String string) {
         SpreedlySecureOpaqueString spreedlySecureOpaqueString = new SpreedlySecureOpaqueString();
         spreedlySecureOpaqueString.append(string);
         return spreedlySecureOpaqueString;

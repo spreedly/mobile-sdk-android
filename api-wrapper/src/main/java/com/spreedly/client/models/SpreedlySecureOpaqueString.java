@@ -20,7 +20,7 @@ public class SpreedlySecureOpaqueString {
 
     }
 
-    public JSONObject encode(JSONObject json, String key){
+    @NonNull public JSONObject encode(@NonNull JSONObject json, @NonNull String key){
         json.put(key, this.data);
         return json;
     }
