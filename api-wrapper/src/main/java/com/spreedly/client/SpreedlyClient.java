@@ -6,13 +6,14 @@ import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 import com.spreedly.client.models.results.TransactionResult;
 
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Single;
 
 import java.io.Closeable;
 
 public interface SpreedlyClient extends Closeable {
-    SpreedlySecureOpaqueString createString();
-    Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(CreditCardInfo info);
-    Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(BankAccountInfo info);
-    Single<TransactionResult<PaymentMethodResult>> recache(String token, SpreedlySecureOpaqueString cvv);
+    @NonNull SpreedlySecureOpaqueString createString();
+    @NonNull Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info);
+    @NonNull Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info);
+    @NonNull Single<TransactionResult<PaymentMethodResult>> recache(@NonNull String token, @NonNull SpreedlySecureOpaqueString cvv);
 }

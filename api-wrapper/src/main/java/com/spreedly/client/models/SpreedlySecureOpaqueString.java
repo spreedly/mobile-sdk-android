@@ -1,22 +1,22 @@
 package com.spreedly.client.models;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+
 public class SpreedlySecureOpaqueString {
-    public int length;
-    private String value;
-
-    public SpreedlySecureOpaqueString(String s) {
-        this.value = s;
+    @NonNull
+    private String data;
+    public void clear(){
+        data = "";
     }
 
-    public void add(char c) {
+    public void append(@NonNull String string) {
+        data += string;
+    }
+    public void removeLastCharacter(){
 
     }
 
-    public void deleteLastChar(char c) {
+    public void encode(){
 
-    }
-
-    public String getValue() {
-        return value;
     }
 }

@@ -3,6 +3,7 @@ package com.spreedly.client.models.results;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
 public class TransactionResult<T> {
@@ -42,7 +43,7 @@ public class TransactionResult<T> {
         this.errors = null;
     }
 
-    public TransactionResult(ArrayList<SpreedlyError> errors) {
+    public TransactionResult(@NonNull ArrayList<SpreedlyError> errors) {
         this.errors = errors;
         this.token = null;
         this.createdAt = null;

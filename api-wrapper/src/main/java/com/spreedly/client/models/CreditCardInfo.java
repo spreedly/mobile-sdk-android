@@ -1,22 +1,25 @@
 package com.spreedly.client.models;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.annotations.Nullable;
+
 public class CreditCardInfo extends PaymentMethodMeta {
-    public String company;
-    public String email;
-    public String firstName;
-    public String lastName;
-    public String fullName;
+    @Nullable public String company;
+    @Nullable public String email;
+    @Nullable public String firstName;
+    @Nullable public String lastName;
+    @Nullable public String fullName;
     // public SpreedlySecureOpaqueString number;
-    public String number;
-    public String month;
-    public String year;
+    @NonNull public String number;
+    @NonNull public String month;
+    @NonNull public String year;
     // public SpreedlySecureOpaqueString cvv;
-    public String cvv;
-    public Address billingAddress;
-    public Address shippingAddress;
-    public String phoneNumber;
-    boolean allowBlankName;
-    boolean allowExpiredDate;
-    boolean allowBlankDate;
-    boolean eligibleForCardUpdate;
+    @NonNull public String cvv;
+    @Nullable public Address billingAddress;
+    @Nullable public Address shippingAddress;
+    @Nullable public String phoneNumber;
+    @Nullable boolean allowBlankName;
+    @Nullable boolean allowExpiredDate;
+    @Nullable boolean allowBlankDate;
+    @Nullable boolean eligibleForCardUpdate;
 }
