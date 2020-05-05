@@ -1,7 +1,9 @@
 package com.spreedly.client;
 
+import com.spreedly.client.models.ApplePayInfo;
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
+import com.spreedly.client.models.GooglePayInfo;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 import com.spreedly.client.models.results.BankAccountResult;
 import com.spreedly.client.models.results.CreditCardResult;
@@ -63,6 +65,27 @@ public class SpreedlyClientImpl implements SpreedlyClient {
             String url = "/payment_methods.json";
             JSONObject transactionResult = sendRequest(info.encode(), url);
             TransactionResult<PaymentMethodResult> finalResults = processBAMap(transactionResult);
+            return finalResults;
+        });
+    }
+
+    @Override
+    public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info) {
+        return Single.fromCallable(() -> {
+            String url = "/payment_methods.json";
+            String string = info.encode();
+            JSONObject transactionResult = sendRequest(info.encode(), url);
+            TransactionResult<PaymentMethodResult> finalResults = processCCMap(transactionResult);
+            return finalResults;
+        });
+    }
+
+    @Override
+    public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info) {
+        return Single.fromCallable(() -> {
+            String url = "/payment_methods.json";
+            JSONObject transactionResult = sendRequest(info.encode(), url);
+            TransactionResult<PaymentMethodResult> finalResults = processCCMap(transactionResult);
             return finalResults;
         });
     }
