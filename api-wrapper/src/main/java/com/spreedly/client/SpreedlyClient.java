@@ -14,6 +14,10 @@ import io.reactivex.rxjava3.core.Single;
 import java.io.Closeable;
 
 public interface SpreedlyClient extends Closeable {
+    public static SpreedlyClient newInstance(String envKey, String envSecret) {
+        return new SpreedlyClientImpl(envKey, envSecret);
+    }
+
     @NonNull SpreedlySecureOpaqueString createString(@NonNull String string);
     @NonNull Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info);
     @NonNull Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info);

@@ -2,6 +2,7 @@ package com.spreedly.client.models.results;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.reactivex.rxjava3.annotations.Nullable;
 
@@ -10,7 +11,7 @@ public class PaymentMethodResult {
     public final @Nullable String storageState;
     public final boolean test;
     public final @Nullable String paymentMethodType; //maybe enum
-    public final @Nullable ArrayList errors;
+    public final @Nullable List<SpreedlyError> errors;
     public final @Nullable Date createdAt;
     public final @Nullable Date updatedAt;
     public final @Nullable String email;
@@ -23,7 +24,7 @@ public class PaymentMethodResult {
             @Nullable Date createdAt,
             @Nullable Date updatedAt,
             @Nullable String email,
-            @Nullable ArrayList errors) {
+            @Nullable List<SpreedlyError> errors) {
         this.token = token;
         this.storageState = storageState;
         this.test = test;

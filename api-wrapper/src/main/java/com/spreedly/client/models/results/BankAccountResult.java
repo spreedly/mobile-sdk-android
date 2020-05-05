@@ -2,6 +2,7 @@ package com.spreedly.client.models.results;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.reactivex.rxjava3.annotations.Nullable;
 
@@ -26,7 +27,7 @@ public class BankAccountResult extends PaymentMethodResult {
             @Nullable Date createdAt,
             @Nullable Date updatedAt,
             @Nullable String email,
-            @Nullable ArrayList errors,
+            @Nullable List<SpreedlyError> errors,
             @Nullable String bankName,
             @Nullable String accountType,
             @Nullable String accountHolderType,
