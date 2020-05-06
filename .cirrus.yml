@@ -1,0 +1,14 @@
+container:
+  image: cirrusci/android-sdk
+
+lint_task:
+  name: 'Lint check sources'
+  script: ./gradlew lint
+
+build_task:
+  name: 'Build Libraries'
+  script: ./gradlew build
+
+test_task:
+  name: 'Run Tests'
+  script: ./gradlew test
