@@ -16,7 +16,6 @@ public class BankAccountInfo extends PaymentMethodMeta {
     @NonNull public String accountNumber; //maybe SpreedlySecureOpaqueString?
     @NonNull public String accountType; //maybe enum
     @NonNull public String bankAccountHolderType; //maybe enum
-    @Nullable public Map<String, Object> additionalInformation;
 
     public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType){
         this.firstName = firstName;
@@ -35,7 +34,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
         this.bankAccountHolderType = bankAccountHolderType;
     }
 
-    public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType, @NonNull String email, @Nullable Map<String, Object> metadata, @Nullable Map<String, Object> additionalInformation){
+    public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType, @NonNull String email, @Nullable Map<String, Object> metadata) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.routingNumber = routingNumber;
@@ -44,10 +43,9 @@ public class BankAccountInfo extends PaymentMethodMeta {
         this.bankAccountHolderType = bankAccountHolderType;
         this.email = email;
         this.data = metadata;
-        this.additionalInformation = additionalInformation;
     }
 
-    public BankAccountInfo(@NonNull String fullName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType, @NonNull String email, @Nullable Map<String, Object> metadata, @Nullable Map<String, Object> additionalInformation){
+    public BankAccountInfo(@NonNull String fullName, @NonNull String routingNumber, @NonNull String accountNumber, @NonNull String accountType, @NonNull String bankAccountHolderType, @NonNull String email, @Nullable Map<String, Object> metadata) {
         this.fullName = fullName;
         this.routingNumber = routingNumber;
         this.accountNumber = accountNumber;
@@ -55,9 +53,11 @@ public class BankAccountInfo extends PaymentMethodMeta {
         this.bankAccountHolderType = bankAccountHolderType;
         this.email = email;
         this.data = metadata;
-        this.additionalInformation = additionalInformation;
     }
-    public BankAccountInfo(){};
+
+    public BankAccountInfo() {
+    }
+
     @Override
     @NonNull public String encode() {
         JSONObject wrapper = new JSONObject();
@@ -74,8 +74,9 @@ public class BankAccountInfo extends PaymentMethodMeta {
         bankAccount.put("bank_account_type", this.accountType);
         bankAccount.put("bank_account_holder_type", this.bankAccountHolderType);
         paymentMethod.put("email", this.email);
-        paymentMethod.put("metadata", this.data);
-        paymentMethod.put("data", additionalInformation);
+        if (this.data != null) {
+            paymentMethod.put("metadata", this.data);
+        }
         paymentMethod.put("bank_account", bankAccount);
         wrapper.put("payment_method", paymentMethod);
         return wrapper.toString();
