@@ -46,7 +46,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
             bankAccount.put("last_name", this.lastName);
         }
         bankAccount.put("bank_routing_number", this.routingNumber);
-        bankAccount.put("bank_account_number", this.accountNumber);
+        bankAccount = this.accountNumber.encode(bankAccount, "bank_account_number");
         bankAccount.put("bank_account_type", this.accountType);
         bankAccount.put("bank_account_holder_type", this.bankAccountHolderType);
         paymentMethod.put("bank_account", bankAccount);

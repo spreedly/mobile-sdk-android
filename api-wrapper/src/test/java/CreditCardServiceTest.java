@@ -22,7 +22,7 @@ public class CreditCardServiceTest {
 
     @Test
     public void TokenizeSucceeds() throws InterruptedException {
-        CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 3, 2032);
+        CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 2032, 12);
         cc.retained = true;
 
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
@@ -58,7 +58,7 @@ public class CreditCardServiceTest {
 
     @Test
     public void badCreditCardFails() throws InterruptedException {
-        CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 0, 2032);
+        CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 2032, 0);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
         test.await();
@@ -70,7 +70,7 @@ public class CreditCardServiceTest {
     @Test
     public void initializationFailsWithEmptyCredentials() throws InterruptedException {
         SpreedlyClient badClient = SpreedlyClient.newInstance("", "", true);
-        CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 0, 2032);
+        CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 2030, 12);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         badClient.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
         test.await();
