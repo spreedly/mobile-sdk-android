@@ -2,6 +2,8 @@ package com.spreedly.client.models;
 
 import org.json.JSONObject;
 
+import javax.swing.JComponent;
+
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
@@ -18,10 +20,65 @@ public class CreditCardInfo extends PaymentMethodMeta {
     @Nullable public Address billingAddress;
     @Nullable public Address shippingAddress;
     @Nullable public String phoneNumber;
-    @Nullable boolean allowBlankName;
-    @Nullable boolean allowExpiredDate;
-    @Nullable boolean allowBlankDate;
-    @Nullable boolean eligibleForCardUpdate;
+    public boolean allowBlankName;
+    public boolean allowExpiredDate;
+    public boolean allowBlankDate;
+    public boolean eligibleForCardUpdate;
+
+    public CreditCardInfo(){
+    };
+    public CreditCardInfo(@NonNull String firstName, @NonNull String lastName, @NonNull SpreedlySecureOpaqueString number, @NonNull SpreedlySecureOpaqueString cvv, @NonNull String month, @NonNull String year, boolean retained){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.number = number;
+        this.cvv = cvv;
+        this.month = month;
+        this.year = year;
+        this.retained = retained;
+    }
+
+    public CreditCardInfo(@NonNull String fullName, @NonNull SpreedlySecureOpaqueString number, @NonNull SpreedlySecureOpaqueString cvv, @NonNull String month, @NonNull String year, boolean retained){
+        this.fullName = fullName;
+        this.number = number;
+        this.cvv = cvv;
+        this.month = month;
+        this.year = year;
+        this.retained = retained;
+    }
+
+    public CreditCardInfo(@NonNull String firstName, @NonNull String lastName, @NonNull SpreedlySecureOpaqueString number, @NonNull SpreedlySecureOpaqueString cvv, @NonNull String month, @NonNull String year, @Nullable Address billingAddress, @Nullable Address shippingAddress, @Nullable String company, @Nullable String email, boolean retained, boolean allowBlankDate, boolean allowBlankName, boolean allowExpiredDate, boolean eligibleForCardUpdate){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.number = number;
+        this.cvv = cvv;
+        this.month = month;
+        this.year = year;
+        this.billingAddress = billingAddress;
+        this.shippingAddress = shippingAddress;
+        this.allowBlankDate = allowBlankDate;
+        this.allowBlankName = allowBlankName;
+        this.allowExpiredDate = allowExpiredDate;
+        this.eligibleForCardUpdate = eligibleForCardUpdate;
+        this.retained = retained;
+    }
+
+    public CreditCardInfo(@NonNull String fullName, @NonNull SpreedlySecureOpaqueString number, @NonNull SpreedlySecureOpaqueString cvv, @NonNull String month, @NonNull String year, @Nullable Address billingAddress, @Nullable Address shippingAddress, @Nullable String company, @Nullable String email, boolean retained, boolean allowBlankDate, boolean allowBlankName, boolean allowExpiredDate, boolean eligibleForCardUpdate){
+        this.fullName = fullName;
+        this.number = number;
+        this.cvv = cvv;
+        this.month = month;
+        this.year = year;
+        this.email = email;
+        this.company = company;
+        this.billingAddress = billingAddress;
+        this.shippingAddress = shippingAddress;
+        this.allowBlankDate = allowBlankDate;
+        this.allowBlankName = allowBlankName;
+        this.allowExpiredDate = allowExpiredDate;
+        this.eligibleForCardUpdate = eligibleForCardUpdate;
+        this.retained = retained;
+    }
+
 
     @Override
     @NonNull public String encode() {
@@ -55,10 +112,15 @@ public class CreditCardInfo extends PaymentMethodMeta {
             creditCard.put("shipping_country", this.shippingAddress.country);
         }
         creditCard.put("phone_number", this.phoneNumber);
+        creditCard.put("company", this.company);
         paymentMethod.put("credit_card", creditCard);
         paymentMethod.put("email", this.email);
         paymentMethod.put("metadata", this.data);
         paymentMethod.put("retained", this.retained);
+        paymentMethod.put("allow_blank_name", allowBlankName);
+        paymentMethod.put("allow_expired_date", allowExpiredDate);
+        paymentMethod.put("allow_blank_date", allowBlankDate);
+        paymentMethod.put("eligible_for_card_updater", eligibleForCardUpdate);
         wrapper.put("payment_method", paymentMethod);
         return wrapper.toString();
     }

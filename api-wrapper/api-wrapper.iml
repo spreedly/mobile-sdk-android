@@ -35,6 +35,7 @@
     <orderEntry type="library" exported="" name="Gradle: rxjava-3.0.3" level="project" />
     <orderEntry type="library" exported="" name="Gradle: json-20190722" level="project" />
     <orderEntry type="library" exported="" name="Gradle: gson-2.8.6" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: annotations-15.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: commons-logging-1.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: commons-codec-1.11" level="project" />
     <orderEntry type="library" exported="" name="Gradle: reactive-streams-1.0.3" level="project" />

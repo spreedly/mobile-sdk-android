@@ -11,13 +11,41 @@ public class GooglePayInfo extends PaymentMethodMeta{
     @NonNull public String signedMessage;
     @NonNull public String firstName;
     @NonNull public String lastName;
-    @NonNull public String email;
+    @Nullable public String email;
     @Nullable public String testCardNumber;
     @Nullable public Address address;
     @Nullable public IntermediateSigningKey intermediateSigningKey;
 
+    public GooglePayInfo(){};
+
+    public GooglePayInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String signature, @NonNull String protocolVersion, @NonNull String signedMessage, boolean retained){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.signedMessage = signedMessage;
+        this.signature = signature;
+        this.protocolVersion = protocolVersion;
+        this.retained = retained;
+    }
+
+    public GooglePayInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String signature, @NonNull String protocolVersion, @NonNull String signedMessage, boolean retained, @Nullable String email, @Nullable Address address, @Nullable String testCardNumber, @Nullable IntermediateSigningKey intermediateSigningKey){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.signedMessage = signedMessage;
+        this.signature = signature;
+        this.protocolVersion = protocolVersion;
+        this.retained = retained;
+        this.email = email;
+        this.address = address;
+        this.testCardNumber = testCardNumber;
+        this.intermediateSigningKey = intermediateSigningKey;
+
+    }
+
+
+
     @Override
-    @NonNull public String encode() {
+    @NonNull
+    public String encode() {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject googlePay = new JSONObject();
@@ -32,8 +60,8 @@ public class GooglePayInfo extends PaymentMethodMeta{
         paymentData.put("protocolVersion", this.protocolVersion);
         paymentData.put("signedMessage", this.signedMessage);
         googlePay.put("payment_data", paymentData);
-        googlePay.put("first_name", this.firstName);
         googlePay.put("last_name", this.lastName);
+        googlePay.put("first_name", this.firstName);
         googlePay.put("test_card_number", this.testCardNumber);
         if (this.address != null){
             googlePay.put("address1", this.address.address1);
