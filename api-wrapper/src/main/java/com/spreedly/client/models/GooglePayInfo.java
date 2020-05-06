@@ -11,7 +11,6 @@ public class GooglePayInfo extends PaymentMethodMeta{
     @NonNull public String signedMessage;
     @NonNull public String firstName;
     @NonNull public String lastName;
-    @Nullable public String email;
     @Nullable public String testCardNumber;
     @Nullable public Address address;
     @Nullable public IntermediateSigningKey intermediateSigningKey;
@@ -26,22 +25,6 @@ public class GooglePayInfo extends PaymentMethodMeta{
         this.protocolVersion = protocolVersion;
         this.retained = retained;
     }
-
-    public GooglePayInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String signature, @NonNull String protocolVersion, @NonNull String signedMessage, boolean retained, @Nullable String email, @Nullable Address address, @Nullable String testCardNumber, @Nullable IntermediateSigningKey intermediateSigningKey){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.signedMessage = signedMessage;
-        this.signature = signature;
-        this.protocolVersion = protocolVersion;
-        this.retained = retained;
-        this.email = email;
-        this.address = address;
-        this.testCardNumber = testCardNumber;
-        this.intermediateSigningKey = intermediateSigningKey;
-
-    }
-
-
 
     @Override
     @NonNull
@@ -73,9 +56,7 @@ public class GooglePayInfo extends PaymentMethodMeta{
         }
 
         paymentMethod.put("google_pay", googlePay);
-        paymentMethod.put("email", this.email);
         paymentMethod.put("retained", this.retained);
-        paymentMethod.put("metadata", this.data);
         wrapper.put("payment_method", paymentMethod);
         return wrapper.toString();
     }

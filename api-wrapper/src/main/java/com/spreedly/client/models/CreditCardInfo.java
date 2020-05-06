@@ -9,8 +9,6 @@ public class CreditCardInfo extends PaymentMethodMeta {
     @Nullable
     public String company;
     @Nullable
-    public String email;
-    @Nullable
     public String firstName;
     @Nullable
     public String lastName;
@@ -19,9 +17,9 @@ public class CreditCardInfo extends PaymentMethodMeta {
     @Nullable
     public SpreedlySecureOpaqueString number;
     @NonNull
-    public String month;
+    public int month;
     @NonNull
-    public String year;
+    public int year;
     @NonNull
     public SpreedlySecureOpaqueString cvv;
     @Nullable
@@ -35,6 +33,22 @@ public class CreditCardInfo extends PaymentMethodMeta {
     @Nullable boolean allowBlankDate;
     @Nullable boolean eligibleForCardUpdate;
 
+    public CreditCardInfo(@NonNull String fullName, @NonNull SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString cvv, @NonNull int year, @NonNull int month){
+        this.fullName = fullName;
+        this.number = number;
+        this.cvv = cvv;
+        this.month = month;
+        this.year = year;
+    }
+
+    public CreditCardInfo(@NonNull String firstName, @NonNull String lastName, @NonNull SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString cvv, @NonNull int year, @NonNull int month){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.number = number;
+        this.cvv = cvv;
+        this.month = month;
+        this.year = year;
+    }
     @Override
     @NonNull
     public String encode() {
@@ -70,10 +84,6 @@ public class CreditCardInfo extends PaymentMethodMeta {
         creditCard.put("phone_number", this.phoneNumber);
         creditCard.put("company", this.company);
         paymentMethod.put("credit_card", creditCard);
-        paymentMethod.put("email", this.email);
-        if (this.data != null) {
-            paymentMethod.put("metadata", this.data);
-        }
         paymentMethod.put("retained", this.retained);
         paymentMethod.put("allow_blank_name", allowBlankName);
         paymentMethod.put("allow_expired_date", allowExpiredDate);
