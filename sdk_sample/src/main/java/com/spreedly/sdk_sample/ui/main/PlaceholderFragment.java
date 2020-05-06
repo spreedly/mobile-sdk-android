@@ -10,7 +10,10 @@ import android.widget.TextView;
 import com.spreedly.sdk_sample.R;
 
 import androidx.annotation.NonNull;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 
 /**
  * A placeholder fragment containing a simple view.
@@ -23,9 +26,10 @@ public class PlaceholderFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     @Override
+    @Nullable
     public View onCreateView(
-            @NonNull LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText("COMING SOON");

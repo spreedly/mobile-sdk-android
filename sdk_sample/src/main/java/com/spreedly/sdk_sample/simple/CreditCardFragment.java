@@ -17,11 +17,13 @@ public class CreditCardFragment extends BillingFragmentBase {
 
     private CreditCardFragmentViewModel mViewModel;
 
+    @NonNull
     public static CreditCardFragment newInstance() {
         return new CreditCardFragment();
     }
 
     @Override
+    @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.credit_card_fragment, container, false);

@@ -25,7 +25,8 @@ public class CreditCardFragmentViewModel extends ViewModel {
 
     void create() {
         final SpreedlyClient client = SpreedlyClient.newInstance("", "", true);
-        final CreditCardInfo info = new CreditCardInfo(name.getValue(),client.createString(cc.getValue()), client.createString(ccv.getValue()), year.getValue(), month.getValue());
+        final CreditCardInfo info = new CreditCardInfo(name.getValue(),client.createString(cc.getValue()), client.createString(ccv.getValue()), year.getValue() == null ? 0 : year.getValue(), month.getValue() == null ? 0 : month.getValue());
+
         inProgress.setValue(true);
         client.createCreditCardPaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
