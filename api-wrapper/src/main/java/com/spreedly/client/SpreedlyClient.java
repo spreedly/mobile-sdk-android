@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.core.Single;
 import java.io.Closeable;
 
 public interface SpreedlyClient extends Closeable {
-    static SpreedlyClient newInstance(String envKey, String envSecret, boolean test) {
+    @NonNull static SpreedlyClient newInstance(@NonNull String envKey, @NonNull String envSecret,@NonNull boolean test) {
         return new SpreedlyClientImpl(envKey, envSecret, test);
     }
 
