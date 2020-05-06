@@ -38,6 +38,13 @@ android {
         textOutput 'stdout'
         textReport true
         checkAllWarnings true
+        enable.addAll([
+                'UnknownNullness'
+        ])
+        disable.addAll([
+                'GoogleAppIndexingWarning',
+                'OldTargetApi'
+        ])
     }
     compileOptions {
         sourceCompatibility = 1.8

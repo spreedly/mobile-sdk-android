@@ -23,4 +23,8 @@ lintOptions {
     enable.addAll([
             'UnknownNullness'
     ])
+    disable.addAll([
+            'GoogleAppIndexingWarning',
+            'OldTargetApi'
+    ])
 }
