@@ -17,9 +17,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
@@ -114,11 +118,8 @@ class SpreedlyClientImpl implements SpreedlyClient {
                     rawResult.optBoolean("test", true),
                     rawResult.optString("payment_method_type"),
                     processErrors(rawResult.optJSONArray("errors")),
-                                        /*                (Date) ((String) rawTransaction.get("created_at")),
-                (Date) rawTransaction.get("updated_at"),*/
-                    new Date(),
-                    new Date(),
-                    // TODO parse dates
+                    parseDate(rawTransaction.optString("created_at")),
+                    parseDate(rawTransaction.optString("updated_at")),
                     rawResult.optString("email"),
                     rawResult.optString("last_four_digits"),
                     rawResult.optString("first_six_digits"),
@@ -130,9 +131,8 @@ class SpreedlyClientImpl implements SpreedlyClient {
         }
         transactionResult = new TransactionResult<PaymentMethodResult>(
                 (String) rawTransaction.optString("token"),
-                // Todo: parse dates
-                new Date(),
-                new Date(),
+                parseDate(rawTransaction.optString("created_at")),
+                parseDate(rawTransaction.optString("updated_at")),
                 rawTransaction.optBoolean("succeeded", false),
                 rawTransaction.optString("transaction_type"),
                 rawTransaction.optBoolean("retained", false),
@@ -159,8 +159,8 @@ class SpreedlyClientImpl implements SpreedlyClient {
                     rawResult.optString("storage_state"),
                     rawResult.optBoolean("test", true),
                     rawResult.optString("payment_method_type"),
-                    new Date(),
-                    new Date(),
+                    parseDate(rawTransaction.optString("created_at")),
+                    parseDate(rawTransaction.optString("updated_at")),
                     rawResult.optString("email"),
                     processErrors(rawResult.optJSONArray("errors")),
                     rawResult.optString("bank_name"),
@@ -177,11 +177,8 @@ class SpreedlyClientImpl implements SpreedlyClient {
         }
         transactionResult = new TransactionResult<PaymentMethodResult>(
                 (String) rawTransaction.optString("token"),
-/*                (Date) ((String) rawTransaction.get("created_at")),
-                (Date) rawTransaction.get("updated_at"),*/
-                new Date(),
-                new Date(),
-                // TODO parse dates
+                parseDate(rawTransaction.optString("created_at")),
+                parseDate(rawTransaction.optString("updated_at")),
                 (boolean) rawTransaction.optBoolean("succeeded", false),
                 rawTransaction.optString("transaction_type"),
                 (boolean) rawTransaction.optBoolean("retained", false),
@@ -231,5 +228,22 @@ class SpreedlyClientImpl implements SpreedlyClient {
     @Override
     public void close() {
 
+    }
+
+    @Nullable
+    private Date parseDate(@Nullable String dateString){
+        if (dateString == null){
+            return null;
+        }
+        dateString = dateString.replace('T', ' ');
+        dateString = dateString.replace("Z", "+0000");
+        //parsing as "yyyy-MM-dd'T'hh:mm:ss'Z'" returns the correct time, but an incorrect time zone
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ssZ", Locale.US).parse(dateString);
+        } catch (ParseException e) {
+            return null;
+        }
+        return date;
     }
 }
