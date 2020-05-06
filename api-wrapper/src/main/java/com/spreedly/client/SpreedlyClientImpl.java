@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
@@ -34,20 +35,18 @@ import okhttp3.Response;
 
 class SpreedlyClientImpl implements SpreedlyClient {
     @NonNull
-    final String credentials;
+    private final String credentials;
     @NonNull
-    final OkHttpClient httpClient;
-    @NonNull
-    final String baseUrl = "https://core.spreedly.com/v1";
-    final boolean test;
+    private final OkHttpClient httpClient;
+    private final boolean test;
 
-    public SpreedlyClientImpl(@NonNull String user, @NonNull String password, boolean test) {
+    SpreedlyClientImpl(@NonNull String user, @NonNull String password, boolean test) {
         this.credentials = "Basic " + safeBase64((user + ":" + password).getBytes());
         this.httpClient = new OkHttpClient();
         this.test = test;
     }
 
-    static String safeBase64(byte[] source) {
+    private static String safeBase64(byte[] source) {
         try {
             Class<?> dtc = Class.forName("android.util.Base64");
             return (String) dtc.getMethod("encodeToString", byte[].class, int.class).invoke(null, source, 2);
@@ -74,33 +73,33 @@ class SpreedlyClientImpl implements SpreedlyClient {
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info, @Nullable String email, @Nullable JSONObject metadata) {
-        return sendRequest(info.encode(email, metadata), "/payment_methods.json").map(this::processCCMap);
+        return sendRequest(info.toJson(email, metadata), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info, @Nullable String email, @Nullable JSONObject metadata) {
-        return sendRequest(info.encode(email, metadata), "/payment_methods.json").map(this::processBAMap);
+        return sendRequest(info.toJson(email, metadata), "/payment_methods.json").map(this::processBAMap);
     }
 
     @Override
     public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info, @Nullable String email, @Nullable JSONObject metadata) {
-        return sendRequest(info.encode(email, metadata), "/payment_methods.json").map(this::processCCMap);
+        return sendRequest(info.toJson(email, metadata), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override
     public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info, @Nullable String email, @Nullable JSONObject metadata) {
-        return sendRequest(info.encode(email, metadata), "/payment_methods.json").map(this::processCCMap);
+        return sendRequest(info.toJson(email, metadata), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> recache(@NonNull String token, @NonNull SpreedlySecureOpaqueString cvv) {
-        return sendRequest(new JSONObject(new Recache(cvv)).toString(), "/payment_methods/" + token + "/recache.json").map(this::processCCMap);
+        return sendRequest(new JSONObject(new Recache(cvv)), "/payment_methods/" + token + "/recache.json").map(this::processCCMap);
     }
 
     @NonNull TransactionResult<PaymentMethodResult> processCCMap(@NonNull JSONObject raw) {
-        TransactionResult<PaymentMethodResult> transactionResult = null;
+        TransactionResult<PaymentMethodResult> transactionResult;
         JSONObject rawTransaction = raw.optJSONObject("transaction");
         if (rawTransaction == null) {
             rawTransaction = new JSONObject();
@@ -128,8 +127,8 @@ class SpreedlyClientImpl implements SpreedlyClient {
                     rawResult.optString("year")
             );
         }
-        transactionResult = new TransactionResult<PaymentMethodResult>(
-                (String) rawTransaction.optString("token"),
+        transactionResult = new TransactionResult<>(
+                rawTransaction.optString("token"),
                 // Todo: parse dates
                 new Date(),
                 new Date(),
@@ -146,7 +145,7 @@ class SpreedlyClientImpl implements SpreedlyClient {
     }
 
     @NonNull TransactionResult<PaymentMethodResult> processBAMap(@NonNull JSONObject raw) {
-        TransactionResult<PaymentMethodResult> transactionResult = null;
+        TransactionResult<PaymentMethodResult> transactionResult;
         JSONObject rawTransaction = raw.optJSONObject("transaction");
         if (rawTransaction == null) {
             rawTransaction = new JSONObject();
@@ -175,16 +174,16 @@ class SpreedlyClientImpl implements SpreedlyClient {
                     rawResult.optString("full_name")
             );
         }
-        transactionResult = new TransactionResult<PaymentMethodResult>(
-                (String) rawTransaction.optString("token"),
+        transactionResult = new TransactionResult<>(
+                rawTransaction.optString("token"),
 /*                (Date) ((String) rawTransaction.get("created_at")),
                 (Date) rawTransaction.get("updated_at"),*/
                 new Date(),
                 new Date(),
                 // TODO parse dates
-                (boolean) rawTransaction.optBoolean("succeeded", false),
+                rawTransaction.optBoolean("succeeded", false),
                 rawTransaction.optString("transaction_type"),
-                (boolean) rawTransaction.optBoolean("retained", false),
+                rawTransaction.optBoolean("retained", false),
                 rawTransaction.optString("state"),
                 rawTransaction.optString("messageKey"),
                 rawTransaction.optString("message"),
@@ -195,10 +194,11 @@ class SpreedlyClientImpl implements SpreedlyClient {
     }
 
     @NonNull
-    private Single<JSONObject> sendRequest(@NonNull String requestBody, @NonNull String url) {
+    private Single<JSONObject> sendRequest(@NonNull JSONObject requestBody, @NonNull String url) {
+        String baseUrl = "https://core.spreedly.com/v1";
         final Call call = httpClient.newCall(new Request.Builder()
                 .url(baseUrl + url)
-                .method("POST", RequestBody.create(requestBody, MediaType.parse("application/json")))
+                .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
                 .header("Authorization", credentials)
                 .build());
 
@@ -210,7 +210,11 @@ class SpreedlyClientImpl implements SpreedlyClient {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                emitter.onSuccess(new JSONObject(response.body().string()));
+                try {
+                    emitter.onSuccess(new JSONObject(Objects.requireNonNull(response.body()).string()));
+                } catch (NullPointerException npe) {
+                    emitter.onError(npe);
+                }
             }
         }));
     }

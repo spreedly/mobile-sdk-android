@@ -1,8 +1,9 @@
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 
-import org.json.JSONObject;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SpreedlySecureOpaqueStringTest {
 
@@ -40,14 +41,5 @@ public class SpreedlySecureOpaqueStringTest {
         SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
         string.removeLastCharacter();
         assertEquals(0, string.length);
-    }
-
-    @Test
-    public void CanEncodeString(){
-        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
-        string.append("test");
-        JSONObject sampleObject = new JSONObject();
-        sampleObject = string.encode(sampleObject, "key");
-        assertEquals("{\"key\":\"test\"}", sampleObject.toString());
     }
 }
