@@ -28,7 +28,7 @@ public class GooglePayInfo extends PaymentMethodMeta{
 
     @Override
     @NonNull
-    public String encode() {
+    public String encode(@Nullable String email, @Nullable JSONObject metadata) {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject googlePay = new JSONObject();
@@ -57,6 +57,12 @@ public class GooglePayInfo extends PaymentMethodMeta{
 
         paymentMethod.put("google_pay", googlePay);
         paymentMethod.put("retained", this.retained);
+        if (metadata != null) {
+            paymentMethod.put("metadata", metadata);
+        }
+        if (email != null) {
+            paymentMethod.put("email", email);
+        }
         wrapper.put("payment_method", paymentMethod);
         return wrapper.toString();
     }

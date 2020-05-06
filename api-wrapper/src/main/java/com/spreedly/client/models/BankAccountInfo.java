@@ -35,7 +35,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
 
 
     @Override
-    @NonNull public String encode() {
+    @NonNull public String encode(@Nullable String email, @Nullable JSONObject metadata) {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject bankAccount = new JSONObject();
@@ -50,6 +50,12 @@ public class BankAccountInfo extends PaymentMethodMeta {
         bankAccount.put("bank_account_type", this.accountType);
         bankAccount.put("bank_account_holder_type", this.bankAccountHolderType);
         paymentMethod.put("bank_account", bankAccount);
+        if (metadata != null) {
+            paymentMethod.put("metadata", metadata);
+        }
+        if (email != null) {
+            paymentMethod.put("email", email);
+        }
         wrapper.put("payment_method", paymentMethod);
         return wrapper.toString();
     }

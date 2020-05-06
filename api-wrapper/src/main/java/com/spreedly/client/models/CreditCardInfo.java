@@ -51,7 +51,7 @@ public class CreditCardInfo extends PaymentMethodMeta {
     }
     @Override
     @NonNull
-    public String encode() {
+    public String encode(@Nullable String email, @Nullable JSONObject metadata) {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject creditCard = new JSONObject();
@@ -89,6 +89,12 @@ public class CreditCardInfo extends PaymentMethodMeta {
         paymentMethod.put("allow_expired_date", allowExpiredDate);
         paymentMethod.put("allow_blank_date", allowBlankDate);
         paymentMethod.put("eligible_for_card_updater", eligibleForCardUpdate);
+        if (metadata != null) {
+            paymentMethod.put("metadata", metadata);
+        }
+        if (email != null) {
+            paymentMethod.put("email", email);
+        }
         wrapper.put("payment_method", paymentMethod);
         return wrapper.toString();
     }
