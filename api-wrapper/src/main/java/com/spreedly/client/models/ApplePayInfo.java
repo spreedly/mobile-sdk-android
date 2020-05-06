@@ -8,10 +8,6 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
 public class ApplePayInfo extends PaymentMethodMeta {
-    @NonNull public String firstName;
-    @NonNull public String lastName;
-    @NonNull public String email;
-    @Nullable public Address address;
     @NonNull public String paymentData;
     @NonNull public String signature;
     @NonNull public String version;
@@ -19,12 +15,15 @@ public class ApplePayInfo extends PaymentMethodMeta {
     @Nullable public String testCardNumber;
 
 
-    @Override
-    @NonNull public String encode(@Nullable String email, @Nullable JSONObject metadata) {
+    @NonNull
+    public JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata) {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject applePay = new JSONObject();
         JSONObject paymentData = new JSONObject();
+
+        addCommonJsonFields(paymentMethod, applePay, email, metadata);
+
         paymentData.put("signature", this.signature);
         paymentData.put("version", this.version);
         paymentData.put("header", this.header);
@@ -32,25 +31,7 @@ public class ApplePayInfo extends PaymentMethodMeta {
         applePay.put("payment_data", paymentData);
         applePay.put("test_card_number", this.testCardNumber);
         paymentMethod.put("apple_pay", applePay);
-        paymentMethod.put("first_name", this.firstName);
-        paymentMethod.put("last_name", this.lastName);
-        if (this.address != null){
-            paymentMethod.put("address1", this.address.address1);
-            paymentMethod.put("address2", this.address.address2);
-            paymentMethod.put("city", this.address.city);
-            paymentMethod.put("state", this.address.state);
-            paymentMethod.put("zip", this.address.zip);
-            paymentMethod.put("country", this.address.country);
-        }
-        paymentMethod.put("email", this.email);
-        paymentMethod.put("retained", this.retained);
-        if (metadata != null) {
-            paymentMethod.put("metadata", metadata);
-        }
-        if (email != null) {
-            paymentMethod.put("email", email);
-        }
         wrapper.put("payment_method", paymentMethod);
-        return wrapper.toString();
+        return wrapper;
     }
 }
