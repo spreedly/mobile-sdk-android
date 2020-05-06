@@ -26,7 +26,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     };
     private final Context mContext;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, int behavior) {
+    public SectionsPagerAdapter(@NonNull Context context, @NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
         mContext = context;
     }

@@ -4,7 +4,12 @@
     <string name="tab_secure_widgets">Secure Widgets</string>
     <string name="tab_3ds2">3DS2</string>
     <string name="tab_drop_in">Drop-In</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="month_hint">Month</string>
+    <string name="year_hint">Year</string>
+    <string name="ccv_hint">CCV</string>
+    <string name="credit_card_hint">Credit Card</string>
+    <string name="name_hint">Name</string>
+    <string name="submit">Submit</string>
+    <string name="routing_number_hint">Routing Number</string>
+    <string name="bank_account_hint">Bank Account</string>
 </resources>

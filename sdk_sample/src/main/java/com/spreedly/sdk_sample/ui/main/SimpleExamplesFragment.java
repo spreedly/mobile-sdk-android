@@ -13,15 +13,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+
 public class SimpleExamplesFragment extends Fragment {
 
-    public static SimpleExamplesFragment newInstance() {
+    @NonNull public static SimpleExamplesFragment newInstance() {
         return new SimpleExamplesFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    @Nullable public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_core_api, container, false);
     }
 

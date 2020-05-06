@@ -17,11 +17,13 @@ public class BankAccountFragment extends BillingFragmentBase {
 
     private BankAccountFragmentViewModel mViewModel;
 
+    @NonNull
     public static BankAccountFragment newInstance() {
         return new BankAccountFragment();
     }
 
     @Override
+    @NonNull
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.bank_account_fragment, container, false);

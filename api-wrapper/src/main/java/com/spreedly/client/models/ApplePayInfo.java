@@ -20,7 +20,7 @@ public class ApplePayInfo extends PaymentMethodMeta {
 
 
     @Override
-    @NonNull public String encode() {
+    @NonNull public String encode(@Nullable String email, @Nullable JSONObject metadata) {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject applePay = new JSONObject();
@@ -44,7 +44,12 @@ public class ApplePayInfo extends PaymentMethodMeta {
         }
         paymentMethod.put("email", this.email);
         paymentMethod.put("retained", this.retained);
-        paymentMethod.put("metadata", this.data);
+        if (metadata != null) {
+            paymentMethod.put("metadata", metadata);
+        }
+        if (email != null) {
+            paymentMethod.put("email", email);
+        }
         wrapper.put("payment_method", paymentMethod);
         return wrapper.toString();
     }

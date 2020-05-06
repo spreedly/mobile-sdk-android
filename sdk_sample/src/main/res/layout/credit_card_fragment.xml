@@ -19,7 +19,10 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="@string/name_hint"
+            android:autofillHints="name"
+            android:inputType="text"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -30,7 +33,10 @@
             android:id="@+id/cc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Credit Card" />
+            android:hint="@string/credit_card_hint"
+            android:autofillHints="creditCardNumber"
+            android:inputType="textNoSuggestions"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -41,7 +47,9 @@
             android:id="@+id/ccv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="CCV" />
+            android:hint="@string/ccv_hint"
+            android:inputType="textNoSuggestions"
+            android:autofillHints="cvv"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -52,8 +60,9 @@
             android:id="@+id/year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Year"
-            android:inputType="number" />
+            android:hint="@string/year_hint"
+            android:inputType="number"
+            android:autofillHints="creditCardYear"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -64,26 +73,30 @@
             android:id="@+id/month"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Month"
-            android:inputType="number" />
+            android:hint="@string/month_hint"
+            android:inputType="number"
+            android:autofillHints="creditCardMonth"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/token"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_blue_dark" />
+        android:textColor="@android:color/holo_blue_dark"
+        android:textIsSelectable="true"/>
 
     <TextView
         android:id="@+id/error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_red_dark" />
+        android:textColor="@android:color/holo_red_dark"
+        android:textIsSelectable="true"/>
 
     <Button
         android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:text="@string/submit" />
 
 </LinearLayout>

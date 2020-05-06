@@ -39,10 +39,12 @@ class SpreedlyClientImpl implements SpreedlyClient {
     final OkHttpClient httpClient;
     @NonNull
     final String baseUrl = "https://core.spreedly.com/v1";
+    final boolean test;
 
-    public SpreedlyClientImpl(@NonNull String user, @NonNull String password) {
+    public SpreedlyClientImpl(@NonNull String user, @NonNull String password, boolean test) {
         this.credentials = "Basic " + safeBase64((user + ":" + password).getBytes());
         this.httpClient = new OkHttpClient();
+        this.test = test;
     }
 
     static String safeBase64(byte[] source) {
@@ -71,24 +73,24 @@ class SpreedlyClientImpl implements SpreedlyClient {
 
     @Override
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info) {
-        return sendRequest(info.encode(), "/payment_methods.json").map(this::processCCMap);
+    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info, @Nullable String email, @Nullable JSONObject metadata) {
+        return sendRequest(info.encode(email, metadata), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info) {
-        return sendRequest(info.encode(), "/payment_methods.json").map(this::processBAMap);
+    public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info, @Nullable String email, @Nullable JSONObject metadata) {
+        return sendRequest(info.encode(email, metadata), "/payment_methods.json").map(this::processBAMap);
     }
 
     @Override
-    public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info) {
-        return sendRequest(info.encode(), "/payment_methods.json").map(this::processCCMap);
+    public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info, @Nullable String email, @Nullable JSONObject metadata) {
+        return sendRequest(info.encode(email, metadata), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override
-    public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info) {
-        return sendRequest(info.encode(), "/payment_methods.json").map(this::processCCMap);
+    public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info, @Nullable String email, @Nullable JSONObject metadata) {
+        return sendRequest(info.encode(email, metadata), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override

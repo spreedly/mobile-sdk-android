@@ -9,6 +9,7 @@ dependencies {
     implementation 'org.json:json:20190722'
 
     testImplementation "junit:junit:4.13"
+    implementation 'org.jetbrains:annotations:19.0.0'
 }
 
 lintOptions {
@@ -21,5 +22,9 @@ lintOptions {
     checkAllWarnings true
     enable.addAll([
             'UnknownNullness'
+    ])
+    disable.addAll([
+            'GoogleAppIndexingWarning',
+            'OldTargetApi'
     ])
 }

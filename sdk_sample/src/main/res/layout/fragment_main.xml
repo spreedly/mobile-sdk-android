@@ -18,6 +18,7 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:textIsSelectable="true"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
