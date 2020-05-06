@@ -35,7 +35,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return CoreApiFragment.newInstance();
+            return SimpleExamplesFragment.newInstance();
         }
 
         return PlaceholderFragment.newInstance();

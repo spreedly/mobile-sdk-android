@@ -2,6 +2,7 @@ package com.spreedly.client.models.results;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
@@ -19,7 +20,7 @@ public class CreditCardResult extends PaymentMethodResult {
             @Nullable String storageState,
             boolean test,
             @Nullable String paymentMethodType,
-            @Nullable ArrayList errors,
+            @Nullable List<SpreedlyError> errors,
             @Nullable Date createdAt,
             @Nullable Date updatedAt,
             @Nullable String email,

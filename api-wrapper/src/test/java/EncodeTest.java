@@ -1,5 +1,4 @@
 import com.spreedly.client.SpreedlyClient;
-import com.spreedly.client.SpreedlyClientImpl;
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.GooglePayInfo;
@@ -9,11 +8,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class EncodeTest {
-    SpreedlyClient client  =  new SpreedlyClientImpl(TestCredentials.getUser(), TestCredentials.getPassword());
+    SpreedlyClient client  =  SpreedlyClient.newInstance(TestCredentials.getUser(), TestCredentials.getPassword());
 
     @Test
     public void CanEncodeCreditCard(){
-        CreditCardInfo creditCard = new CreditCardInfo("Jane Doe", client.createString("sample card number"), client.createString("sample cvv"), "12", "2030", false);
+        CreditCardInfo creditCard = new CreditCardInfo();
         String expected = "{\"payment_method\":{\"retained\":false,\"credit_card\":{\"number\":\"sample card number\",\"full_name\":\"Jane Doe\",\"verification_value\":\"sample cvv\",\"month\":\"12\",\"year\":\"2030\"},\"metadata\":{},\"eligible_for_card_updater\":false,\"allow_blank_name\":false,\"allow_expired_date\":false,\"allow_blank_date\":false}}";
         String actual = creditCard.encode();
         assertEquals(expected, actual);

@@ -2,6 +2,7 @@ package com.spreedly.client.models.results;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
@@ -16,7 +17,7 @@ public class TransactionResult<T> {
     public final @Nullable String state; // maybe enum
     public final @Nullable String messageKey; // localization?
     public final @Nullable String message;
-    public final @Nullable ArrayList<SpreedlyError> errors;
+    public final @Nullable List<SpreedlyError> errors;
     public final @Nullable T result;
 
     public TransactionResult(
@@ -29,6 +30,7 @@ public class TransactionResult<T> {
             @Nullable String state,
             @Nullable String messageKey,
             @Nullable String message,
+            @Nullable List<SpreedlyError> errors,
             @Nullable T result) {
         this.token = token;
         this.createdAt = createdAt;
@@ -38,9 +40,9 @@ public class TransactionResult<T> {
         this.retained = retained;
         this.state = state;
         this.messageKey = messageKey;
-        this.message = message;
+        this.message = (message == null || message.isEmpty()) && errors != null && !errors.isEmpty() ? errors.get(0).message : message;
         this.result = result;
-        this.errors = null;
+        this.errors = errors;
     }
 
     public TransactionResult(@NonNull ArrayList<SpreedlyError> errors) {
