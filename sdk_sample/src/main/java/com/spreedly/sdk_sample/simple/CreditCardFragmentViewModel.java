@@ -24,16 +24,10 @@ public class CreditCardFragmentViewModel extends ViewModel {
     MutableLiveData<String> error = new MutableLiveData<>(null);
 
     void create() {
-        final SpreedlyClient client = SpreedlyClient.newInstance("", "");
-        final CreditCardInfo info = new CreditCardInfo();
-        info.fullName = name.getValue();
-        info.number = client.createString(cc.getValue());
-        info.cvv = client.createString(ccv.getValue());
-        info.year = year.getValue().toString();
-        info.month = month.getValue().toString();
-
+        final SpreedlyClient client = SpreedlyClient.newInstance("", "", true);
+        final CreditCardInfo info = new CreditCardInfo(name.getValue(),client.createString(cc.getValue()), client.createString(ccv.getValue()), year.getValue(), month.getValue());
         inProgress.setValue(true);
-        client.createCreditCardPaymentMethod(info).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        client.createCreditCardPaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 
