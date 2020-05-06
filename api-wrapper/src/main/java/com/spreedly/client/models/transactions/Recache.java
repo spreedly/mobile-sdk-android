@@ -2,10 +2,13 @@ package com.spreedly.client.models.transactions;
 
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+
 public class Recache {
     PaymentMethod payment_method;
-    public Recache(SpreedlySecureOpaqueString cvv) {
-        this.payment_method = new PaymentMethod(cvv.getValue());
+    public Recache(@NonNull SpreedlySecureOpaqueString cvv) {
+        this.payment_method = new PaymentMethod("432");
+        //TODO finish spreeedly secure strings
     }
     private class PaymentMethod {
         CreditCard credit_card;

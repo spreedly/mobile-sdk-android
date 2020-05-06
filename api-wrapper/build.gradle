@@ -1,13 +1,25 @@
 
 apply plugin: 'java-library'
+apply plugin: "com.android.lint"
 
 dependencies {
-    compile 'org.apache.httpcomponents:httpcore:4.4.10'
-    compile "org.apache.httpcomponents:httpclient:4.0.2"
-    compile "org.apache.httpcomponents:httpasyncclient:4.1.4"
-    compile 'com.google.code.gson:gson:2.8.6'
+    api 'io.reactivex.rxjava3:rxjava:3.0.3'
 
-    testCompile "junit:junit:RELEASE"
-    testCompile "junit:junit:4.13"
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    implementation "com.squareup.okhttp3:okhttp:4.6.0"
+    implementation 'org.json:json:20190722'
+
+    testImplementation "junit:junit:4.13"
+}
+
+lintOptions {
+    abortOnError true
+    warningsAsErrors true
+    htmlReport false
+    xmlReport false
+    textOutput 'stdout'
+    textReport true
+    checkAllWarnings true
+    enable.addAll([
+            'UnknownNullness'
+    ])
 }

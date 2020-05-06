@@ -1,41 +1,43 @@
 package com.spreedly.client.models.results;
 
-import com.spreedly.client.models.results.PaymentMethodResult;
-
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import io.reactivex.rxjava3.annotations.Nullable;
+
+/// Bank Account Result
 public class BankAccountResult extends PaymentMethodResult {
-    public final String bankName;
-    public final String accountType;
-    public final String accountHolderType;
-    public final String routingNumberDisplayDigits;
-    public final String accountNumberDisplayDigits;
-    public final String firstName;
-    public final String lastName;
-    public final String fullName;
-    public final String routingNumber;
-    public final String accountNumber;
+    public final @Nullable String bankName;
+    public final @Nullable String accountType;
+    public final @Nullable String accountHolderType;
+    public final @Nullable String routingNumberDisplayDigits;
+    public final @Nullable String accountNumberDisplayDigits;
+    public final @Nullable String firstName;
+    public final @Nullable String lastName;
+    public final @Nullable String fullName;
+    public final @Nullable String routingNumber;
+    public final @Nullable String accountNumber;
 
     public BankAccountResult(
-            String token,
-            String storageState,
+            @Nullable String token,
+            @Nullable String storageState,
             boolean test,
-            String paymentMethodType,
-            Date createdAt,
-            Date updatedAt,
-            String email,
-            ArrayList errors,
-            String bankName,
-            String accountType,
-            String accountHolderType,
-            String routingNumberDisplayDigits,
-            String accountNumberDisplayDigits,
-            String routingNumber,
-            String accountNumber,
-            String firstName,
-            String lastName,
-            String fullName) {
+            @Nullable String paymentMethodType,
+            @Nullable Date createdAt,
+            @Nullable Date updatedAt,
+            @Nullable String email,
+            @Nullable List<SpreedlyError> errors,
+            @Nullable String bankName,
+            @Nullable String accountType,
+            @Nullable String accountHolderType,
+            @Nullable String routingNumberDisplayDigits,
+            @Nullable String accountNumberDisplayDigits,
+            @Nullable String routingNumber,
+            @Nullable String accountNumber,
+            @Nullable String firstName,
+            @Nullable String lastName,
+            @Nullable String fullName) {
         super(token, storageState, test, paymentMethodType, createdAt, updatedAt, email, errors);
         this.bankName = bankName;
         this.accountType = accountType;

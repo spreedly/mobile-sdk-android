@@ -2,21 +2,36 @@ package com.spreedly.client.models.results;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.annotations.Nullable;
 
 public class TransactionResult<T> {
-    public final String token;
-    public final Date createdAt;
-    public final Date updatedAt;
+    public final @Nullable String token;
+    public final @Nullable Date createdAt;
+    public final @Nullable Date updatedAt;
     public final boolean succeeded;
-    public final String transactionType; // maybe enum
+    public final @Nullable String transactionType; // maybe enum
     public final boolean retained;
-    public final String state; // maybe enum
-    public final String messageKey; // localization?
-    public final String message;
-    public final ArrayList<SpreedlyError> errors;
-    public final T result;
+    public final @Nullable String state; // maybe enum
+    public final @Nullable String messageKey; // localization?
+    public final @Nullable String message;
+    public final @Nullable List<SpreedlyError> errors;
+    public final @Nullable T result;
 
-    public TransactionResult(String token, Date createdAt, Date updatedAt, boolean succeeded, String transactionType, boolean retained, String state, String messageKey, String message, T result) {
+    public TransactionResult(
+            @Nullable String token,
+            @Nullable Date createdAt,
+            @Nullable Date updatedAt,
+            boolean succeeded,
+            @Nullable String transactionType,
+            boolean retained,
+            @Nullable String state,
+            @Nullable String messageKey,
+            @Nullable String message,
+            @Nullable List<SpreedlyError> errors,
+            @Nullable T result) {
         this.token = token;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -25,12 +40,12 @@ public class TransactionResult<T> {
         this.retained = retained;
         this.state = state;
         this.messageKey = messageKey;
-        this.message = message;
+        this.message = (message == null || message.isEmpty()) && errors != null && !errors.isEmpty() ? errors.get(0).message : message;
         this.result = result;
-        this.errors = null;
+        this.errors = errors;
     }
 
-    public TransactionResult(ArrayList<SpreedlyError> errors) {
+    public TransactionResult(@NonNull ArrayList<SpreedlyError> errors) {
         this.errors = errors;
         this.token = null;
         this.createdAt = null;

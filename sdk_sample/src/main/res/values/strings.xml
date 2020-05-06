@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Spreedly SDK Sample</string>
+    <string name="tab_core_api">Core</string>
+    <string name="tab_secure_widgets">Secure Widgets</string>
+    <string name="tab_3ds2">3DS2</string>
+    <string name="tab_drop_in">Drop-In</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

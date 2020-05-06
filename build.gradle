@@ -3,29 +3,18 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
-        classpath "gradle.plugin.com.worker8.android_lint_reporter:android_lint_reporter:1.1.2"
-        classpath "com.netflix.nebula:gradle-lint-plugin:16.8.0"
+        classpath 'com.android.tools.build:gradle:3.6.3'
     }
 }
-
-apply plugin: "com.worker8.android_lint_reporter"
-apply plugin: "nebula.lint"
 
 allprojects {
     repositories {
         google()
         jcenter()
     }
-
-    apply plugin: "nebula.lint"
-    gradleLint.rules = ['all-dependency']
 }
 
 rootProject.buildDir = 'build'
