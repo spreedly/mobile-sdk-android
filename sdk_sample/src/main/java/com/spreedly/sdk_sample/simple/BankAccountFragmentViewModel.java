@@ -28,8 +28,9 @@ public class BankAccountFragmentViewModel extends ViewModel {
         final SpreedlyClient client = SpreedlyClient.newInstance("", "", true);
         final BankAccountType bankAccountType = type.getValue() == "savings" ? BankAccountType.savings : BankAccountType.checking;
         final BankAccountInfo info = new BankAccountInfo(name.getValue(), routing.getValue(), client.createString(account.getValue()), bankAccountType );
-
         inProgress.setValue(true);
+        token.postValue("");
+        error.postValue("");
         client.createBankPaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -42,11 +43,9 @@ public class BankAccountFragmentViewModel extends ViewModel {
                     if (trans.succeeded) {
                         Log.i("Spreedly", "trans.result.token: " + trans.result.token);
                         token.postValue(trans.result.token);
-                        error.postValue("");
                     } else {
                         Log.e("Spreedly", "trans.message: " + trans.message);
                         error.postValue(trans.message);
-                        token.postValue("");
                     }
                 } finally {
                     inProgress.postValue(false);
@@ -57,7 +56,6 @@ public class BankAccountFragmentViewModel extends ViewModel {
             public void onError(@NonNull Throwable e) {
                 Log.e("Spreedly", e.getMessage(), e);
                 error.postValue("UNEXPECTED ERROR: " + e.getMessage());
-                token.postValue("");
                 inProgress.postValue(false);
             }
         });
