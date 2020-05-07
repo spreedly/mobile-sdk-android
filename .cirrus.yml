@@ -11,4 +11,12 @@ build_task:
 
 test_task:
   name: 'Run Tests'
-  script: ./gradlew test
+  test_script: ./gradlew test
+  publish_coverage_script:
+    - git clone https://github.com/ergonlabs/spreedly-docs.git docs
+    - mkdir -p docs/coverage/java/core-api
+    - cp -fR build/api-wrapper/reports/jacoco/test/html/* docs/coverage/java/core-api
+    - cd docs
+    - git add .
+    - git commit -m "reports for java"
+    - git push
