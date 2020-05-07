@@ -240,7 +240,6 @@ class SpreedlyClientImpl implements SpreedlyClient {
         }
         dateString = dateString.replace('T', ' ');
         dateString = dateString.replace("Z", "+0000");
-        //parsing as "yyyy-MM-dd'T'hh:mm:ss'Z'" returns the correct time, but an incorrect time zone
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ssZ", Locale.US).parse(dateString);
