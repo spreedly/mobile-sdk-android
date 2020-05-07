@@ -1,6 +1,7 @@
 
 apply plugin: 'java-library'
-apply plugin: "com.android.lint"
+apply plugin: 'com.android.lint'
+apply plugin: 'jacoco'
 
 dependencies {
     api 'io.reactivex.rxjava3:rxjava:3.0.3'
@@ -27,4 +28,11 @@ lintOptions {
             'GoogleAppIndexingWarning',
             'OldTargetApi'
     ])
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
 }
