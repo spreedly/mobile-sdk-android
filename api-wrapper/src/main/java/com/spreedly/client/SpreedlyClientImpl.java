@@ -129,7 +129,6 @@ class SpreedlyClientImpl implements SpreedlyClient {
         }
         transactionResult = new TransactionResult<>(
                 rawTransaction.optString("token"),
-                // Todo: parse dates
                 parseDate(rawTransaction.optString("created_at")),
                 parseDate(rawTransaction.optString("updated_at")),
                 rawTransaction.optBoolean("succeeded", false),
@@ -178,7 +177,6 @@ class SpreedlyClientImpl implements SpreedlyClient {
                 rawTransaction.optString("token"),
                 parseDate(rawTransaction.optString("created_at")),
                 parseDate(rawTransaction.optString("updated_at")),
-                // TODO parse dates
                 rawTransaction.optBoolean("succeeded", false),
                 rawTransaction.optString("transaction_type"),
                 rawTransaction.optBoolean("retained", false),

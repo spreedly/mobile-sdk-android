@@ -8,7 +8,6 @@ public class Recache {
     PaymentMethod payment_method;
     public Recache(@NonNull SpreedlySecureOpaqueString cvv) {
         this.payment_method = new PaymentMethod("432");
-        //TODO finish spreeedly secure strings
     }
     private class PaymentMethod {
         CreditCard credit_card;
