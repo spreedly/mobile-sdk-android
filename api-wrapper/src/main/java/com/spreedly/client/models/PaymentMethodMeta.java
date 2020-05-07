@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
-abstract class PaymentMethodMeta {
+public abstract class PaymentMethodMeta {
     @Nullable
     public String company;
     @Nullable

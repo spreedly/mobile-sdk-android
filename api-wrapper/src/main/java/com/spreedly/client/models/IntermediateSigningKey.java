@@ -12,5 +12,4 @@ public class IntermediateSigningKey {
         this.signatures = signatures;
         this.signedKey = signedKey;
     }
-
 }
