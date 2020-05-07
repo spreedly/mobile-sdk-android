@@ -25,7 +25,7 @@ public abstract class PaymentMethodMeta {
     @NonNull
     abstract JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata);
 
-    protected void addCommonJsonFields(JSONObject paymentMethod, JSONObject subType, @Nullable String email, @Nullable JSONObject metadata) {
+    protected void addCommonJsonFields(@NonNull JSONObject paymentMethod, @NonNull JSONObject subType, @Nullable String email, @Nullable JSONObject metadata) {
         if (this.fullName != null) {
             subType.put("full_name", this.fullName);
         } else {
