@@ -228,13 +228,8 @@ class SpreedlyClientImpl implements SpreedlyClient {
         return spreedlyErrors;
     }
 
-    @Override
-    public void close() {
 
-    }
-
-    @Nullable
-    private Date parseDate(@Nullable String dateString){
+    @Nullable Date parseDate(@Nullable String dateString) {
         if (dateString == null){
             return null;
         }

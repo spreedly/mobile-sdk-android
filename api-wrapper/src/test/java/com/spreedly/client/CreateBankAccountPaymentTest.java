@@ -1,4 +1,5 @@
-import com.spreedly.client.SpreedlyClient;
+package com.spreedly.client;
+
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.enums.BankAccountType;
 import com.spreedly.client.models.results.PaymentMethodResult;

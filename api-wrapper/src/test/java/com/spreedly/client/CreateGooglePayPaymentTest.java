@@ -1,4 +1,5 @@
-import com.spreedly.client.SpreedlyClient;
+package com.spreedly.client;
+
 import com.spreedly.client.models.GooglePayInfo;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
@@ -54,5 +55,6 @@ public class CreateGooglePayPaymentTest {
         TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
         //assertEquals("Succeeded!", trans.message);
         //assertNotNull(trans.result.token);
+        // TODO: add asserts back in w/ good google info
     }
 }
