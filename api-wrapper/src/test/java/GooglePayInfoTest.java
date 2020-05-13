@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class GooglePlayInfoTest {
+public class GooglePayInfoTest {
     @Test
     public void CanCreateGooglePayInfo() {
         GooglePayInfo googlePay = new GooglePayInfo("Jane", "Doe", "sample signature", "sample version", "sample signing key", false);
