@@ -1,10 +1,8 @@
 package com.spreedly.client.models.results;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
 public class TransactionResult<T> {
@@ -43,19 +41,5 @@ public class TransactionResult<T> {
         this.message = (message == null || message.isEmpty()) && errors != null && !errors.isEmpty() ? errors.get(0).message : message;
         this.result = result;
         this.errors = errors;
-    }
-
-    public TransactionResult(@NonNull ArrayList<SpreedlyError> errors) {
-        this.errors = errors;
-        this.token = null;
-        this.createdAt = null;
-        this.updatedAt = null;
-        this.succeeded = false;
-        this.transactionType = null;
-        this.retained = false;
-        this.state = null;
-        this.messageKey = null;
-        this.message = null;
-        this.result = null;
     }
 }

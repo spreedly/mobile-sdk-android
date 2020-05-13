@@ -1,6 +1,6 @@
+package com.spreedly.client.models;
+
 import com.spreedly.client.SpreedlyClient;
-import com.spreedly.client.models.Address;
-import com.spreedly.client.models.CreditCardInfo;
 
 import org.json.JSONObject;
 import org.junit.Before;

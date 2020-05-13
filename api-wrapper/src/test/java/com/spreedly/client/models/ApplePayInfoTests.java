@@ -1,4 +1,4 @@
-import com.spreedly.client.models.ApplePayInfo;
+package com.spreedly.client.models;
 
 import org.json.JSONObject;
 import org.junit.Test;

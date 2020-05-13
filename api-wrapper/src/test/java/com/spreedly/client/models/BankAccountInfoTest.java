@@ -1,6 +1,6 @@
+package com.spreedly.client.models;
+
 import com.spreedly.client.SpreedlyClient;
-import com.spreedly.client.models.Address;
-import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.enums.BankAccountType;
 
 import org.json.JSONObject;
