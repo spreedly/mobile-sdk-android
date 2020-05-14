@@ -98,7 +98,7 @@ class SpreedlyClientImpl implements SpreedlyClient {
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> recache(@NonNull String token, @NonNull SpreedlySecureOpaqueString cvv) {
-        return sendRequest(new RecacheInfo(cvv).json, "/payment_methods/" + token + "/recache.json").map(this::processCCMap);
+        return sendRequest(new RecacheInfo(cvv).toJson(), "/payment_methods/" + token + "/recache.json").map(this::processCCMap);
     }
 
     @NonNull TransactionResult<PaymentMethodResult> processCCMap(@NonNull JSONObject raw) {
