@@ -19,6 +19,8 @@ public class SimplePagerAdapter extends FragmentPagerAdapter {
                 return "Credit Card";
             case 1:
                 return "Bank Account";
+            case 2:
+                return "Google Pay";
         }
         throw new IndexOutOfBoundsException();
     }
@@ -31,12 +33,14 @@ public class SimplePagerAdapter extends FragmentPagerAdapter {
                 return CreditCardFragment.newInstance();
             case 1:
                 return BankAccountFragment.newInstance();
+            case 2:
+                return GooglePayFragment.newInstance();
         }
         throw new IndexOutOfBoundsException();
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }
