@@ -1,4 +1,4 @@
-import com.spreedly.client.models.SpreedlySecureOpaqueString;
+package com.spreedly.client.models;
 
 import org.junit.Test;
 
