@@ -21,6 +21,8 @@ public class SimplePagerAdapter extends FragmentPagerAdapter {
                 return "Bank Account";
             case 2:
                 return "Google Pay";
+            case 3:
+                return "Apple Pay";
         }
         throw new IndexOutOfBoundsException();
     }
@@ -35,12 +37,14 @@ public class SimplePagerAdapter extends FragmentPagerAdapter {
                 return BankAccountFragment.newInstance();
             case 2:
                 return GooglePayFragment.newInstance();
+            case 3:
+                return ApplePayFragment.newInstance();
         }
         throw new IndexOutOfBoundsException();
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 }
