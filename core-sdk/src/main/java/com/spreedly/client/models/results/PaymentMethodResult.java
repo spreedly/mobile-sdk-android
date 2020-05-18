@@ -1,6 +1,5 @@
 package com.spreedly.client.models.results;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

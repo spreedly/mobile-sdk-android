@@ -14,10 +14,10 @@ Run
 
 # Coverage
 
-A coverage report is regularly posted [here](https://ergonlabs.github.io/spreedly-docs/coverage/java/core-api/index.html).
+A coverage report is regularly posted [here](https://ergonlabs.github.io/spreedly-docs/coverage/java/core-sdk/index.html).
 
 To see this locally run:
 
     ./gradlew test
 
-Then open [build/api-wrapper/reports/jacoco/test/html/index.html](build/api-wrapper/reports/jacoco/test/html/index.html)
+Then open [build/core-sdk/reports/jacoco/test/html/index.html](build/core-sdk/reports/jacoco/test/html/index.html)
