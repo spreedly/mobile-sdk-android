@@ -17,11 +17,13 @@ public class ApplePayFragment extends BillingFragmentBase {
 
     private ApplePayFragmentViewModel mViewModel;
 
+    @NonNull
     public static ApplePayFragment newInstance() {
         return new ApplePayFragment();
     }
 
     @Override
+    @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.apple_pay_fragment, container, false);

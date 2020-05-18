@@ -22,7 +22,7 @@ public class GooglePayFragmentViewModel extends ViewModel {
     MutableLiveData<Boolean> inProgress = new MutableLiveData<>(false);
 
     void create() {
-        final SpreedlyClient client = SpreedlyClient.newInstance("", "", true);
+        final SpreedlyClient client = SpreedlyClient.newInstance("XsQXqPtrgCOnpexSwyhzN9ngr2c", "ghEGueczUT4BhJv54K24G6B4Oy9yWaM5R4dR2yt5gRsx3xnwbZE0OZ0mRg2zyI5g", true);
         final String[] names = name.getValue().split(" ", 2);
         final String paymentData = "{\n" +
                 "  \"protocolVersion\":\"ECv2\",\n" +

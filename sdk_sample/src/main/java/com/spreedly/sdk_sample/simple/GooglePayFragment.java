@@ -17,11 +17,13 @@ public class GooglePayFragment extends BillingFragmentBase {
 
     private GooglePayFragmentViewModel mViewModel;
 
+    @NonNull
     public static GooglePayFragment newInstance() {
         return new GooglePayFragment();
     }
 
     @Override
+    @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.google_pay_fragment, container, false);
