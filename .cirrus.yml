@@ -20,7 +20,7 @@ test_task:
     - git config --global user.email "ci@ergonlabs.com"
     - git clone https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/ergonlabs/spreedly-docs.git docs
     - mkdir -p docs/coverage/pr/core-sdk/android
-    - cp -fR build/api-wrapper/reports/jacoco/test/html/* docs/coverage/pr/core-sdk/android
+    - cp -fR build/core-sdk/reports/jacoco/test/html/* docs/coverage/pr/core-sdk/android
     - cd docs
     - git add .
     - git commit -m "reports for java" && git push || echo "No code coverage changes"
