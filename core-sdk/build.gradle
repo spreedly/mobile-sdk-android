@@ -6,7 +6,7 @@ apply plugin: 'jacoco'
 dependencies {
     api 'io.reactivex.rxjava3:rxjava:3.0.3'
 
-    implementation "com.squareup.okhttp3:okhttp:4.6.0"
+    implementation "com.squareup.okhttp3:okhttp:4.7.0"
     implementation 'org.json:json:20190722'
 
     testImplementation "junit:junit:4.13"
