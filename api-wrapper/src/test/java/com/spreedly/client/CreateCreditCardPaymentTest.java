@@ -1,4 +1,5 @@
-import com.spreedly.client.SpreedlyClient;
+package com.spreedly.client;
+
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
@@ -6,13 +7,12 @@ import com.spreedly.client.models.results.TransactionResult;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.crypto.spec.OAEPParameterSpec;
-
 import io.reactivex.rxjava3.observers.TestObserver;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-public class CreditCardServiceTest {
+public class CreateCreditCardPaymentTest {
     SpreedlyClient client = null;
 
     @Before
@@ -21,7 +21,18 @@ public class CreditCardServiceTest {
     }
 
     @Test
-    public void TokenizeSucceeds() throws InterruptedException {
+    public void CreateCreditCardSucceeds() throws InterruptedException {
+        CreditCardInfo cc = new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 2032, 12);
+        cc.retained = true;
+
+        TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
+        client.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
+        test.await();
+        test.assertComplete();
+    }
+
+    @Test
+    public void CreateCreditCardHasToken() throws InterruptedException {
         CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 2032, 12);
         cc.retained = true;
 
@@ -32,29 +43,9 @@ public class CreditCardServiceTest {
 
         TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
 
-        assertTrue(trans.succeeded);
+        assertNotNull(trans.result.token);
     }
 
-    @Test
-    public void CanRecache() throws InterruptedException {
-        CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 3, 2032);
-        cc.retained = true;
-
-        TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
-        test.await();
-        test.assertComplete();
-
-        TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
-        test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        if (trans == null || trans.result == null ) { return; }
-        client.recache(trans.result.token, client.createString("423")).subscribe(test);
-        test.await();
-        test.assertComplete();
-        trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
-        assertTrue(trans.succeeded);
-
-    }
 
     @Test
     public void badCreditCardFails() throws InterruptedException {

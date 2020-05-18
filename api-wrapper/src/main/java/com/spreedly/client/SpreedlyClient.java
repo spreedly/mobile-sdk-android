@@ -4,8 +4,8 @@ import com.spreedly.client.models.ApplePayInfo;
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.GooglePayInfo;
-import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
+import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 
 import org.json.JSONObject;
@@ -14,9 +14,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
 
-import java.io.Closeable;
-
-public interface SpreedlyClient extends Closeable {
+public interface SpreedlyClient {
     @NonNull static SpreedlyClient newInstance(@NonNull String envKey, @NonNull String envSecret,@NonNull boolean test) {
         return new SpreedlyClientImpl(envKey, envSecret, test);
     }
