@@ -4,13 +4,13 @@ import com.spreedly.client.models.ApplePayInfo;
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.GooglePayInfo;
+import com.spreedly.client.models.RecacheInfo;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 import com.spreedly.client.models.results.BankAccountResult;
 import com.spreedly.client.models.results.CreditCardResult;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.results.TransactionResult;
-import com.spreedly.client.models.transactions.Recache;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -98,7 +98,7 @@ class SpreedlyClientImpl implements SpreedlyClient {
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> recache(@NonNull String token, @NonNull SpreedlySecureOpaqueString cvv) {
-        return sendRequest(new JSONObject(new Recache(cvv)), "/payment_methods/" + token + "/recache.json").map(this::processCCMap);
+        return sendRequest(new RecacheInfo(cvv).toJson(), "/payment_methods/" + token + "/recache.json").map(this::processCCMap);
     }
 
     @NonNull TransactionResult<PaymentMethodResult> processCCMap(@NonNull JSONObject raw) {
@@ -228,13 +228,8 @@ class SpreedlyClientImpl implements SpreedlyClient {
         return spreedlyErrors;
     }
 
-    @Override
-    public void close() {
 
-    }
-
-    @Nullable
-    private Date parseDate(@Nullable String dateString){
+    @Nullable Date parseDate(@Nullable String dateString) {
         if (dateString == null){
             return null;
         }
