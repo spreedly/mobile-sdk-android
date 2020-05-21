@@ -1,2 +1,3 @@
 include ':core-sdk'
 include ':sdk_sample'
+include ':securewidgets'

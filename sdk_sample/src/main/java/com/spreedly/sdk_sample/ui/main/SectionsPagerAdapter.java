@@ -2,14 +2,14 @@ package com.spreedly.sdk_sample.ui.main;
 
 import android.content.Context;
 
-import com.spreedly.sdk_sample.R;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.spreedly.sdk_sample.R;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -37,6 +37,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             return SimpleExamplesFragment.newInstance();
         }
+        if (position == 1)
+            return WidgetExampleFragment.newInstance();
 
         return PlaceholderFragment.newInstance();
     }
