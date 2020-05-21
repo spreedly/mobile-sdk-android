@@ -30,8 +30,6 @@ public class SecureTextField extends FrameLayout {
     }
 
     private void init() {
-        int count = getChildCount();
-        int padding = getPaddingTop();
         int id = this.getId();
         View view = findTextInputLayout(this);
         if (!(view instanceof TextInputLayout)) {
@@ -45,7 +43,7 @@ public class SecureTextField extends FrameLayout {
             editText = (AppCompatEditText) view;
         } else {
             editText = new AppCompatEditText(textLayout.getContext());
-            editText.setText("Some more text");
+            setHint();
             textLayout.addView(editText);
         }
     }
@@ -67,7 +65,6 @@ public class SecureTextField extends FrameLayout {
             for (int i = 0; i < vg.getChildCount(); i++) {
 
                 View child = vg.getChildAt(i);
-                int pads = child.getPaddingTop();
                 result = findTextInputLayout(child);
                 if (result instanceof TextInputLayout) {
                     return result;
@@ -95,5 +92,17 @@ public class SecureTextField extends FrameLayout {
             }
         }
         return result;
+    }
+
+    private void setHint() {
+        int id = getId();
+        int cc = R.id.credit_card_number;
+        switch (id) {
+            case 2131230821:
+                textLayout.setHint("Credit Card Number");
+                break;
+            default:
+                break;
+        }
     }
 }
