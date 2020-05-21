@@ -25,3 +25,15 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+gradle.projectsEvaluated {
+    def exportedProjects = [
+            ":core-sdk",
+    ]
+    task alljavadoc(type: Javadoc) {
+        source exportedProjects.collect { project(it).sourceSets.main.allJava }
+        classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
+        destinationDir = file("docs")
+    }
+}
+
