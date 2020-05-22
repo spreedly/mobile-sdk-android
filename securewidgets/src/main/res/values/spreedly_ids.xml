@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="credit_card_number" type="id" />
     <item name="full_name" type="id" />
+    <item name="first_name" type="id" />
+    <item name="last_name" type="id" />
+    <item name="email" type="id" />
+    <item name="company" type="id" />
+    <item name="address1" type="id" />
+    <item name="address2" type="id" />
+    <item name="city" type="id" />
+    <item name="state" type="id" />
+    <item name="zip" type="id" />
+    <item name="country" type="id" />
+    <item name="phone_number" type="id" />
+    <item name="credit_card_number" type="id" />
+    <item name="ccv" type="id" />
+    <item name="cc_month" type="id" />
+    <item name="cc_year" type="id" />
+    <item name="cc_expiration_date" type="id" />
+    <item name="ba_account_number" type="id" />
+    <item name="ba_routing_number" type="id" />
+    <item name="ba_account_type" type="id" />
+    <item name="ba_account_holder_type" type="id" />
 </resources>

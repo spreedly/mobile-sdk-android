@@ -96,13 +96,12 @@ public class SecureTextField extends FrameLayout {
 
     private void setHint() {
         int id = getId();
-        int cc = R.id.credit_card_number;
-        switch (id) {
-            case 2131230821:
-                textLayout.setHint("Credit Card Number");
-                break;
-            default:
-                break;
+        if (id == R.id.credit_card_number) {
+            textLayout.setHint("Credit Card Number");
+        } else if (id == R.id.ccv) {
+            textLayout.setHint("CCV");
+        } else if (id == R.id.ba_account_number) {
+            textLayout.setHint("Account Number");
         }
     }
 }
