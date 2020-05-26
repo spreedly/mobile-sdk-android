@@ -21,4 +21,5 @@
     <item name="ba_routing_number" type="id" />
     <item name="ba_account_type" type="id" />
     <item name="ba_account_holder_type" type="id" />
+    <item name="cc_submit" type="id" />
 </resources>

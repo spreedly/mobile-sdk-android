@@ -5,6 +5,7 @@
     android:layout_marginStart="@dimen/activity_horizontal_margin"
     android:layout_marginEnd="@dimen/activity_horizontal_margin"
     android:gravity="center"
+    android:id="@+id/credit_card_form"
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,12 +45,11 @@
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/year"
+        android:id="@id/cc_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@id/year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="creditCardYear"
@@ -58,7 +58,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/month"
+        android:id="@id/cc_month"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -76,4 +76,11 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/holo_blue_dark"
         android:textIsSelectable="true" />
+
+    <Button
+        android:id="@id/cc_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="submitCreditCard"
+        android:text="Submit"></Button>
 </com.spreedly.securewidgets.SecureFormLayout>

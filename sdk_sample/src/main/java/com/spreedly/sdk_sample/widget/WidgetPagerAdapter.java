@@ -26,7 +26,7 @@ public class WidgetPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return SecureTextFieldFragment.newInstance();
+                return SecureFormCreditCardFragment.newInstance();
         }
         throw new IndexOutOfBoundsException();
     }
