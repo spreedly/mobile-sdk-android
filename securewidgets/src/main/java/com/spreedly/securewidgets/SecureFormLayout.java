@@ -3,7 +3,6 @@ package com.spreedly.securewidgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -20,11 +19,18 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 
+
 /**
  * TODO: document your custom view class.
  */
 public class SecureFormLayout extends LinearLayout {
     SpreedlyClient spreedlyClient;
+
+    SecureTextField creditCardNumber;
+    SecureTextField ccv;
+    TextInputLayout fullName;
+    TextInputLayout month;
+    TextInputLayout year;
 
     public SecureFormLayout(Context context) {
         super(context);
@@ -42,20 +48,15 @@ public class SecureFormLayout extends LinearLayout {
         return spreedlyClient;
     }
 
+    @Override
+    public void onFinishInflate() {
+        super.onFinishInflate();
+        init();
+    }
+
     public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod() {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
-        SecureTextField creditCardNumber = findViewById(R.id.credit_card_number);
-        SecureTextField ccv = findViewById(R.id.ccv);
-        TextInputLayout fullName = findViewById(R.id.full_name);
-        TextInputLayout monthInput = findViewById(R.id.cc_month);
-        TextInputLayout yearInput = findViewById(R.id.cc_year);
-        int year;
-        EditText editText = yearInput.getEditText();
-        String yearString = editText.getText().toString();
-        year = Integer.parseInt(yearString);
-        int month = Integer.parseInt(monthInput.getEditText().getText().toString());
-
-        final CreditCardInfo info = new CreditCardInfo(fullName.getEditText().getText().toString(), creditCardNumber.getText(), ccv.getText(), year, month);
+        final CreditCardInfo info = new CreditCardInfo(getString(fullName), creditCardNumber.getText(), ccv.getText(), getNumber(year), getNumber(month));
         Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, null, null);
         result.subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
@@ -87,7 +88,30 @@ public class SecureFormLayout extends LinearLayout {
         return result;
     }
 
-    private void handleErrors(List<SpreedlyError> errors) {
+    public void handleErrors(List<SpreedlyError> errors) {
+        try {
+            TextInputLayout v = new TextInputLayout(this.getContext());
+            this.addView(v);
+            int y = 7;
+            v.setHint("Here's a test");
+            int x = 4 + y;
+            for (int i = 0; i < errors.size(); i++) {
+                SpreedlyError error = errors.get(i);
+                switch (error.attribute) {
+                    case "name":
+                        fullName.setError(error.message);
+                    case "month":
+                        month.setError(error.message);
+                    case "year":
+                        year.setError(error.message);
+                    default:
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            Log.e("Spreedly", e.getMessage());
+            throw e;
+        }
     }
 
     public Single<TransactionResult<BankAccountResult>> createBankAccountPaymentMethod() {
@@ -97,6 +121,31 @@ public class SecureFormLayout extends LinearLayout {
     private int nameTold(String name) {
         return 0;
     }
+
+    private int getNumber(TextInputLayout textInputLayout) {
+        try {
+            return Integer.parseInt(textInputLayout.getEditText().getText().toString());
+        } catch (NullPointerException | NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private String getString(TextInputLayout textInputLayout) {
+        try {
+            return textInputLayout.getEditText().getText().toString();
+        } catch (NullPointerException e) {
+            return "";
+        }
+    }
+
+    private void init() {
+        creditCardNumber = findViewById(R.id.credit_card_number);
+        ccv = findViewById(R.id.ccv);
+        fullName = findViewById(R.id.full_name);
+        month = findViewById(R.id.cc_month);
+        year = findViewById(R.id.cc_year);
+    }
+
 
 
 }

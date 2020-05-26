@@ -81,6 +81,5 @@
         android:id="@id/cc_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="submitCreditCard"
-        android:text="Submit"></Button>
+        android:text="Submit" />
 </com.spreedly.securewidgets.SecureFormLayout>

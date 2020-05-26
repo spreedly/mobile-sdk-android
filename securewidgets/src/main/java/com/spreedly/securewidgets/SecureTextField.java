@@ -12,9 +12,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 
-/**
- * TODO: document your custom view class.
- */
 public class SecureTextField extends FrameLayout {
     TextInputLayout textLayout;
     EditText editText;
