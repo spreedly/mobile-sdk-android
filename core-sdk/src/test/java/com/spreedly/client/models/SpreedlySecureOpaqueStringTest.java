@@ -53,6 +53,13 @@ public class SpreedlySecureOpaqueStringTest {
     }
 
     @Test
+    public void canIdentifyMastercardAlt() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
+        string.append("2223003122003222");
+        assertEquals(CreditCardType.mastercard, string.detectCardType());
+    }
+
+    @Test
     public void canIdentifyVisaCard() {
         SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
         string.append("4111111111111111");
@@ -111,9 +118,8 @@ public class SpreedlySecureOpaqueStringTest {
     @Test
     public void canIdentifySodexo() {
         SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
-        string.append("507597000000003");
+        string.append("6060690000000002");
         assertEquals(CreditCardType.sodexo, string.detectCardType());
-        //TODO: better sodexo card number?
     }
 
     @Test
@@ -121,6 +127,34 @@ public class SpreedlySecureOpaqueStringTest {
         SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
         string.append("5895627823453003");
         assertEquals(CreditCardType.naranja, string.detectCardType());
+    }
+
+    @Test
+    public void canIdentifyElo() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
+        string.append("5067310000000010");
+        assertEquals(CreditCardType.elo, string.detectCardType());
+    }
+
+    @Test
+    public void canIdentifyAlelo() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
+        string.append("5067705232092752");
+        assertEquals(CreditCardType.alelo, string.detectCardType());
+    }
+
+    @Test
+    public void canIdentifyCabal() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
+        string.append("6035227716427021");
+        assertEquals(CreditCardType.cabal, string.detectCardType());
+    }
+
+    @Test
+    public void canIdentifyCarnet() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
+        string.append("5062280000000002");
+        assertEquals(CreditCardType.carnet, string.detectCardType());
     }
 
     @Test

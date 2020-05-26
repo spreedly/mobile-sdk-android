@@ -57,9 +57,8 @@ public final class SpreedlySecureOpaqueString {
             new Range(601689, 601700),
             new Range(602011, 602050),
             new Range(639000, 639099),
-            new Range(670000, 679999),
-            new Range(500033, 500033),
-            new Range(581149, 581149)};
+            new Range(670000, 679999)
+    };
     private final Range[] eloRanges = new Range[]{
             new Range(506707, 506708), new Range(506715, 506715), new Range(506718, 506722), new Range(506724, 506724), new Range(506726, 506736), new Range(506739, 506739), new Range(506741, 506743),
             new Range(506745, 506747), new Range(506753, 506753), new Range(506774, 506776), new Range(506778, 506778), new Range(509000, 509001), new Range(509003, 509003), new Range(509007, 509007),
@@ -93,6 +92,10 @@ public final class SpreedlySecureOpaqueString {
             "60462203", "60462204", "588772"
     };
 
+    private final String[] maestroBins = new String[]{
+            "500033", "581149"
+    };
+
     @NonNull String _encode() {
         return data;
     }
@@ -123,15 +126,15 @@ public final class SpreedlySecureOpaqueString {
             return CreditCardType.jcb;
         } else if (Pattern.matches("^5019[0-9]{12}$", data)) {
             return CreditCardType.dankort;
-        } else if (data.length() == 16 && inRanges(maestroRanges, Integer.parseInt(data.substring(0, 6)))) {
+        } else if (data.length() >= 12 && (inRanges(maestroRanges, Integer.parseInt(data.substring(0, 6))) || binMatch(carnetBins, data))) {
             return CreditCardType.maestro;
         } else if (Pattern.matches("^(606071|603389|606070|606069|606068|600818)[0-9]{10}$", data)) {
             return CreditCardType.sodexo;
         } else if (Pattern.matches("^(627416|637036)[0-9]{10}$", data)) {
             return CreditCardType.vr;
-        } else if (data.length() == 16 && inRanges(cabalRanges, Integer.parseInt(data.substring(0, 6)))) {
+        } else if (data.length() == 16 && inRanges(cabalRanges, Integer.parseInt(data.substring(0, 8)))) {
             return CreditCardType.cabal;
-        } else if ((data.length() == 16 && inRanges(carnetRanges, Integer.parseInt(data.substring(0, 6)))) || binMatch(carnetBins, data)) {
+        } else if ((data.length() == 16 && inRanges(carnetRanges, Integer.parseInt(data.substring(0, 6))) || binMatch(carnetBins, data))) {
             return CreditCardType.carnet;
         }
         return CreditCardType.unknown;
