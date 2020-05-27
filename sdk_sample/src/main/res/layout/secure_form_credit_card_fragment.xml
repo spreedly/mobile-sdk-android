@@ -1,5 +1,4 @@
 <com.spreedly.securewidgets.SecureFormLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -9,7 +8,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/full_name"
+        android:id="@id/spreedly_full_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,30 +21,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.spreedly.securewidgets.SecureTextField
-        android:id="@id/credit_card_number"
+        android:id="@id/spreedly_credit_card_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Credit Card Number">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="blank"
-                android:inputType="text"
-                tools:ignore="LabelFor" />
-        </com.google.android.material.textfield.TextInputLayout>
     </com.spreedly.securewidgets.SecureTextField>
     <com.spreedly.securewidgets.SecureTextField
-        android:id="@id/ccv"
+        android:id="@id/spreedly_ccv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/cc_year"
+        android:id="@id/spreedly_cc_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -58,7 +44,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/cc_month"
+        android:id="@id/spreedly_cc_month"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -78,7 +64,7 @@
         android:textIsSelectable="true" />
 
     <Button
-        android:id="@id/cc_submit"
+        android:id="@id/spreedly_cc_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit" />

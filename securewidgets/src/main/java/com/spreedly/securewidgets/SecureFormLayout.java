@@ -107,10 +107,10 @@ public class SecureFormLayout extends LinearLayout {
     }
 
     private void init() {
-        creditCardNumber = findViewById(R.id.credit_card_number);
-        ccv = findViewById(R.id.ccv);
-        fullName = findViewById(R.id.full_name);
-        month = findViewById(R.id.cc_month);
-        year = findViewById(R.id.cc_year);
+        creditCardNumber = findViewById(R.id.spreedly_credit_card_number);
+        ccv = findViewById(R.id.spreedly_ccv);
+        fullName = findViewById(R.id.spreedly_full_name);
+        month = findViewById(R.id.spreedly_cc_month);
+        year = findViewById(R.id.spreedly_cc_year);
     }
 }
