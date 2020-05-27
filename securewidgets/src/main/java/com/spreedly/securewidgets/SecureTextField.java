@@ -101,4 +101,8 @@ public class SecureTextField extends FrameLayout {
             textLayout.setHint("Account Number");
         }
     }
+
+    public void setError(String error) {
+
+    }
 }

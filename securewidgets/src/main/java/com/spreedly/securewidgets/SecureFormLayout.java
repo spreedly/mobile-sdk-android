@@ -90,20 +90,11 @@ public class SecureFormLayout extends LinearLayout {
 
     public void handleErrors(List<SpreedlyError> errors) {
         try {
-            TextInputLayout v = new TextInputLayout(this.getContext());
-            this.addView(v);
-            int y = 7;
-            v.setHint("Here's a test");
-            int x = 4 + y;
             for (int i = 0; i < errors.size(); i++) {
                 SpreedlyError error = errors.get(i);
                 switch (error.attribute) {
-                    case "name":
-                        fullName.setError(error.message);
-                    case "month":
-                        month.setError(error.message);
-                    case "year":
-                        year.setError(error.message);
+                    case "number":
+                        creditCardNumber.setError(error.message);
                     default:
                         break;
                 }
