@@ -4,12 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 
 public class SecureTextField extends FrameLayout {
@@ -46,9 +48,15 @@ public class SecureTextField extends FrameLayout {
     }
 
     public SpreedlySecureOpaqueString getText() {
-        SpreedlySecureOpaqueString spreedlyString = new SpreedlySecureOpaqueString();
-        spreedlyString.append(editText.getText().toString());
-        return spreedlyString;
+        SpreedlyClient client;
+        ViewParent parent = this.getParent();
+        parent.getClass();
+        while (parent.getClass() != SecureFormLayout.class) {
+            parent = parent.getParent();
+        }
+        SecureFormLayout parentClass = (SecureFormLayout) parent;
+        client = parentClass.spreedlyClient;
+        return client.createString(editText.getText().toString());
     }
 
     private View findTextInputLayout(View v) {
