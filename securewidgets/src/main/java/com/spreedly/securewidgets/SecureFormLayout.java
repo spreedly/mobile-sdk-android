@@ -15,9 +15,8 @@ import com.spreedly.client.models.results.TransactionResult;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.core.SingleObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
 
 
 /**
@@ -58,34 +57,12 @@ public class SecureFormLayout extends LinearLayout {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         final CreditCardInfo info = new CreditCardInfo(getString(fullName), creditCardNumber.getText(), ccv.getText(), getNumber(year), getNumber(month));
         Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, null, null);
-        result.subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
-            @Override
-            public void onSubscribe(@androidx.annotation.NonNull Disposable d) {
-
+        return result.subscribeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
+            if (!transaction.succeeded) {
+                handleErrors(transaction.errors);
             }
-
-            @Override
-            public void onSuccess(TransactionResult<PaymentMethodResult> trans) {
-                try {
-                    if (trans.succeeded) {
-                        Log.i("Spreedly", "trans.result.token: " + trans.result.token);
-                    } else {
-                        Log.e("Spreedly", "trans.message: " + trans.message);
-                        handleErrors(trans.errors);
-                    }
-                } finally {
-                    Log.i("Spreedly", "Completed");
-                }
-            }
-
-            @Override
-            public void onError(@androidx.annotation.NonNull Throwable e) {
-                Log.e("Spreedly", e.getMessage(), e);
-                //error.postValue("UNEXPECTED ERROR: " + e.getMessage());
-                //inProgress.postValue(false);
-            }
+            return transaction;
         });
-        return result;
     }
 
     public void handleErrors(List<SpreedlyError> errors) {
@@ -136,7 +113,4 @@ public class SecureFormLayout extends LinearLayout {
         month = findViewById(R.id.cc_month);
         year = findViewById(R.id.cc_year);
     }
-
-
-
 }

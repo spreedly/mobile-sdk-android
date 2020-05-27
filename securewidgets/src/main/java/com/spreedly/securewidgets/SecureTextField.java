@@ -59,7 +59,7 @@ public class SecureTextField extends FrameLayout {
         return client.createString(editText.getText().toString());
     }
 
-    private View findTextInputLayout(View v) {
+    protected View findTextInputLayout(View v) {
         if (v instanceof TextInputLayout) {
             return v;
         }
@@ -79,7 +79,7 @@ public class SecureTextField extends FrameLayout {
         return result;
     }
 
-    private View findEditText(View v) {
+    protected View findEditText(View v) {
         if (v instanceof EditText) {
             return v;
         }
