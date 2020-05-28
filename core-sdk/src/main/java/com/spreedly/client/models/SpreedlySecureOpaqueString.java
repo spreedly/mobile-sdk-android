@@ -141,6 +141,49 @@ public final class SpreedlySecureOpaqueString {
 
     }
 
+    @Nullable
+    public CreditCardType softDetect() {
+
+        if (length > 19) {
+            return CreditCardType.error;
+        }
+        if (data.startsWith("4")) {
+            return CreditCardType.visa;
+        } else if (length >= 6 && inRanges(mastercardRanges, Integer.parseInt(data.substring(0, 6)))) {
+            return CreditCardType.mastercard;
+        } else if (length >= 6 && inRanges(eloRanges, Integer.parseInt(data.substring(0, 6)))) {
+            return CreditCardType.elo;
+        } else if (length >= 6 && inRanges(aleloRanges, Integer.parseInt(data.substring(0, 6)))) {
+            return CreditCardType.alelo;
+        } else if (Pattern.matches("^(6011|65[0-9]{2}|64[4-9][0-9])", data)) {
+            return CreditCardType.discover;
+        } else if (Pattern.matches("^3[47]", data)) {
+            return CreditCardType.americanExpress;
+        } else if (length >= 6 && inRanges(naranjaRanges, Integer.parseInt(data.substring(0, 6)))) {
+            return CreditCardType.naranja;
+        } else if (Pattern.matches("^3(0[0-5]|[68][0-9])", data)) {
+            return CreditCardType.dinersClub;
+        } else if (Pattern.matches("^35(28|29|[3-8][0-9])", data)) {
+            return CreditCardType.jcb;
+        } else if (Pattern.matches("^5019[0-9]", data)) {
+            return CreditCardType.dankort;
+        } else if (length >= 6 && (inRanges(maestroRanges, Integer.parseInt(data.substring(0, 6))) || binMatch(carnetBins, data))) {
+            return CreditCardType.maestro;
+        } else if (Pattern.matches("^(606071|603389|606070|606069|606068|600818)", data)) {
+            return CreditCardType.sodexo;
+        } else if (Pattern.matches("^(627416|637036)", data)) {
+            return CreditCardType.vr;
+        } else if (length >= 8 && inRanges(cabalRanges, Integer.parseInt(data.substring(0, 8)))) {
+            return CreditCardType.cabal;
+        } else if (length >= 6 && (inRanges(carnetRanges, Integer.parseInt(data.substring(0, 6))) || binMatch(carnetBins, data))) {
+            return CreditCardType.carnet;
+        }
+        return CreditCardType.unknown;
+
+    }
+
+
+
     @NonNull boolean checkIsValid(String numbers) {
         try {
             Double.parseDouble(numbers);
