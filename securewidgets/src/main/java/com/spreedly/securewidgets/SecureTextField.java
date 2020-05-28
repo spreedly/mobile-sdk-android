@@ -55,7 +55,7 @@ public class SecureTextField extends FrameLayout {
             parent = parent.getParent();
         }
         SecureFormLayout parentClass = (SecureFormLayout) parent;
-        client = parentClass.spreedlyClient;
+        client = parentClass.getClient();
         return client.createString(editText.getText().toString());
     }
 

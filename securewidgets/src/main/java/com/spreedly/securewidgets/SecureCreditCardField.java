@@ -1,6 +1,8 @@
 package com.spreedly.securewidgets;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,7 @@ public class SecureCreditCardField extends SecureTextField {
         super.onFinishInflate();
         textLayout.setHint("Credit Card Number");
         setEndIcons();
+        setStartIcon();
     }
 
     public void setEndIcons() {
@@ -36,7 +39,6 @@ public class SecureCreditCardField extends SecureTextField {
                 if (visibile[0]) {
                     textLayout.setEndIconDrawable(R.drawable.ic_visible);
                     visibile[0] = false;
-                    editText.setTextAppearance(context, R.style.sample_style);
                 } else {
                     textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
                     visibile[0] = true;
@@ -46,6 +48,77 @@ public class SecureCreditCardField extends SecureTextField {
         };
         textLayout.setEndIconOnClickListener(v);
 
+    }
+
+    public void setStartIcon() {
+        textLayout.setStartIconDrawable(R.drawable.stp_card_unknown);
+        textLayout.setStartIconTintList(null);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int icon = R.drawable.stp_card_unknown;
+                switch (getText().detectCardType()) {
+                    case mastercard:
+                        icon = R.drawable.stp_card_mastercard;
+                        break;
+                    case americanExpress:
+                        icon = R.drawable.stp_card_amex;
+                        break;
+                    case alelo:
+                        break;
+                    case cabal:
+                        break;
+                    case carnet:
+                        break;
+                    case dankort:
+                        break;
+                    case dinersClub:
+                        icon = R.drawable.stp_card_diners;
+                        break;
+                    case discover:
+                        icon = R.drawable.stp_card_discover;
+                        break;
+                    case elo:
+                        break;
+                    case jcb:
+                        icon = R.drawable.stp_card_jcb;
+                        break;
+                    case maestro:
+                        break;
+                    case naranja:
+                        break;
+                    case sodexo:
+                        break;
+                    case vr:
+                        break;
+                    case unknown:
+                        break;
+                    case error:
+                        if (getText().length == 0) {
+                            icon = R.drawable.stp_card_unknown;
+                        } else {
+                            icon = R.drawable.stp_card_error;
+                        }
+                        break;
+                    case visa:
+                        icon = R.drawable.stp_card_visa_template;
+                        break;
+                    default:
+                        break;
+                }
+                textLayout.setStartIconDrawable(icon);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     public String hideNumber(String text) {
