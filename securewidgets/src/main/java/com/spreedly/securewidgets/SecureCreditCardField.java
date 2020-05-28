@@ -30,6 +30,7 @@ public class SecureCreditCardField extends SecureTextField {
     public void setEndIcons() {
         textLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
         textLayout.setEndIconDrawable(R.drawable.ic_visible);
+        editText.setTransformationMethod(new CreditCardTransformationMethod());
         final boolean[] visibile = {false};
         final Context context = this.getContext();
         View.OnClickListener v = new View.OnClickListener() {
@@ -39,8 +40,10 @@ public class SecureCreditCardField extends SecureTextField {
                 if (visibile[0]) {
                     textLayout.setEndIconDrawable(R.drawable.ic_visible);
                     visibile[0] = false;
+                    editText.setTransformationMethod(new CreditCardTransformationMethod());
                 } else {
                     textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
+                    editText.setTransformationMethod(null);
                     visibile[0] = true;
 
                 }
