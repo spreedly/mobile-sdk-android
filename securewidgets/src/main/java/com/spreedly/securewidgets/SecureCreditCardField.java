@@ -15,42 +15,47 @@ import com.spreedly.client.models.enums.CreditCardType;
  */
 public class SecureCreditCardField extends SecureTextField {
 
+    private CreditCardTransformationMethod ccTransformationMethod;
+    private View.OnClickListener clickListener;
+    private boolean visible = true;
+    private CharSequence previous = "";
     public SecureCreditCardField(Context context, AttributeSet attrs) {
         super(context, attrs);
+        ccTransformationMethod = new CreditCardTransformationMethod();
+        clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Spreedly", "button clicked");
+                if (visible) {
+                    textLayout.setEndIconDrawable(R.drawable.ic_visible);
+                    editText.setTransformationMethod(ccTransformationMethod);
+                    visible = false;
+                } else {
+                    textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
+                    editText.setTransformationMethod(null);
+                    visible = true;
+                }
+            }
+        };
     }
-
-    private CreditCardTransformationMethod ccTransformationMethod = new CreditCardTransformationMethod();
-    private boolean visible = true;
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
         textLayout.setHint("Credit Card Number");
         setEndIcons();
         setStartIcon();
-        setValidation();
     }
 
     private void setEndIcons() {
         textLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
-        textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
-        final Context context = this.getContext();
-        View.OnClickListener v = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("Spreedly", "button clicked");
-                if (visible) {
-                    textLayout.setEndIconDrawable(R.drawable.ic_visible);
-                    visible = false;
-                    editText.setTransformationMethod(ccTransformationMethod);
-                } else {
-                    textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
-                    editText.setTransformationMethod(null);
-                    visible = true;
-
-                }
-            }
-        };
-        textLayout.setEndIconOnClickListener(v);
+        if (visible) {
+            textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
+            editText.setTransformationMethod(null);
+        } else {
+            editText.setTransformationMethod(ccTransformationMethod);
+            textLayout.setEndIconDrawable(R.drawable.ic_visible);
+        }
+        textLayout.setEndIconOnClickListener(clickListener);
 
     }
 
@@ -65,6 +70,11 @@ public class SecureCreditCardField extends SecureTextField {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().equals(previous.toString())) {
+                    return;
+                }
+                if (s.length() > 19)
+                    previous = s;
                 int icon = R.drawable.stp_card_unknown;
                 CreditCardType type;
                 if (getText().length < 16) {
@@ -144,10 +154,11 @@ public class SecureCreditCardField extends SecureTextField {
                     textLayout.setEndIconDrawable(R.drawable.ic_visible);
                     visible = false;
                     editText.setTransformationMethod(ccTransformationMethod);
-                } else {
+                    textLayout.setEndIconOnClickListener(clickListener);
+                } else if (visible == true) {
                     textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
                     editText.setTransformationMethod(null);
-                    visible = true;
+                    textLayout.setEndIconOnClickListener(clickListener);
                 }
             }
 
@@ -156,8 +167,5 @@ public class SecureCreditCardField extends SecureTextField {
 
             }
         });
-    }
-
-    private void setValidation() {
     }
 }
