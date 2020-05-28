@@ -20,11 +20,10 @@
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.spreedly.securewidgets.SecureTextField
+    <com.spreedly.securewidgets.SecureCreditCardField
         android:id="@id/spreedly_credit_card_number"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.spreedly.securewidgets.SecureTextField>
+        android:layout_height="wrap_content"></com.spreedly.securewidgets.SecureCreditCardField>
     <com.spreedly.securewidgets.SecureTextField
         android:id="@id/spreedly_ccv"
         android:layout_width="match_parent"

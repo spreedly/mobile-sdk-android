@@ -1,8 +1,8 @@
 package com.spreedly.securewidgets;
 
 import android.content.Context;
-import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -16,6 +16,7 @@ public class SecureCreditCardField extends SecureTextField {
         super(context, attrs);
     }
 
+    String previousValue;
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
@@ -25,15 +26,21 @@ public class SecureCreditCardField extends SecureTextField {
 
     public void setEndIcons() {
         textLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
-        textLayout.setStartIconDrawable(R.drawable.ic_visible);
+        textLayout.setEndIconDrawable(R.drawable.ic_visible);
+        final boolean[] visibile = {false};
+        final Context context = this.getContext();
         View.OnClickListener v = new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                if (editText.getInputType() == InputType.TYPE_CLASS_NUMBER) {
-                    editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                Log.i("Spreedly", "button clicked");
+                if (visibile[0]) {
+                    textLayout.setEndIconDrawable(R.drawable.ic_visible);
+                    visibile[0] = false;
+                    editText.setTextAppearance(context, R.style.sample_style);
                 } else {
-                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
+                    visibile[0] = true;
+
                 }
             }
         };
@@ -41,6 +48,12 @@ public class SecureCreditCardField extends SecureTextField {
 
     }
 
+    public String hideNumber(String text) {
+        int length = text.length();
+        String lastFour = text.substring(length - 4, length);
+        String xs = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX".substring(0, length - 4);
+        return xs + lastFour;
+    }
 
 
 }

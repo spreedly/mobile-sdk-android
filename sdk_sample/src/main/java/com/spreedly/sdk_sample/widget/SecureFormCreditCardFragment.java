@@ -33,7 +33,7 @@ public class SecureFormCreditCardFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(SecureFormCreditCardViewModel.class);
         // TODO: Use the ViewModel
         mViewModel.layout = getView().findViewById(R.id.credit_card_form);
-        getView().<Button>findViewById(R.id.cc_submit).setOnClickListener(b -> mViewModel.submitCreditCard());
+        getView().<Button>findViewById(R.id.spreedly_cc_submit).setOnClickListener(b -> mViewModel.submitCreditCard());
     }
 
 }
