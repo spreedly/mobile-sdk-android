@@ -69,9 +69,9 @@ public class SecureExpirationDate extends FrameLayout {
         String input = editText.getEditableText().toString();
         switch (format) {
             case 0:
-                return Integer.parseInt(input.substring(3, 5));
+                return 2000 + Integer.parseInt(input.substring(3, 5));
             case 1:
-                return Integer.parseInt(input.substring(0, 2));
+                return 2000 + Integer.parseInt(input.substring(0, 2));
             case 2:
                 return Integer.parseInt(input.substring(3, 7));
             default:
