@@ -55,6 +55,7 @@ public class SecureCreditCardField extends SecureTextField {
             editText.setTransformationMethod(null);
             visible = true;
         }
+        editText.setSelection(editText.getText().length());
     }
 
     void setEndIcons() {
@@ -67,6 +68,7 @@ public class SecureCreditCardField extends SecureTextField {
             textLayout.setEndIconDrawable(R.drawable.ic_visible);
         }
         textLayout.setEndIconOnClickListener(clickListener);
+        editText.setSelection(editText.getText().length());
 
     }
 
@@ -88,6 +90,7 @@ public class SecureCreditCardField extends SecureTextField {
 
             @Override
             public void afterTextChanged(Editable s) {
+                int p = editText.getSelectionEnd();
                 String text = editText.getText().toString();
                 text = text.replace(" ", "");
                 CardBrand brand;
