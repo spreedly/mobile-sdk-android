@@ -1,6 +1,6 @@
 package com.spreedly.client.models.enums;
 
-public enum CreditCardType {
+public enum CardBrand {
     visa,
     mastercard,
     americanExpress,

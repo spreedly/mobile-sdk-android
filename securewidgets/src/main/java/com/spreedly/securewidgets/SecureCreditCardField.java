@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
-import com.spreedly.client.models.enums.CreditCardType;
+import com.spreedly.client.models.enums.CardBrand;
 
 import io.reactivex.rxjava3.annotations.Nullable;
 
@@ -69,7 +69,7 @@ public class SecureCreditCardField extends SecureTextField {
     }
 
     private void setStartIcon() {
-        textLayout.setStartIconDrawable(R.drawable.stp_card_unknown);
+        textLayout.setStartIconDrawable(R.drawable.spr_card_unknown);
         textLayout.setStartIconTintList(null);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -85,46 +85,46 @@ public class SecureCreditCardField extends SecureTextField {
             @Override
             public void afterTextChanged(Editable s) {
                 String text = editText.getText().toString();
-                CreditCardType type;
+                CardBrand brand;
                 SpreedlySecureOpaqueString secureString = getText();
                 if (text.equals(previous)) {
                     return;
                 }
                 previous = text;
                 if (text.length() < 16) {
-                    type = secureString.softDetect();
+                    brand = secureString.softDetect();
                 } else if (text.length() < 20) {
-                    type = secureString.detectCardType();
+                    brand = secureString.detectCardType();
                 } else {
-                    type = CreditCardType.error;
+                    brand = CardBrand.error;
                 }
-                if (type == CreditCardType.error) {
+                if (brand == CardBrand.error) {
                     textLayout.setError("Invalid credit card number");
                 } else {
                     textLayout.setError(null);
                 }
-                if (text.length() > 15 && text.length() < 20 && type != CreditCardType.error) {
+                if (text.length() > 15 && text.length() < 20 && brand != CardBrand.error) {
                     visible = false;
                     setEndIcons();
                 } else {
                     visible = true;
                     setEndIcons();
                 }
-                setIcon(type);
+                setIcon(brand);
             }
         });
     }
 
-    void setIcon(CreditCardType type) {
+    void setIcon(CardBrand type) {
         switch (type) {
             case visa:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_visa);
+                textLayout.setStartIconDrawable(R.drawable.spr_card_visa);
                 break;
             case mastercard:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_mastercard);
+                textLayout.setStartIconDrawable(R.drawable.spr_card_mastercard);
                 break;
             case americanExpress:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_amex);
+                textLayout.setStartIconDrawable(R.drawable.spr_card_amex);
                 break;
             case alelo:
                 break;
@@ -135,15 +135,15 @@ public class SecureCreditCardField extends SecureTextField {
             case dankort:
                 break;
             case dinersClub:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_diners);
+                textLayout.setStartIconDrawable(R.drawable.spr_card_diners);
                 break;
             case discover:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_discover);
+                textLayout.setStartIconDrawable(R.drawable.spr_card_discover);
                 break;
             case elo:
                 break;
             case jcb:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_jcb);
+                textLayout.setStartIconDrawable(R.drawable.spr_card_jcb);
                 break;
             case maestro:
                 break;
@@ -154,10 +154,10 @@ public class SecureCreditCardField extends SecureTextField {
             case vr:
                 break;
             case unknown:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_unknown);
+                textLayout.setStartIconDrawable(R.drawable.spr_card_unknown);
                 break;
             case error:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_error);
+                textLayout.setStartIconDrawable(R.drawable.spr_card_error);
                 break;
         }
     }
