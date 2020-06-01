@@ -102,7 +102,7 @@ public final class SpreedlySecureOpaqueString {
 
     @Nullable
     public CardBrand detectCardType() {
-
+        data = data.replaceAll(" ", "");
         if (!checkIsValid(data)) {
             return CardBrand.error;
         }
@@ -143,7 +143,7 @@ public final class SpreedlySecureOpaqueString {
 
     @Nullable
     public CardBrand softDetect() {
-
+        data = data.replaceAll(" ", "");
         if (length > 19) {
             return CardBrand.error;
         }

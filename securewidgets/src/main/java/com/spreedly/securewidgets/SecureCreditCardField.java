@@ -2,6 +2,7 @@ package com.spreedly.securewidgets;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class SecureCreditCardField extends SecureTextField {
             setTransformation();
         };
         textLayout.setHint("Credit Card Number");
+        editText.setInputType(InputType.TYPE_CLASS_PHONE);
         setEndIcons();
         setStartIcon();
     }
@@ -72,6 +74,8 @@ public class SecureCreditCardField extends SecureTextField {
         textLayout.setStartIconDrawable(R.drawable.spr_card_unknown);
         textLayout.setStartIconTintList(null);
         editText.addTextChangedListener(new TextWatcher() {
+            boolean lock;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -85,6 +89,7 @@ public class SecureCreditCardField extends SecureTextField {
             @Override
             public void afterTextChanged(Editable s) {
                 String text = editText.getText().toString();
+                text = text.replace(" ", "");
                 CardBrand brand;
                 SpreedlySecureOpaqueString secureString = getText();
                 if (text.equals(previous)) {
@@ -111,6 +116,19 @@ public class SecureCreditCardField extends SecureTextField {
                     setEndIcons();
                 }
                 setIcon(brand);
+                if (lock) {
+                    return;
+                }
+                lock = true;
+                String newText = "";
+                for (int i = 0; i < text.length(); i++) {
+                    if (i != 0 && (i % 4 == 0) && i < 16) {
+                        newText += " ";
+                    }
+                    newText += text.charAt(i);
+                }
+                s.replace(0, s.length(), newText);
+                lock = false;
             }
         });
     }

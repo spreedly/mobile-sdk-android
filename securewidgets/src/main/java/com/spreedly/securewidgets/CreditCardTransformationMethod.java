@@ -25,7 +25,7 @@ public class CreditCardTransformationMethod extends PasswordTransformationMethod
         }
 
         public char charAt(int i) {
-            if (i < length() - 4) {
+            if (i < length() - 4 && mSource.charAt(i) != ' ') {
                 return DOT;
             } else return mSource.charAt(i);
         }
