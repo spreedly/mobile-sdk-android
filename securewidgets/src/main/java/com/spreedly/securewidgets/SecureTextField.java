@@ -8,6 +8,8 @@ import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -15,10 +17,12 @@ import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 
 public class SecureTextField extends FrameLayout {
+    @NonNull
     TextInputLayout textLayout;
+    @NonNull
     EditText editText;
 
-    public SecureTextField(Context context, AttributeSet attrs) {
+    public SecureTextField(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -47,6 +51,7 @@ public class SecureTextField extends FrameLayout {
         }
     }
 
+    @Nullable
     public SpreedlySecureOpaqueString getText() {
         SpreedlyClient client;
         ViewParent parent = this.getParent();
@@ -59,7 +64,8 @@ public class SecureTextField extends FrameLayout {
         return client.createString(editText.getText().toString());
     }
 
-    protected View findTextInputLayout(View v) {
+    @Nullable
+    protected View findTextInputLayout(@Nullable View v) {
         if (v instanceof TextInputLayout) {
             return v;
         }
@@ -79,7 +85,8 @@ public class SecureTextField extends FrameLayout {
         return result;
     }
 
-    protected View findEditText(View v) {
+    @Nullable
+    protected View findEditText(@Nullable View v) {
         if (v instanceof EditText) {
             return v;
         }
@@ -110,7 +117,7 @@ public class SecureTextField extends FrameLayout {
         }
     }
 
-    public void setError(String error) {
+    public void setError(@NonNull String error) {
 
     }
 }

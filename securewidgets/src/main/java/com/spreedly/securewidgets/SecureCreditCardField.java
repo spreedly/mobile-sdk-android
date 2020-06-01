@@ -7,21 +7,28 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 import com.spreedly.client.models.enums.CreditCardType;
+
+import io.reactivex.rxjava3.annotations.Nullable;
 
 /**
  * TODO: document your custom view class.
  */
 public class SecureCreditCardField extends SecureTextField {
 
-    private CreditCardTransformationMethod ccTransformationMethod = new CreditCardTransformationMethod();
+    boolean visible = true;
     private View.OnClickListener clickListener;
-    private boolean visible = true;
-    private String previous = "";
-    public SecureCreditCardField(Context context, AttributeSet attrs) {
+    String previous = "";
+    @NonNull
+    private CreditCardTransformationMethod ccTransformationMethod;
+
+    public SecureCreditCardField(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        ccTransformationMethod = new CreditCardTransformationMethod();
     }
 
     @Override
@@ -48,7 +55,7 @@ public class SecureCreditCardField extends SecureTextField {
         }
     }
 
-    private void setEndIcons() {
+    void setEndIcons() {
         textLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
         if (visible) {
             textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
@@ -108,10 +115,10 @@ public class SecureCreditCardField extends SecureTextField {
         });
     }
 
-    private void setIcon(CreditCardType type) {
+    void setIcon(CreditCardType type) {
         switch (type) {
             case visa:
-                textLayout.setStartIconDrawable(R.drawable.stp_card_visa_template);
+                textLayout.setStartIconDrawable(R.drawable.stp_card_visa);
                 break;
             case mastercard:
                 textLayout.setStartIconDrawable(R.drawable.stp_card_mastercard);

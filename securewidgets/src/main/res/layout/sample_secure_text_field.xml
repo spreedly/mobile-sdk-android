@@ -7,9 +7,6 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:background="#ccc"
-        android:paddingLeft="20dp"
-        android:paddingTop="13dp"
-        android:paddingBottom="40dp"
         app:exampleColor="#33b5e5"
         app:exampleDimension="24sp"
         app:exampleDrawable="@android:drawable/ic_menu_add"
@@ -25,8 +22,7 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="blank"
                 android:inputType="text"
-                android:paddingTop="7dp"
-                android:text="Sample text" />
+                android:paddingTop="7dp" />
         </com.google.android.material.textfield.TextInputLayout>
     </com.spreedly.securewidgets.SecureTextField>
 

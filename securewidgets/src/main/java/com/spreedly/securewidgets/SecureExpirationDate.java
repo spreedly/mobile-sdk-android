@@ -80,7 +80,7 @@ public class SecureExpirationDate extends FrameLayout {
     }
 
 
-    private class ExpirationDateTextWatcher implements TextWatcher {
+    class ExpirationDateTextWatcher implements TextWatcher {
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {

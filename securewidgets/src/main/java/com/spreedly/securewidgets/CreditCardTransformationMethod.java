@@ -3,11 +3,16 @@ package com.spreedly.securewidgets;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class CreditCardTransformationMethod extends PasswordTransformationMethod {
-    private static char DOT = '\u2022';
+    @NonNull
+    static char DOT = '\u2022';
 
     @Override
-    public CharSequence getTransformation(CharSequence source, View view) {
+    @NonNull
+    public CharSequence getTransformation(@Nullable CharSequence source, @Nullable View view) {
         return new PasswordCharSequence(source);
     }
 

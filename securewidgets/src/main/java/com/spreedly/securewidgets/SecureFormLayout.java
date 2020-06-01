@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.CreditCardInfo;
@@ -16,6 +18,7 @@ import com.spreedly.client.models.results.TransactionResult;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
 
 
@@ -32,18 +35,16 @@ public class SecureFormLayout extends LinearLayout {
     TextInputLayout month;
     TextInputLayout year;
 
-    public SecureFormLayout(Context context) {
-        super(context);
-    }
 
-    public SecureFormLayout(Context context, AttributeSet attrs) {
+    public SecureFormLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void setSpreedlyClient(String envKey, String envSecret, boolean test) {
+    public void setSpreedlyClient(@NonNull String envKey, @NonNull String envSecret, boolean test) {
         spreedlyClient = SpreedlyClient.newInstance(envKey, envSecret, test);
     }
 
+    @Nullable
     public SpreedlyClient getClient() {
         return spreedlyClient;
     }
@@ -54,6 +55,7 @@ public class SecureFormLayout extends LinearLayout {
         init();
     }
 
+    @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod() {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         final CreditCardInfo info = new CreditCardInfo(getString(fullName), creditCardNumber.getText(), ccv.getText(), expiration.getYear(), expiration.getMonth());
@@ -66,7 +68,7 @@ public class SecureFormLayout extends LinearLayout {
         });
     }
 
-    public void handleErrors(List<SpreedlyError> errors) {
+    public void handleErrors(@NonNull List<SpreedlyError> errors) {
         try {
             for (int i = 0; i < errors.size(); i++) {
                 SpreedlyError error = errors.get(i);
@@ -83,6 +85,7 @@ public class SecureFormLayout extends LinearLayout {
         }
     }
 
+    @Nullable
     public Single<TransactionResult<BankAccountResult>> createBankAccountPaymentMethod() {
         return null;
     }
