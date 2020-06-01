@@ -1,6 +1,7 @@
 <com.spreedly.securewidgets.SecureFormLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_marginStart="@dimen/activity_horizontal_margin"
     android:layout_marginEnd="@dimen/activity_horizontal_margin"
     android:gravity="center"
@@ -23,37 +24,17 @@
     <com.spreedly.securewidgets.SecureCreditCardField
         android:id="@id/spreedly_credit_card_number"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.spreedly.securewidgets.SecureCreditCardField>
+        android:layout_height="wrap_content" />
     <com.spreedly.securewidgets.SecureTextField
         android:id="@id/spreedly_ccv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/spreedly_cc_year"
+    <com.spreedly.securewidgets.SecureExpirationDate
+        android:id="@id/spreedly_cc_expiration_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="creditCardYear"
-            android:hint="@string/year_hint"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/spreedly_cc_month"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="creditCardMonth"
-            android:hint="@string/month_hint"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="wrap_content"
+        custom:dateFormat="mmyyyy" />
 
     <TextView
         android:id="@+id/token"
