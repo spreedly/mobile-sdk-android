@@ -8,52 +8,60 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.spreedly.client.models.SpreedlySecureOpaqueString;
+import com.spreedly.client.models.enums.CreditCardType;
 
 /**
  * TODO: document your custom view class.
  */
 public class SecureCreditCardField extends SecureTextField {
 
+    private CreditCardTransformationMethod ccTransformationMethod = new CreditCardTransformationMethod();
+    private View.OnClickListener clickListener;
+    private boolean visible = true;
+    private String previous = "";
     public SecureCreditCardField(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    String previousValue;
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
+        clickListener = v -> {
+            Log.i("Spreedly", "button clicked");
+            setTransformation();
+        };
         textLayout.setHint("Credit Card Number");
         setEndIcons();
         setStartIcon();
     }
 
-    public void setEndIcons() {
-        textLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
-        textLayout.setEndIconDrawable(R.drawable.ic_visible);
-        editText.setTransformationMethod(new CreditCardTransformationMethod());
-        final boolean[] visibile = {false};
-        final Context context = this.getContext();
-        View.OnClickListener v = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("Spreedly", "button clicked");
-                if (visibile[0]) {
-                    textLayout.setEndIconDrawable(R.drawable.ic_visible);
-                    visibile[0] = false;
-                    editText.setTransformationMethod(new CreditCardTransformationMethod());
-                } else {
-                    textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
-                    editText.setTransformationMethod(null);
-                    visibile[0] = true;
+    private void setTransformation() {
+        if (visible) {
+            textLayout.setEndIconDrawable(R.drawable.ic_visible);
+            editText.setTransformationMethod(ccTransformationMethod);
+            visible = false;
+        } else {
+            textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
+            editText.setTransformationMethod(null);
+            visible = true;
+        }
+    }
 
-                }
-            }
-        };
-        textLayout.setEndIconOnClickListener(v);
+    private void setEndIcons() {
+        textLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
+        if (visible) {
+            textLayout.setEndIconDrawable(R.drawable.ic_visibilityoff);
+            editText.setTransformationMethod(null);
+        } else {
+            editText.setTransformationMethod(ccTransformationMethod);
+            textLayout.setEndIconDrawable(R.drawable.ic_visible);
+        }
+        textLayout.setEndIconOnClickListener(clickListener);
 
     }
 
-    public void setStartIcon() {
+    private void setStartIcon() {
         textLayout.setStartIconDrawable(R.drawable.stp_card_unknown);
         textLayout.setStartIconTintList(null);
         editText.addTextChangedListener(new TextWatcher() {
@@ -64,72 +72,86 @@ public class SecureCreditCardField extends SecureTextField {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int icon = R.drawable.stp_card_unknown;
-                switch (getText().detectCardType()) {
-                    case mastercard:
-                        icon = R.drawable.stp_card_mastercard;
-                        break;
-                    case americanExpress:
-                        icon = R.drawable.stp_card_amex;
-                        break;
-                    case alelo:
-                        break;
-                    case cabal:
-                        break;
-                    case carnet:
-                        break;
-                    case dankort:
-                        break;
-                    case dinersClub:
-                        icon = R.drawable.stp_card_diners;
-                        break;
-                    case discover:
-                        icon = R.drawable.stp_card_discover;
-                        break;
-                    case elo:
-                        break;
-                    case jcb:
-                        icon = R.drawable.stp_card_jcb;
-                        break;
-                    case maestro:
-                        break;
-                    case naranja:
-                        break;
-                    case sodexo:
-                        break;
-                    case vr:
-                        break;
-                    case unknown:
-                        break;
-                    case error:
-                        if (getText().length == 0) {
-                            icon = R.drawable.stp_card_unknown;
-                        } else {
-                            icon = R.drawable.stp_card_error;
-                        }
-                        break;
-                    case visa:
-                        icon = R.drawable.stp_card_visa_template;
-                        break;
-                    default:
-                        break;
-                }
-                textLayout.setStartIconDrawable(icon);
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                String text = editText.getText().toString();
+                CreditCardType type;
+                SpreedlySecureOpaqueString secureString = getText();
+                if (text.equals(previous)) {
+                    return;
+                }
+                previous = text;
+                if (text.length() < 16) {
+                    type = secureString.softDetect();
+                } else if (text.length() < 20) {
+                    type = secureString.detectCardType();
+                } else {
+                    type = CreditCardType.error;
+                }
+                if (type == CreditCardType.error) {
+                    textLayout.setError("Invalid credit card number");
+                } else {
+                    textLayout.setError(null);
+                }
+                if (text.length() > 15 && text.length() < 20 && type != CreditCardType.error) {
+                    visible = false;
+                    setEndIcons();
+                } else {
+                    visible = true;
+                    setEndIcons();
+                }
+                setIcon(type);
             }
         });
     }
 
-    public String hideNumber(String text) {
-        int length = text.length();
-        String lastFour = text.substring(length - 4, length);
-        String xs = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX".substring(0, length - 4);
-        return xs + lastFour;
+    private void setIcon(CreditCardType type) {
+        switch (type) {
+            case visa:
+                textLayout.setStartIconDrawable(R.drawable.stp_card_visa_template);
+                break;
+            case mastercard:
+                textLayout.setStartIconDrawable(R.drawable.stp_card_mastercard);
+                break;
+            case americanExpress:
+                textLayout.setStartIconDrawable(R.drawable.stp_card_amex);
+                break;
+            case alelo:
+                break;
+            case cabal:
+                break;
+            case carnet:
+                break;
+            case dankort:
+                break;
+            case dinersClub:
+                textLayout.setStartIconDrawable(R.drawable.stp_card_diners);
+                break;
+            case discover:
+                textLayout.setStartIconDrawable(R.drawable.stp_card_discover);
+                break;
+            case elo:
+                break;
+            case jcb:
+                textLayout.setStartIconDrawable(R.drawable.stp_card_jcb);
+                break;
+            case maestro:
+                break;
+            case naranja:
+                break;
+            case sodexo:
+                break;
+            case vr:
+                break;
+            case unknown:
+                textLayout.setStartIconDrawable(R.drawable.stp_card_unknown);
+                break;
+            case error:
+                textLayout.setStartIconDrawable(R.drawable.stp_card_error);
+                break;
+        }
     }
-
-
 }
