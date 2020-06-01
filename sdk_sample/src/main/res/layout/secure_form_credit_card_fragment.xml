@@ -29,31 +29,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/spreedly_cc_year"
+    <com.spreedly.securewidgets.SecureExpirationDate
+        android:id="@id/spreedly_cc_expiration_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="creditCardYear"
-            android:hint="@string/year_hint"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/spreedly_cc_month"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="creditCardMonth"
-            android:hint="@string/month_hint"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="wrap_content"></com.spreedly.securewidgets.SecureExpirationDate>
 
     <TextView
         android:id="@+id/token"
