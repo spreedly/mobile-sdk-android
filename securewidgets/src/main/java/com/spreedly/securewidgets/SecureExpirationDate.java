@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,8 +14,9 @@ import androidx.annotation.Nullable;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class SecureExpirationDate extends TextInputLayout {
+public class SecureExpirationDate extends FrameLayout {
     TextInputEditText editText;
+    TextInputLayout textInputLayout;
     TypedArray styledAttributes;
     int format;
 
@@ -25,23 +27,55 @@ public class SecureExpirationDate extends TextInputLayout {
     }
 
     private void init() {
+        textInputLayout = new TextInputLayout(this.getContext());
         editText = new TextInputEditText(this.getContext());
         editText.setInputType(InputType.TYPE_CLASS_DATETIME);
-        this.addView(editText);
+        textInputLayout.addView(editText);
+        this.addView(textInputLayout);
         editText.addTextChangedListener(new ExpirationDateTextWatcher());
 
         format = styledAttributes.getInteger(R.styleable.SecureExpirationDate_dateFormat, 0);
         switch (format) {
             case 0:
-                this.setHint("MMYY");
+                textInputLayout.setHint("MMYY");
                 break;
             case 1:
-                this.setHint("YYMM");
+                textInputLayout.setHint("YYMM");
                 break;
             case 2:
-                this.setHint("MMYYYY");
+                textInputLayout.setHint("MMYYYY");
+                break;
             default:
-                this.setHint("MMYY");
+                textInputLayout.setHint("MMYY");
+                break;
+        }
+    }
+
+    public int getMonth() {
+        String input = editText.getEditableText().toString();
+        switch (format) {
+            case 0:
+                return Integer.parseInt(input.substring(0, 2));
+            case 1:
+                return Integer.parseInt(input.substring(3, 5));
+            case 2:
+                return Integer.parseInt(input.substring(0, 2));
+            default:
+                return 0;
+        }
+    }
+
+    public int getYear() {
+        String input = editText.getEditableText().toString();
+        switch (format) {
+            case 0:
+                return Integer.parseInt(input.substring(3, 5));
+            case 1:
+                return Integer.parseInt(input.substring(0, 2));
+            case 2:
+                return Integer.parseInt(input.substring(3, 7));
+            default:
+                return 0;
         }
     }
 
@@ -61,15 +95,55 @@ public class SecureExpirationDate extends TextInputLayout {
         @Override
         public void afterTextChanged(Editable s) {
             int length = s.length();
+            int month;
+            int year;
             if (s.length() > 2) {
                 if (s.charAt(2) != '/') {
                     s = s.insert(2, "/");
                     length = s.length();
                 }
-                if (format == 2 && s.length() > 7) {
-                    s = s.delete(7, s.length());
-                } else if ((format == 0 || format == 1) && s.length() > 5) {
-                    s = s.delete(5, s.length());
+                switch (format) {
+                    case 0:
+                        if (s.length() > 5) {
+                            s = s.delete(5, s.length());
+                        }
+                        if (s.length() == 5) {
+                            month = Integer.parseInt(s.toString().substring(0, 2));
+                            if (month > 12) {
+                                textInputLayout.setError("Invalid Date");
+                            } else {
+                                textInputLayout.setError(null);
+                            }
+                        }
+                        break;
+                    case 1:
+                        if (s.length() > 5) {
+                            s = s.delete(5, s.length());
+                        }
+                        if (s.length() == 5) {
+                            month = Integer.parseInt(s.toString().substring(3, 5));
+                            if (month > 12) {
+                                textInputLayout.setError("Invalid Date");
+                            } else {
+                                textInputLayout.setError(null);
+                            }
+                        }
+                        break;
+                    case 2:
+                        if (s.length() > 7) {
+                            s = s.delete(7, s.length());
+                            if (s.length() == 5) {
+                                month = Integer.parseInt(s.toString().substring(0, 2));
+                                if (month > 12) {
+                                    textInputLayout.setError("Invalid Date");
+                                } else {
+                                    textInputLayout.setError(null);
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
