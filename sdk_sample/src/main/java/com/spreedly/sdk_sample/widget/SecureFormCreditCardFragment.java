@@ -36,5 +36,4 @@ public class SecureFormCreditCardFragment extends Fragment {
         mViewModel.layout.setSpreedlyClient("XsQXqPtrgCOnpexSwyhzN9ngr2c", "ghEGueczUT4BhJv54K24G6B4Oy9yWaM5R4dR2yt5gRsx3xnwbZE0OZ0mRg2zyI5g", true);
         getView().<Button>findViewById(R.id.spreedly_cc_submit).setOnClickListener(b -> mViewModel.submitCreditCard());
     }
-
 }

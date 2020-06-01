@@ -97,6 +97,7 @@ public final class SpreedlySecureOpaqueString {
     };
 
     @NonNull String _encode() {
+        data = data.replaceAll(" ", "");
         return data;
     }
 
@@ -145,7 +146,7 @@ public final class SpreedlySecureOpaqueString {
     public CardBrand softDetect() {
         data = data.replaceAll(" ", "");
         if (length > 19) {
-            return CardBrand.error;
+            return CardBrand.unknown;
         }
         if (data.startsWith("4")) {
             return CardBrand.visa;

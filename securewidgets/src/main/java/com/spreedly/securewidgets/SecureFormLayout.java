@@ -28,7 +28,7 @@ import io.reactivex.rxjava3.core.Single;
 public class SecureFormLayout extends LinearLayout {
     SpreedlyClient spreedlyClient;
 
-    SecureTextField creditCardNumber;
+    SecureCreditCardField creditCardNumber;
     SecureTextField ccv;
     SecureExpirationDate expiration;
     TextInputLayout fullName;
@@ -74,7 +74,7 @@ public class SecureFormLayout extends LinearLayout {
                 SpreedlyError error = errors.get(i);
                 switch (error.attribute) {
                     case "number":
-                        creditCardNumber.setError(error.message);
+                        creditCardNumber.textLayout.setError(error.message);
                     default:
                         break;
                 }
