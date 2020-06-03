@@ -1,6 +1,6 @@
 package com.spreedly.client.models;
 
-import com.spreedly.client.models.enums.CreditCardType;
+import com.spreedly.client.models.enums.CardBrand;
 
 import java.util.regex.Pattern;
 
@@ -16,6 +16,11 @@ public final class SpreedlySecureOpaqueString {
     public SpreedlySecureOpaqueString() {
         data = "";
         length = 0;
+    }
+
+    public SpreedlySecureOpaqueString(String text) {
+        data = text;
+        length = text.length();
     }
 
     public void clear() {
@@ -97,88 +102,89 @@ public final class SpreedlySecureOpaqueString {
     };
 
     @NonNull String _encode() {
+        data = data.replaceAll(" ", "");
         return data;
     }
 
     @Nullable
-    public CreditCardType detectCardType() {
-
+    public CardBrand detectCardType() {
+        data = data.replaceAll(" ", "");
         if (!checkIsValid(data)) {
-            return CreditCardType.error;
+            return CardBrand.error;
         }
         if (Pattern.matches("^4[0-9]{12}([0-9]{3})?([0-9]{3})?$", data)) {
-            return CreditCardType.visa;
+            return CardBrand.visa;
         } else if (data.length() == 16 && inRanges(mastercardRanges, Integer.parseInt(data.substring(0, 6)))) {
-            return CreditCardType.mastercard;
+            return CardBrand.mastercard;
         } else if (data.length() == 16 && inRanges(eloRanges, Integer.parseInt(data.substring(0, 6)))) {
-            return CreditCardType.elo;
+            return CardBrand.elo;
         } else if (data.length() == 16 && inRanges(aleloRanges, Integer.parseInt(data.substring(0, 6)))) {
-            return CreditCardType.alelo;
+            return CardBrand.alelo;
         } else if (Pattern.matches("^(6011|65[0-9]{2}|64[4-9][0-9])[0-9]{12,15}|(62[0-9]{14,17})$", data)) {
-            return CreditCardType.discover;
+            return CardBrand.discover;
         } else if (Pattern.matches("^3[47][0-9]{13}$", data)) {
-            return CreditCardType.americanExpress;
+            return CardBrand.americanExpress;
         } else if (data.length() == 16 && inRanges(naranjaRanges, Integer.parseInt(data.substring(0, 6)))) {
-            return CreditCardType.naranja;
+            return CardBrand.naranja;
         } else if (Pattern.matches("^3(0[0-5]|[68][0-9])[0-9]{11}$", data)) {
-            return CreditCardType.dinersClub;
+            return CardBrand.dinersClub;
         } else if (Pattern.matches("^35(28|29|[3-8][0-9])[0-9]{12}$", data)) {
-            return CreditCardType.jcb;
+            return CardBrand.jcb;
         } else if (Pattern.matches("^5019[0-9]{12}$", data)) {
-            return CreditCardType.dankort;
+            return CardBrand.dankort;
         } else if (data.length() >= 12 && (inRanges(maestroRanges, Integer.parseInt(data.substring(0, 6))) || binMatch(carnetBins, data))) {
-            return CreditCardType.maestro;
+            return CardBrand.maestro;
         } else if (Pattern.matches("^(606071|603389|606070|606069|606068|600818)[0-9]{10}$", data)) {
-            return CreditCardType.sodexo;
+            return CardBrand.sodexo;
         } else if (Pattern.matches("^(627416|637036)[0-9]{10}$", data)) {
-            return CreditCardType.vr;
+            return CardBrand.vr;
         } else if (data.length() == 16 && inRanges(cabalRanges, Integer.parseInt(data.substring(0, 8)))) {
-            return CreditCardType.cabal;
+            return CardBrand.cabal;
         } else if ((data.length() == 16 && inRanges(carnetRanges, Integer.parseInt(data.substring(0, 6))) || binMatch(carnetBins, data))) {
-            return CreditCardType.carnet;
+            return CardBrand.carnet;
         }
-        return CreditCardType.unknown;
+        return CardBrand.unknown;
 
     }
 
     @Nullable
-    public CreditCardType softDetect() {
-
+    public CardBrand softDetect() {
+        data = data.replaceAll(" ", "");
         if (length > 19) {
-            return CreditCardType.error;
+            return CardBrand.unknown;
         }
         if (data.startsWith("4")) {
-            return CreditCardType.visa;
+            return CardBrand.visa;
         } else if (length >= 6 && inRanges(mastercardRanges, Integer.parseInt(data.substring(0, 6)))) {
-            return CreditCardType.mastercard;
+            return CardBrand.mastercard;
         } else if (length >= 6 && inRanges(eloRanges, Integer.parseInt(data.substring(0, 6)))) {
-            return CreditCardType.elo;
+            return CardBrand.elo;
         } else if (length >= 6 && inRanges(aleloRanges, Integer.parseInt(data.substring(0, 6)))) {
-            return CreditCardType.alelo;
+            return CardBrand.alelo;
         } else if (Pattern.matches("^(6011|65[0-9]{2}|64[4-9][0-9])", data)) {
-            return CreditCardType.discover;
+            return CardBrand.discover;
         } else if (Pattern.matches("^3[47]", data)) {
-            return CreditCardType.americanExpress;
+            return CardBrand.americanExpress;
         } else if (length >= 6 && inRanges(naranjaRanges, Integer.parseInt(data.substring(0, 6)))) {
-            return CreditCardType.naranja;
+            return CardBrand.naranja;
         } else if (Pattern.matches("^3(0[0-5]|[68][0-9])", data)) {
-            return CreditCardType.dinersClub;
+            return CardBrand.dinersClub;
         } else if (Pattern.matches("^35(28|29|[3-8][0-9])", data)) {
-            return CreditCardType.jcb;
+            return CardBrand.jcb;
         } else if (Pattern.matches("^5019[0-9]", data)) {
-            return CreditCardType.dankort;
+            return CardBrand.dankort;
         } else if (length >= 6 && (inRanges(maestroRanges, Integer.parseInt(data.substring(0, 6))) || binMatch(carnetBins, data))) {
-            return CreditCardType.maestro;
+            return CardBrand.maestro;
         } else if (Pattern.matches("^(606071|603389|606070|606069|606068|600818)", data)) {
-            return CreditCardType.sodexo;
+            return CardBrand.sodexo;
         } else if (Pattern.matches("^(627416|637036)", data)) {
-            return CreditCardType.vr;
+            return CardBrand.vr;
         } else if (length >= 8 && inRanges(cabalRanges, Integer.parseInt(data.substring(0, 8)))) {
-            return CreditCardType.cabal;
+            return CardBrand.cabal;
         } else if (length >= 6 && (inRanges(carnetRanges, Integer.parseInt(data.substring(0, 6))) || binMatch(carnetBins, data))) {
-            return CreditCardType.carnet;
+            return CardBrand.carnet;
         }
-        return CreditCardType.unknown;
+        return CardBrand.unknown;
 
     }
 
