@@ -35,6 +35,7 @@ public class SecureCreditCardField extends SecureTextField {
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
+        setIcons();
         clickListener = v -> {
             Log.i("Spreedly", "button clicked");
             int s = editText.getSelectionEnd();
@@ -53,6 +54,7 @@ public class SecureCreditCardField extends SecureTextField {
         editText.setInputType(InputType.TYPE_CLASS_PHONE);
         setEndIcons();
         setStartIcon();
+
     }
 
     public void setError(@NonNull String error) {
@@ -117,7 +119,9 @@ public class SecureCreditCardField extends SecureTextField {
                     visible = true;
                     setEndIcons();
                 }
-                setIcon(brand);
+                textLayout.setStartIconDrawable(brand.getIcon());
+
+
                 if (lock) {
                     return;
                 }
@@ -135,50 +139,23 @@ public class SecureCreditCardField extends SecureTextField {
         });
     }
 
-    void setIcon(CardBrand type) {
-        switch (type) {
-            case visa:
-                textLayout.setStartIconDrawable(R.drawable.spr_card_visa);
-                break;
-            case mastercard:
-                textLayout.setStartIconDrawable(R.drawable.spr_card_mastercard);
-                break;
-            case americanExpress:
-                textLayout.setStartIconDrawable(R.drawable.spr_card_amex);
-                break;
-            case alelo:
-                break;
-            case cabal:
-                break;
-            case carnet:
-                break;
-            case dankort:
-                break;
-            case dinersClub:
-                textLayout.setStartIconDrawable(R.drawable.spr_card_diners);
-                break;
-            case discover:
-                textLayout.setStartIconDrawable(R.drawable.spr_card_discover);
-                break;
-            case elo:
-                break;
-            case jcb:
-                textLayout.setStartIconDrawable(R.drawable.spr_card_jcb);
-                break;
-            case maestro:
-                break;
-            case naranja:
-                break;
-            case sodexo:
-                break;
-            case vr:
-                break;
-            case unknown:
-                textLayout.setStartIconDrawable(R.drawable.spr_card_unknown);
-                break;
-            case error:
-                textLayout.setStartIconDrawable(R.drawable.spr_card_error);
-                break;
-        }
+    public void setIcons() {
+        CardBrand.visa.setIcon(R.drawable.spr_card_visa);
+        CardBrand.americanExpress.setIcon(R.drawable.spr_card_amex);
+        CardBrand.mastercard.setIcon(R.drawable.spr_card_mastercard);
+        CardBrand.dinersClub.setIcon(R.drawable.spr_card_diners);
+        CardBrand.discover.setIcon(R.drawable.spr_card_discover);
+        CardBrand.jcb.setIcon(R.drawable.spr_card_jcb);
+        CardBrand.unknown.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.error.setIcon(R.drawable.spr_card_error);
+        CardBrand.alelo.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.elo.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.cabal.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.carnet.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.dankort.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.maestro.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.naranja.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.sodexo.setIcon(R.drawable.spr_card_unknown);
+        CardBrand.vr.setIcon(R.drawable.spr_card_unknown);
     }
 }

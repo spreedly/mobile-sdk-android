@@ -1,5 +1,8 @@
 package com.spreedly.client.models.enums;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.annotations.Nullable;
+
 public enum CardBrand {
     visa,
     mastercard,
@@ -17,5 +20,17 @@ public enum CardBrand {
     sodexo,
     vr,
     unknown,
-    error
+    error;
+    private int icon;
+
+    @Nullable
+    public int getIcon() {
+        return this.icon;
+    }
+
+    public void setIcon(@NonNull int icon) {
+        this.icon = icon;
+    }
+
+
 }
