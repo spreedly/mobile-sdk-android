@@ -18,6 +18,11 @@ public final class SpreedlySecureOpaqueString {
         length = 0;
     }
 
+    public SpreedlySecureOpaqueString(String text) {
+        data = text;
+        length = text.length();
+    }
+
     public void clear() {
         data = "";
         length = 0;
