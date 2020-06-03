@@ -8,6 +8,7 @@ import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.securewidgets.SecureFormLayout;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -16,7 +17,7 @@ public class SecureFormCreditCardViewModel extends ViewModel {
     SecureFormLayout layout;
     // TODO: Implement the ViewModel
     public void submitCreditCard() {
-        layout.createCreditCardPaymentMethod().subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        layout.createCreditCardPaymentMethod().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 

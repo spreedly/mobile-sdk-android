@@ -1,7 +1,6 @@
 package com.spreedly.securewidgets;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -16,9 +15,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class SecureExpirationDate extends FrameLayout {
     TextInputEditText editText;
-    TextInputLayout textInputLayout;
-    TypedArray styledAttributes;
-    int format;
+    TextInputLayout textLayout;
 
     public SecureExpirationDate(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -26,23 +23,33 @@ public class SecureExpirationDate extends FrameLayout {
     }
 
     private void init() {
-        textInputLayout = new TextInputLayout(this.getContext());
+        textLayout = new TextInputLayout(this.getContext());
         editText = new TextInputEditText(this.getContext());
         editText.setInputType(InputType.TYPE_CLASS_DATETIME);
-        textInputLayout.addView(editText);
-        this.addView(textInputLayout);
+        textLayout.addView(editText);
+        this.addView(textLayout);
         editText.addTextChangedListener(new ExpirationDateTextWatcher());
-        textInputLayout.setHint("MMYY");
+        textLayout.setHint("MMYY");
     }
 
     public int getMonth() {
         String input = editText.getEditableText().toString();
-        return Integer.parseInt(input.substring(0, 2));
+        if (input.length() == 5) {
+            return Integer.parseInt(input.substring(0, 2));
+        }
+        return 0;
     }
 
     public int getYear() {
         String input = editText.getEditableText().toString();
-        return 2000 + Integer.parseInt(input.substring(3, 5));
+        if (input.length() == 5) {
+            return 2000 + Integer.parseInt(input.substring(3, 5));
+        }
+        return 0;
+    }
+
+    public void setError(@Nullable String error) {
+        textLayout.setError(error);
     }
 
 
@@ -71,9 +78,9 @@ public class SecureExpirationDate extends FrameLayout {
                 if (s.length() == 5) {
                     month = Integer.parseInt(s.toString().substring(0, 2));
                     if (month > 12) {
-                        textInputLayout.setError("Invalid Date");
+                        textLayout.setError("Invalid Date");
                     } else {
-                        textInputLayout.setError(null);
+                        textLayout.setError(null);
                     }
                 }
             }

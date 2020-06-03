@@ -20,6 +20,7 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -60,7 +61,7 @@ public class SecureFormLayout extends LinearLayout {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         final CreditCardInfo info = new CreditCardInfo(getString(fullName), creditCardNumber.getText(), ccv.getText(), expiration.getYear(), expiration.getMonth());
         Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, null, null);
-        return result.subscribeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
+        return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
                 handleErrors(transaction.errors);
             }
@@ -74,7 +75,12 @@ public class SecureFormLayout extends LinearLayout {
                 SpreedlyError error = errors.get(i);
                 switch (error.attribute) {
                     case "number":
-                        creditCardNumber.textLayout.setError(error.message);
+                        creditCardNumber.setError(error.message);
+                        break;
+                    case "month":
+                        expiration.setError(error.message);
+                    case "year":
+                        expiration.setError(error.message);
                     default:
                         break;
                 }

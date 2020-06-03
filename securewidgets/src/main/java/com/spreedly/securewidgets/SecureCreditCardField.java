@@ -23,6 +23,7 @@ public class SecureCreditCardField extends SecureTextField {
 
     boolean visible = true;
     private View.OnClickListener clickListener;
+    private boolean hasError = false;
     String previous = "";
     @NonNull
     private CreditCardTransformationMethod ccTransformationMethod;
@@ -57,9 +58,10 @@ public class SecureCreditCardField extends SecureTextField {
 
     }
 
-    public void setError(@NonNull String error) {
+    public void setError(@Nullable String error) {
         textLayout.setError(error);
     }
+
     void setEndIcons() {
         int s = editText.getSelectionEnd();
         textLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);

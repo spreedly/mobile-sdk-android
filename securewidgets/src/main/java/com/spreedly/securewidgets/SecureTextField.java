@@ -107,7 +107,7 @@ public class SecureTextField extends FrameLayout {
         }
     }
 
-    public void setError(@NonNull String error) {
-
+    public void setError(@Nullable String error) {
+        textLayout.setError(error);
     }
 }
