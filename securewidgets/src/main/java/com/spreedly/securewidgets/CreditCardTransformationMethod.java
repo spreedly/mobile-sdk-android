@@ -13,14 +13,14 @@ public class CreditCardTransformationMethod extends PasswordTransformationMethod
     @Override
     @NonNull
     public CharSequence getTransformation(@Nullable CharSequence source, @Nullable View view) {
-        return new PasswordCharSequence(source);
+        return new CardCharSequence(source);
     }
 
-    private class PasswordCharSequence implements CharSequence {
+    private class CardCharSequence implements CharSequence {
 
         private CharSequence mSource;
 
-        public PasswordCharSequence(CharSequence source) {
+        public CardCharSequence(CharSequence source) {
             mSource = source;
         }
 
