@@ -3,7 +3,9 @@ package com.spreedly.securewidgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 
@@ -27,14 +29,44 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * TODO: document your custom view class.
  */
 public class SecureFormLayout extends LinearLayout {
+    @NonNull
     SpreedlyClient spreedlyClient;
 
-    SecureCreditCardField creditCardNumber;
-    SecureTextField ccv;
-    SecureExpirationDate expiration;
-    TextInputLayout fullName;
-    TextInputLayout month;
-    TextInputLayout year;
+    @Nullable TextInputLayout fullNameInput;
+    @Nullable TextInputLayout firstNameInput;
+    @Nullable TextInputLayout lastNameInput;
+    @Nullable TextInputLayout company;
+
+    @Nullable SecureCreditCardField creditCardNumberField;
+    @Nullable SecureTextField ccvField;
+    @Nullable SecureExpirationDate expirationField;
+    @Nullable TextInputLayout monthInput;
+    @Nullable TextInputLayout yearInput;
+
+    @Nullable TextInputLayout address1Input;
+    @Nullable TextInputLayout address2Input;
+    @Nullable TextInputLayout cityInput;
+    @Nullable TextInputLayout stateInput;
+    @Nullable TextInputLayout countryInput;
+    @Nullable TextInputLayout phoneInput;
+    @Nullable TextInputLayout zipInput;
+    @Nullable TextInputLayout shippingAddress1Input;
+    @Nullable TextInputLayout shippingAddress2Input;
+    @Nullable TextInputLayout shippingCityInput;
+    @Nullable TextInputLayout shippingStateInput;
+    @Nullable TextInputLayout shippingCountryInput;
+    @Nullable TextInputLayout shippingPhoneInput;
+    @Nullable TextInputLayout shippingZipInput;
+
+    @Nullable TextInputLayout emailInput;
+
+    @Nullable SecureTextField bankAccountNumberField;
+    @Nullable TextInputLayout routingNumberInput;
+
+    @Nullable TextInputLayout bankAccountTypeInput;
+    @Nullable Spinner bankAccountTypeSpinner;
+    @Nullable TextInputLayout accountHolderTypeInput;
+    @Nullable Spinner accountHolderTypeSpinner;
 
 
     public SecureFormLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -59,7 +91,10 @@ public class SecureFormLayout extends LinearLayout {
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod() {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
-        final CreditCardInfo info = new CreditCardInfo(getString(fullName), creditCardNumber.getText(), ccv.getText(), expiration.getYear(), expiration.getMonth());
+        CreditCardInfo info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+
+
+
         Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, null, null);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
@@ -69,18 +104,19 @@ public class SecureFormLayout extends LinearLayout {
         });
     }
 
+
     public void handleErrors(@NonNull List<SpreedlyError> errors) {
         try {
             for (int i = 0; i < errors.size(); i++) {
                 SpreedlyError error = errors.get(i);
                 switch (error.attribute) {
                     case "number":
-                        creditCardNumber.setError(error.message);
+                        creditCardNumberField.setError(error.message);
                         break;
                     case "month":
-                        expiration.setError(error.message);
+                        expirationField.setError(error.message);
                     case "year":
-                        expiration.setError(error.message);
+                        expirationField.setError(error.message);
                     default:
                         break;
                 }
@@ -117,9 +153,42 @@ public class SecureFormLayout extends LinearLayout {
     }
 
     private void init() {
-        creditCardNumber = findViewById(R.id.spreedly_credit_card_number);
-        ccv = findViewById(R.id.spreedly_ccv);
-        fullName = findViewById(R.id.spreedly_full_name);
-        expiration = findViewById(R.id.spreedly_cc_expiration_date);
+        creditCardNumberField = findViewById(R.id.spreedly_credit_card_number);
+        ccvField = findViewById(R.id.spreedly_ccv);
+        fullNameInput = findViewById(R.id.spreedly_full_name);
+        expirationField = findViewById(R.id.spreedly_cc_expiration_date);
+        firstNameInput = findViewById(R.id.spreedly_first_name);
+        lastNameInput = findViewById(R.id.spreedly_last_name);
+        company = findViewById(R.id.spreedly_company);
+        monthInput = findViewById(R.id.spreedly_cc_month);
+        yearInput = findViewById(R.id.spreedly_cc_year);
+        address1Input = findViewById(R.id.spreedly_address1);
+        address2Input = findViewById(R.id.spreedly_address2);
+        cityInput = findViewById(R.id.spreedly_city);
+        stateInput = findViewById(R.id.spreedly_state);
+        zipInput = findViewById(R.id.spreedly_zip);
+        countryInput = findViewById(R.id.spreedly_country);
+        phoneInput = findViewById(R.id.spreedly_phone_number);
+        shippingAddress1Input = findViewById(R.id.spreedly_shipping_address1);
+        shippingAddress2Input = findViewById(R.id.spreedly_shipping_address2);
+        shippingCityInput = findViewById(R.id.spreedly_shipping_city);
+        shippingStateInput = findViewById(R.id.spreedly_shipping_state);
+        shippingZipInput = findViewById(R.id.spreedly_shipping_zip);
+        shippingCountryInput = findViewById(R.id.spreedly_shipping_country);
+        shippingPhoneInput = findViewById(R.id.spreedly_shipping_phone_number);
+        emailInput = findViewById(R.id.spreedly_email);
+        bankAccountNumberField = findViewById(R.id.spreedly_ba_account_number);
+        routingNumberInput = findViewById(R.id.spreedly_ba_routing_number);
+        View bankAccountTypeView = findViewById(R.id.spreedly_ba_account_type);
+        if (bankAccountTypeView.getClass() == TextInputLayout.class)
+            bankAccountTypeInput = (TextInputLayout) bankAccountTypeView;
+        else bankAccountTypeSpinner = (Spinner) bankAccountTypeView;
+        View accountHolderTypeView = findViewById(R.id.spreedly_ba_account_holder_type);
+        if (accountHolderTypeView.getClass() == TextInputLayout.class)
+            accountHolderTypeInput = (TextInputLayout) accountHolderTypeView;
+        else accountHolderTypeSpinner = (Spinner) accountHolderTypeView;
+
     }
+
+
 }
