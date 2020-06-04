@@ -109,17 +109,9 @@ public class SecureFormLayout extends LinearLayout {
         try {
             for (int i = 0; i < errors.size(); i++) {
                 SpreedlyError error = errors.get(i);
-                switch (error.attribute) {
-                    case "number":
-                        creditCardNumberField.setError(error.message);
-                        break;
-                    case "month":
-                        expirationField.setError(error.message);
-                    case "year":
-                        expirationField.setError(error.message);
-                    default:
-                        break;
-                }
+                int resourceId = nameTold(error.attribute);
+                View view = findViewById(resourceId);
+
             }
         } catch (Exception e) {
             Log.e("Spreedly", e.getMessage());
@@ -132,8 +124,13 @@ public class SecureFormLayout extends LinearLayout {
         return null;
     }
 
-    private int nameTold(String name) {
-        return 0;
+    private int nameTold(@NonNull String name) {
+        WidgetError widgetError = WidgetError.valueOf(name.toUpperCase());
+        if (widgetError == null) {
+            return 0;
+        } else {
+            return widgetError.getResourceId();
+        }
     }
 
     private int getNumber(TextInputLayout textInputLayout) {
@@ -180,11 +177,11 @@ public class SecureFormLayout extends LinearLayout {
         bankAccountNumberField = findViewById(R.id.spreedly_ba_account_number);
         routingNumberInput = findViewById(R.id.spreedly_ba_routing_number);
         View bankAccountTypeView = findViewById(R.id.spreedly_ba_account_type);
-        if (bankAccountTypeView.getClass() == TextInputLayout.class)
+        if (bankAccountTypeView != null && bankAccountTypeView.getClass() == TextInputLayout.class)
             bankAccountTypeInput = (TextInputLayout) bankAccountTypeView;
         else bankAccountTypeSpinner = (Spinner) bankAccountTypeView;
         View accountHolderTypeView = findViewById(R.id.spreedly_ba_account_holder_type);
-        if (accountHolderTypeView.getClass() == TextInputLayout.class)
+        if (accountHolderTypeView != null && accountHolderTypeView.getClass() == TextInputLayout.class)
             accountHolderTypeInput = (TextInputLayout) accountHolderTypeView;
         else accountHolderTypeSpinner = (Spinner) accountHolderTypeView;
 
