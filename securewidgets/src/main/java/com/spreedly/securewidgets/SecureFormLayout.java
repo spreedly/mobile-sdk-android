@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
+import com.spreedly.client.models.Address;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.results.BankAccountResult;
 import com.spreedly.client.models.results.PaymentMethodResult;
@@ -47,14 +49,18 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable TextInputLayout address2Input;
     @Nullable TextInputLayout cityInput;
     @Nullable TextInputLayout stateInput;
+    @Nullable Spinner stateSpinner;
     @Nullable TextInputLayout countryInput;
+    @Nullable Spinner countrySpinner;
     @Nullable TextInputLayout phoneInput;
     @Nullable TextInputLayout zipInput;
     @Nullable TextInputLayout shippingAddress1Input;
     @Nullable TextInputLayout shippingAddress2Input;
     @Nullable TextInputLayout shippingCityInput;
     @Nullable TextInputLayout shippingStateInput;
+    @Nullable Spinner shippingStateSpinner;
     @Nullable TextInputLayout shippingCountryInput;
+    @Nullable Spinner shippingCountrySpinner;
     @Nullable TextInputLayout shippingPhoneInput;
     @Nullable TextInputLayout shippingZipInput;
 
@@ -67,6 +73,8 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable Spinner bankAccountTypeSpinner;
     @Nullable TextInputLayout accountHolderTypeInput;
     @Nullable Spinner accountHolderTypeSpinner;
+
+    CheckBox sameAddress;
 
 
     public SecureFormLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -91,11 +99,15 @@ public class SecureFormLayout extends LinearLayout {
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod() {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
-        CreditCardInfo info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
-
-
-
-        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, null, null);
+        CreditCardInfo info;
+        if (fullNameInput != null) {
+            info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+        } else {
+            info = new CreditCardInfo(getString(firstNameInput), getString(lastNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+        }
+        addAddress(info);
+        addShippingAddress(info);
+        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, getString(emailInput), null);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
                 handleErrors(transaction.errors);
@@ -104,13 +116,57 @@ public class SecureFormLayout extends LinearLayout {
         });
     }
 
+    private void addAddress(CreditCardInfo info) {
+        String address1 = getString(address1Input);
+        String address2 = getString(address2Input);
+        String city = getString(cityInput);
+        String state = getString(stateInput);
+        String zip = getString(zipInput);
+        String phone = getString(phoneInput);
+        String country = getString(countryInput);
+        info.address = new Address(address1, address2, city, state, zip, country, phone);
+    }
+
+    private void addShippingAddress(CreditCardInfo info) {
+        if (getBoolean(sameAddress)) {
+            addAddress(info);
+        } else {
+            String address1 = getString(shippingAddress1Input);
+            String address2 = getString(shippingAddress2Input);
+            String city = getString(shippingCityInput);
+            String state = getString(shippingStateInput);
+            String zip = getString(shippingZipInput);
+            String phone = getString(shippingPhoneInput);
+            String country = getString(shippingCountryInput);
+            info.shippingAddress = new Address(address1, address2, city, state, zip, country, phone);
+        }
+    }
+
 
     public void handleErrors(@NonNull List<SpreedlyError> errors) {
         try {
             for (int i = 0; i < errors.size(); i++) {
                 SpreedlyError error = errors.get(i);
-                int resourceId = nameTold(error.attribute);
-                View view = findViewById(resourceId);
+                WidgetError widgetError = WidgetError.valueOf(error.attribute.toUpperCase());
+                if (widgetError != null) {
+                    int resourceId = widgetError.getResourceId();
+                    View view = findViewById(resourceId);
+                    Class viewClass = view.getClass();
+                    if (viewClass == TextInputLayout.class) {
+                        TextInputLayout textInputLayout = (TextInputLayout) view;
+                        textInputLayout.setError(error.message);
+                    } else if (viewClass == SecureTextField.class) {
+                        SecureTextField secureTextField = (SecureTextField) view;
+                        secureTextField.setError(error.message);
+                    } else if (viewClass == SecureCreditCardField.class) {
+                        SecureCreditCardField secureCreditCardField = (SecureCreditCardField) view;
+                        secureCreditCardField.setError(error.message);
+                    } else if (viewClass == SecureExpirationDate.class) {
+                        SecureExpirationDate secureExpirationDate = (SecureExpirationDate) view;
+                        secureExpirationDate.setError(error.message);
+                    }
+
+                }
 
             }
         } catch (Exception e) {
@@ -149,6 +205,17 @@ public class SecureFormLayout extends LinearLayout {
         }
     }
 
+    private boolean getBoolean(CheckBox checkBox) {
+        try {
+            return checkBox.isChecked();
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+
+    private String getSpinner(Spinner spinner) {
+    }
+
     private void init() {
         creditCardNumberField = findViewById(R.id.spreedly_credit_card_number);
         ccvField = findViewById(R.id.spreedly_ccv);
@@ -184,6 +251,7 @@ public class SecureFormLayout extends LinearLayout {
         if (accountHolderTypeView != null && accountHolderTypeView.getClass() == TextInputLayout.class)
             accountHolderTypeInput = (TextInputLayout) accountHolderTypeView;
         else accountHolderTypeSpinner = (Spinner) accountHolderTypeView;
+
 
     }
 
