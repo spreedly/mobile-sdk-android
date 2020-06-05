@@ -29,4 +29,5 @@
     <item name="spreedly_ba_account_type" type="id" />
     <item name="spreedly_ba_account_holder_type" type="id" />
     <item name="spreedly_cc_submit" type="id" />
+    <item name="spreedly_generic_error" type="id" />
 </resources>

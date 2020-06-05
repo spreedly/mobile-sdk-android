@@ -7,14 +7,17 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.Address;
+import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
-import com.spreedly.client.models.results.BankAccountResult;
+import com.spreedly.client.models.PaymentMethodMeta;
+import com.spreedly.client.models.enums.BankAccountType;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.results.TransactionResult;
@@ -74,6 +77,8 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable TextInputLayout accountHolderTypeInput;
     @Nullable Spinner accountHolderTypeSpinner;
 
+    @Nullable TextView errorView;
+
     CheckBox sameAddress;
 
 
@@ -116,7 +121,28 @@ public class SecureFormLayout extends LinearLayout {
         });
     }
 
-    private void addAddress(CreditCardInfo info) {
+    @NonNull
+    public Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod() {
+        Log.i("Spreedly", "createCreditCardPaymentMethod firing");
+        BankAccountInfo info;
+        Object accountType = bankAccountTypeSpinner.getSelectedItem();
+        if (fullNameInput != null) {
+            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType.toString()));
+        } else {
+            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType.toString()));
+        }
+        addAddress(info);
+        addShippingAddress(info);
+        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info, getString(emailInput), null);
+        return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
+            if (!transaction.succeeded) {
+                handleErrors(transaction.errors);
+            }
+            return transaction;
+        });
+    }
+
+    private void addAddress(PaymentMethodMeta info) {
         String address1 = getString(address1Input);
         String address2 = getString(address2Input);
         String city = getString(cityInput);
@@ -127,7 +153,7 @@ public class SecureFormLayout extends LinearLayout {
         info.address = new Address(address1, address2, city, state, zip, country, phone);
     }
 
-    private void addShippingAddress(CreditCardInfo info) {
+    private void addShippingAddress(PaymentMethodMeta info) {
         if (getBoolean(sameAddress)) {
             addAddress(info);
         } else {
@@ -164,6 +190,8 @@ public class SecureFormLayout extends LinearLayout {
                     } else if (viewClass == SecureExpirationDate.class) {
                         SecureExpirationDate secureExpirationDate = (SecureExpirationDate) view;
                         secureExpirationDate.setError(error.message);
+                    } else {
+                        errorView.setText(error.message);
                     }
 
                 }
@@ -175,10 +203,6 @@ public class SecureFormLayout extends LinearLayout {
         }
     }
 
-    @Nullable
-    public Single<TransactionResult<BankAccountResult>> createBankAccountPaymentMethod() {
-        return null;
-    }
 
     private int nameTold(@NonNull String name) {
         WidgetError widgetError = WidgetError.valueOf(name.toUpperCase());
@@ -213,8 +237,7 @@ public class SecureFormLayout extends LinearLayout {
         }
     }
 
-    private String getSpinner(Spinner spinner) {
-    }
+
 
     private void init() {
         creditCardNumberField = findViewById(R.id.spreedly_credit_card_number);
@@ -251,7 +274,7 @@ public class SecureFormLayout extends LinearLayout {
         if (accountHolderTypeView != null && accountHolderTypeView.getClass() == TextInputLayout.class)
             accountHolderTypeInput = (TextInputLayout) accountHolderTypeView;
         else accountHolderTypeSpinner = (Spinner) accountHolderTypeView;
-
+        errorView = findViewById(R.id.spreedly_generic_error);
 
     }
 
