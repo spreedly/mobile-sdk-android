@@ -16,7 +16,9 @@ public class WidgetPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Sample";
+                return "Credit Card";
+            case 1:
+                return "Bank Account";
         }
         throw new IndexOutOfBoundsException();
     }
@@ -27,12 +29,14 @@ public class WidgetPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return SecureFormCreditCardFragment.newInstance();
+            case 1:
+                return SecureFormBankAccountFragment.newInstance();
         }
         throw new IndexOutOfBoundsException();
     }
 
     @Override
     public int getCount() {
-        return 1;
+        return 2;
     }
 }

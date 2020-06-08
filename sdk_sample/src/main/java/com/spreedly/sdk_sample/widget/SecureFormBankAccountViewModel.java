@@ -1,6 +1,7 @@
 package com.spreedly.sdk_sample.widget;
 
 import android.util.Log;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.lifecycle.ViewModel;
@@ -14,16 +15,17 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 
-public class SecureFormCreditCardViewModel extends ViewModel {
-    SecureFormLayout layout;
+public class SecureFormBankAccountViewModel extends ViewModel {
     public TextView token;
+    Spinner spinner;
+    SecureFormLayout layout;
     TextView error;
 
     // TODO: Implement the ViewModel
-    public void submitCreditCard() {
+    public void submitBankAccount() {
         token.setText("");
         error.setText("");
-        layout.createCreditCardPaymentMethod().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        layout.createBankAccountPaymentMethod().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 
@@ -37,6 +39,7 @@ public class SecureFormCreditCardViewModel extends ViewModel {
                 } catch (Exception e) {
                     error.setText("Unexpected Error");
                 }
+
             }
 
             @Override
