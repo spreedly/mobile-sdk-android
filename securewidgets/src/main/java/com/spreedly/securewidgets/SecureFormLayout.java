@@ -197,10 +197,9 @@ public class SecureFormLayout extends LinearLayout {
                     } else if (viewClass == SecureExpirationDate.class) {
                         SecureExpirationDate secureExpirationDate = (SecureExpirationDate) view;
                         secureExpirationDate.setError(error.message);
-                    } else {
+                    } else if (errorView != null) {
                         errorView.setText(error.message);
                     }
-
                 }
 
             }

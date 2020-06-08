@@ -161,23 +161,23 @@ public final class SpreedlySecureOpaqueString {
             return CardBrand.elo;
         } else if (length >= 6 && inRanges(aleloRanges, data, 6)) {
             return CardBrand.alelo;
-        } else if (Pattern.matches("^(6011|65[0-9]{2}|64[4-9][0-9])", data)) {
+        } else if (Pattern.matches("^(6011|65[0-9]{2}|64[4-9][0-9])[0-9]*|(62[0-9]*)", data)) {
             return CardBrand.discover;
         } else if (Pattern.matches("^3[47][0-9]*", data)) {
             return CardBrand.americanExpress;
         } else if (length >= 6 && inRanges(naranjaRanges, data, 6)) {
             return CardBrand.naranja;
-        } else if (Pattern.matches("^3(0[0-5]|[68][0-9])", data)) {
+        } else if (Pattern.matches("^3(0[0-5]|[68][0-9])[0-9]*", data)) {
             return CardBrand.dinersClub;
-        } else if (Pattern.matches("^35(28|29|[3-8][0-9])", data)) {
+        } else if (Pattern.matches("^35(28|29|[3-8][0-9]*)", data)) {
             return CardBrand.jcb;
-        } else if (Pattern.matches("^5019[0-9]", data)) {
+        } else if (Pattern.matches("^5019[0-9]*", data)) {
             return CardBrand.dankort;
-        } else if (length >= 6 && (inRanges(maestroRanges, data, 6) || binMatch(carnetBins, data))) {
+        } else if (length >= 6 && (inRanges(maestroRanges, data, 6) || binMatch(maestroBins, data))) {
             return CardBrand.maestro;
-        } else if (Pattern.matches("^(606071|603389|606070|606069|606068|600818)", data)) {
+        } else if (Pattern.matches("^(606071|603389|606070|606069|606068|600818)[0-9]*", data)) {
             return CardBrand.sodexo;
-        } else if (Pattern.matches("^(627416|637036)[0-9]", data)) {
+        } else if (Pattern.matches("^(627416|637036)[0-9]*", data)) {
             return CardBrand.vr;
         } else if (length >= 8 && inRanges(cabalRanges, data, 8)) {
             return CardBrand.cabal;
