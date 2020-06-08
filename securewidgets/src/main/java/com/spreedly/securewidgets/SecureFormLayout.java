@@ -104,7 +104,8 @@ public class SecureFormLayout extends LinearLayout {
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod() {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
-        resetErrors();
+        resetCardErrors();
+        resetGenericErrors();
         CreditCardInfo info;
         if (fullNameInput != null) {
             info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
@@ -125,7 +126,8 @@ public class SecureFormLayout extends LinearLayout {
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod() {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
-        resetErrors();
+        resetBankErrors();
+        resetGenericErrors();
         BankAccountInfo info;
         Object accountType = bankAccountTypeSpinner.getSelectedItem();
         if (fullNameInput != null) {
@@ -135,6 +137,9 @@ public class SecureFormLayout extends LinearLayout {
         }
         addAddress(info);
         addShippingAddress(info);
+        if (accountHolderTypeSpinner != null) {
+            info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
+        }
         Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info, getString(emailInput), null);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
@@ -239,46 +244,64 @@ public class SecureFormLayout extends LinearLayout {
         }
     }
 
-    private void resetErrors() {
+    private void resetCardErrors() {
         if (creditCardNumberField != null)
             creditCardNumberField.setError(null);
         if (ccvField != null)
             ccvField.setError(null);
-        if (fullNameInput != null)
-            fullNameInput.setError(null);
         if (expirationField != null)
             expirationField.setError(null);
+        if (monthInput != null)
+            monthInput.setError(null);
+        if (yearInput != null)
+            yearInput.setError(null);
+    }
+
+    private void resetBankErrors() {
+        if (bankAccountNumberField != null)
+            bankAccountNumberField.setError(null);
+        if (routingNumberInput != null)
+            routingNumberInput.setError(null);
+    }
+
+    private void resetGenericErrors() {
+        if (fullNameInput != null)
+            fullNameInput.setError(null);
         if (firstNameInput != null)
             firstNameInput.setError(null);
         if (lastNameInput != null)
             lastNameInput.setError(null);
 
-        if (monthInput != null)
-            monthInput.setError(null);
-        if (yearInput != null)
-            yearInput.setError(null);
-        if (bankAccountNumberField != null)
-            bankAccountNumberField.setError(null);
-        if (routingNumberInput != null)
-            routingNumberInput.setError(null);
+        if (address1Input != null)
+            address1Input.setError(null);
+        if (address2Input != null)
+            address2Input.setError(null);
+        if (cityInput != null)
+            cityInput.setError(null);
+        if (stateInput != null)
+            stateInput.setError(null);
+        if (zipInput != null)
+            zipInput.setError(null);
+        if (countryInput != null)
+            countryInput.setError(null);
+        if (phoneInput != null)
+            phoneInput.setError(null);
 
-//        monthInput = findViewById(R.id.spreedly_cc_month);
-//        yearInput = findViewById(R.id.spreedly_cc_year);
-//        address1Input = findViewById(R.id.spreedly_address1);
-//        address2Input = findViewById(R.id.spreedly_address2);
-//        cityInput = findViewById(R.id.spreedly_city);
-//        stateInput = findViewById(R.id.spreedly_state);
-//        zipInput = findViewById(R.id.spreedly_zip);
-//        countryInput = findViewById(R.id.spreedly_country);
-//        phoneInput = findViewById(R.id.spreedly_phone_number);
-//        shippingAddress1Input = findViewById(R.id.spreedly_shipping_address1);
-//        shippingAddress2Input = findViewById(R.id.spreedly_shipping_address2);
-//        shippingCityInput = findViewById(R.id.spreedly_shipping_city);
-//        shippingStateInput = findViewById(R.id.spreedly_shipping_state);
-//        shippingZipInput = findViewById(R.id.spreedly_shipping_zip);
-//        shippingCountryInput = findViewById(R.id.spreedly_shipping_country);
-//        shippingPhoneInput = findViewById(R.id.spreedly_shipping_phone_number);
-//        emailInput = findViewById(R.id.spreedly_email);
+
+        if (shippingAddress1Input != null)
+            address1Input.setError(null);
+        if (shippingAddress2Input != null)
+            address2Input.setError(null);
+        if (shippingCityInput != null)
+            cityInput.setError(null);
+        if (shippingStateInput != null)
+            stateInput.setError(null);
+        if (shippingZipInput != null)
+            zipInput.setError(null);
+        if (shippingCountryInput != null)
+            countryInput.setError(null);
+        if (shippingPhoneInput != null)
+            phoneInput.setError(null);
     }
 
 
