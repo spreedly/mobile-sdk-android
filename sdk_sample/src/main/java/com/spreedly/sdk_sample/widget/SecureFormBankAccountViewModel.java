@@ -37,7 +37,7 @@ public class SecureFormBankAccountViewModel extends ViewModel {
                 try {
                     token.setText("Token: " + paymentMethodResultTransactionResult.result.token);
                 } catch (Exception e) {
-                    error.setText(paymentMethodResultTransactionResult.message);
+                    error.setText("Unexpected Error");
                 }
 
             }

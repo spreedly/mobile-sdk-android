@@ -7,7 +7,8 @@ public enum WidgetError {
     CARD_TYPE(R.id.spreedly_credit_card_number),
     ACCOUNT_NUMBER(R.id.spreedly_ba_account_number),
     ROUTING_NUMBER(R.id.spreedly_ba_routing_number),
-    FULL_NAME(R.id.spreedly_full_name);
+    FULL_NAME(R.id.spreedly_full_name),
+    LAST_NAME(R.id.spreedly_full_name);
     private final int resourceId;
 
     WidgetError(int resourceId) {
