@@ -208,8 +208,25 @@ public class SpreedlySecureOpaqueStringTest {
 
     @Test
     public void canIdentifyCarnetAlt() {
-        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString("502275000");
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString("5022750000000003");
         assertEquals(CardBrand.carnet, string.softDetect());
+        assertEquals(CardBrand.carnet, string.detectCardType());
     }
+
+    @Test
+    public void canIdentifyMaestroAlt() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString("5000330000000000");
+        assertEquals(CardBrand.maestro, string.softDetect());
+        assertEquals(CardBrand.maestro, string.detectCardType());
+    }
+
+    @Test
+    public void canIdentifyVR() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString("6274160000000008");
+        assertEquals(CardBrand.vr, string.softDetect());
+        assertEquals(CardBrand.vr, string.detectCardType());
+    }
+
+
 
 }
