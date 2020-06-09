@@ -355,15 +355,15 @@ public class SecureFormLayout extends LinearLayout {
 
     private boolean validateNames() {
         boolean hasError = false;
-        if (fullNameInput != null && getString(fullNameInput) == "") {
+        if (fullNameInput != null && getString(fullNameInput).length() == 0) {
             fullNameInput.setError("Full name cannot be blank");
             hasError = true;
         }
-        if (firstNameInput != null && getString(firstNameInput) == "") {
+        if (firstNameInput != null && getString(firstNameInput).length() == 0) {
             firstNameInput.setError("First name cannot be blank");
             hasError = true;
         }
-        if (lastNameInput != null && getString(lastNameInput) == "") {
+        if (lastNameInput != null && getString(lastNameInput).length() == 0) {
             lastNameInput.setError("Last name cannot be blank");
             hasError = true;
         }
