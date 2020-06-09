@@ -18,6 +18,7 @@ import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.PaymentMethodMeta;
 import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.CardBrand;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.results.TransactionResult;
@@ -27,6 +28,7 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -106,6 +108,23 @@ public class SecureFormLayout extends LinearLayout {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         resetCardErrors();
         resetGenericErrors();
+        boolean hasError = validateNames();
+        if (creditCardNumberField == null || creditCardNumberField.getText().detectCardType() == CardBrand.error) {
+            creditCardNumberField.setError("Invalid Card Number");
+            hasError = true;
+        }
+        if (expirationField != null && (expirationField.getYear() == 0 || expirationField.getMonth() == 0)) {
+            expirationField.setError("Invalid Date");
+            hasError = true;
+        }
+        if (hasError) {
+            return new Single<TransactionResult<PaymentMethodResult>>() {
+                @Override
+                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
+
+                }
+            };
+        }
         CreditCardInfo info;
         if (fullNameInput != null) {
             info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
@@ -128,6 +147,37 @@ public class SecureFormLayout extends LinearLayout {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         resetBankErrors();
         resetGenericErrors();
+        boolean hasError = validateNames();
+        if (bankAccountNumberField != null) {
+            if (bankAccountNumberField.getText().length == 0) {
+                hasError = true;
+                bankAccountNumberField.setError("Account number cannot be blank");
+            } else if (!bankAccountNumberField.getText().isNumber()) {
+                hasError = true;
+                bankAccountNumberField.setError("Invalid account number");
+            }
+        }
+        if (routingNumberInput != null) {
+            if (getString(routingNumberInput).length() == 0) {
+                hasError = true;
+                routingNumberInput.setError("Account number cannot be blank");
+            } else {
+                try {
+                    Double.parseDouble(getString(routingNumberInput));
+                } catch (Exception e) {
+                    hasError = true;
+                    routingNumberInput.setError("Invalid routing number");
+                }
+            }
+        }
+        if (hasError) {
+            return new Single<TransactionResult<PaymentMethodResult>>() {
+                @Override
+                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
+
+                }
+            };
+        }
         BankAccountInfo info;
         Object accountType = bankAccountTypeSpinner.getSelectedItem();
         if (fullNameInput != null) {
@@ -303,6 +353,22 @@ public class SecureFormLayout extends LinearLayout {
             phoneInput.setError(null);
     }
 
+    private boolean validateNames() {
+        boolean hasError = false;
+        if (fullNameInput != null && getString(fullNameInput).length() == 0) {
+            fullNameInput.setError("Full name cannot be blank");
+            hasError = true;
+        }
+        if (firstNameInput != null && getString(firstNameInput).length() == 0) {
+            firstNameInput.setError("First name cannot be blank");
+            hasError = true;
+        }
+        if (lastNameInput != null && getString(lastNameInput).length() == 0) {
+            lastNameInput.setError("Last name cannot be blank");
+            hasError = true;
+        }
+        return hasError;
+    }
 
     private void init() {
         creditCardNumberField = findViewById(R.id.spreedly_credit_card_number);

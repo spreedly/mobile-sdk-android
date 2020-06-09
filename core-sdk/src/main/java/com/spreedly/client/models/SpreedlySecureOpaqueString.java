@@ -214,6 +214,17 @@ public final class SpreedlySecureOpaqueString {
         return (nSum % 10 == 0);
     }
 
+    @NonNull
+    public boolean isNumber() {
+        data = data.replaceAll(" ", "");
+        try {
+            Double.parseDouble(data);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     boolean inRanges(Range[] ranges, String input, int length) {
         if (length > input.length()) {
             return false;
