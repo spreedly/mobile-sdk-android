@@ -109,6 +109,7 @@ public class SecureFormLayout extends LinearLayout {
         resetCardErrors();
         resetGenericErrors();
         boolean hasError = validateNames();
+        hasError = validateAddress(hasError);
         if (creditCardNumberField == null || creditCardNumberField.getText().detectCardType() == CardBrand.error) {
             creditCardNumberField.setError("Invalid Card Number");
             hasError = true;
@@ -148,6 +149,7 @@ public class SecureFormLayout extends LinearLayout {
         resetBankErrors();
         resetGenericErrors();
         boolean hasError = validateNames();
+        hasError = validateAddress(hasError);
         if (bankAccountNumberField != null) {
             if (bankAccountNumberField.getText().length == 0) {
                 hasError = true;
@@ -338,19 +340,19 @@ public class SecureFormLayout extends LinearLayout {
 
 
         if (shippingAddress1Input != null)
-            address1Input.setError(null);
+            shippingAddress1Input.setError(null);
         if (shippingAddress2Input != null)
-            address2Input.setError(null);
+            shippingAddress2Input.setError(null);
         if (shippingCityInput != null)
-            cityInput.setError(null);
+            shippingCityInput.setError(null);
         if (shippingStateInput != null)
-            stateInput.setError(null);
+            shippingStateInput.setError(null);
         if (shippingZipInput != null)
-            zipInput.setError(null);
+            shippingZipInput.setError(null);
         if (shippingCountryInput != null)
-            countryInput.setError(null);
+            shippingCountryInput.setError(null);
         if (shippingPhoneInput != null)
-            phoneInput.setError(null);
+            shippingPhoneInput.setError(null);
     }
 
     private boolean validateNames() {
@@ -366,6 +368,50 @@ public class SecureFormLayout extends LinearLayout {
         if (lastNameInput != null && getString(lastNameInput).length() == 0) {
             lastNameInput.setError("Last name cannot be blank");
             hasError = true;
+        }
+        return hasError;
+    }
+
+    private boolean validateAddress(boolean hasError) {
+        if (address1Input != null && getString(address1Input).length() == 0) {
+            hasError = true;
+            address1Input.setError("Address cannot be blank");
+        }
+        if (cityInput != null && getString(cityInput).length() == 0) {
+            hasError = true;
+            cityInput.setError("City cannot be blank");
+        }
+        if (stateInput != null && getString(stateInput).length() == 0) {
+            hasError = true;
+            stateInput.setError("State cannot be blank");
+        }
+        if (zipInput != null && getString(zipInput).length() == 0) {
+            hasError = true;
+            zipInput.setError("Zipcode cannot be blank");
+        }
+        if (countryInput != null && getString(countryInput).length() == 0) {
+            hasError = true;
+            countryInput.setError("Country cannot be blank");
+        }
+        if (shippingAddress1Input != null) {
+            hasError = true;
+            address1Input.setError("Address cannot be blank");
+        }
+        if (shippingCityInput != null) {
+            hasError = true;
+            cityInput.setError("City cannot be blank");
+        }
+        if (shippingStateInput != null) {
+            hasError = true;
+            stateInput.setError("State cannot be blank");
+        }
+        if (shippingZipInput != null) {
+            hasError = true;
+            zipInput.setError("Zipcode cannot be blank");
+        }
+        if (shippingCountryInput != null) {
+            hasError = true;
+            countryInput.setError("Country cannot be blank");
         }
         return hasError;
     }
