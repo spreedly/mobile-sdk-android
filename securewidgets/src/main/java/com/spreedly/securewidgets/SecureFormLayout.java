@@ -18,6 +18,7 @@ import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.PaymentMethodMeta;
 import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.CardBrand;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.results.TransactionResult;
@@ -27,6 +28,7 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -106,6 +108,35 @@ public class SecureFormLayout extends LinearLayout {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         resetCardErrors();
         resetGenericErrors();
+        boolean hasError = false;
+        if (creditCardNumberField == null || creditCardNumberField.getText().detectCardType() == CardBrand.error) {
+            creditCardNumberField.setError("Invalid Card Number");
+            hasError = true;
+        }
+        if (expirationField != null && (expirationField.getYear() == 0 || expirationField.getMonth() == 0)) {
+            expirationField.setError("Invalid Date");
+            hasError = true;
+        }
+        if (fullNameInput != null && getString(fullNameInput) == "") {
+            fullNameInput.setError("Full name cannot be blank");
+            hasError = true;
+        }
+        if (firstNameInput != null && getString(firstNameInput) == "") {
+            firstNameInput.setError("First name cannot be blank");
+            hasError = true;
+        }
+        if (lastNameInput != null && getString(lastNameInput) == "") {
+            lastNameInput.setError("Last name cannot be blank");
+            hasError = true;
+        }
+        if (hasError) {
+            return new Single<TransactionResult<PaymentMethodResult>>() {
+                @Override
+                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
+
+                }
+            };
+        }
         CreditCardInfo info;
         if (fullNameInput != null) {
             info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
