@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
+import com.spreedly.sdk_sample.R;
 import com.spreedly.securewidgets.SecureFormLayout;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -35,10 +36,11 @@ public class SecureFormBankAccountViewModel extends ViewModel {
             @Override
             public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> paymentMethodResultTransactionResult) {
                 Log.i("Spreedly", "Created Credit Card");
+                String result = "Token: " + paymentMethodResultTransactionResult.result.token;
                 try {
-                    token.setText("Token: " + paymentMethodResultTransactionResult.result.token);
+                    token.setText(result);
                 } catch (Exception e) {
-                    error.setText("Unexpected Error");
+                    error.setText(R.string.generic_error);
                 }
 
             }
