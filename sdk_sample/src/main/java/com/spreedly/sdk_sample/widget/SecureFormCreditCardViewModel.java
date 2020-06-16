@@ -15,9 +15,10 @@ import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class SecureFormCreditCardViewModel extends ViewModel {
-    SecureFormLayout layout;
+    @NonNull
     public TextView token;
-    TextView error;
+    @NonNull SecureFormLayout layout;
+    @NonNull TextView error;
 
     // TODO: Implement the ViewModel
     public void submitCreditCard() {

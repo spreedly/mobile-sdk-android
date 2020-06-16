@@ -16,10 +16,11 @@ import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class SecureFormBankAccountViewModel extends ViewModel {
+    @NonNull
     public TextView token;
-    Spinner spinner;
-    SecureFormLayout layout;
-    TextView error;
+    @NonNull Spinner spinner;
+    @NonNull SecureFormLayout layout;
+    @NonNull TextView error;
 
     // TODO: Implement the ViewModel
     public void submitBankAccount() {

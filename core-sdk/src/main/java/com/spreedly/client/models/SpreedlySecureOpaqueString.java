@@ -18,7 +18,7 @@ public final class SpreedlySecureOpaqueString {
         length = 0;
     }
 
-    public SpreedlySecureOpaqueString(String text) {
+    public SpreedlySecureOpaqueString(@Nullable String text) {
         data = text;
         length = text.length();
     }
