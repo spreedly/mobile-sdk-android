@@ -17,11 +17,13 @@ import com.spreedly.sdk_sample.widget.WidgetPagerAdapter;
 public class WidgetExampleFragment extends Fragment {
 
 
+    @NonNull
     public static WidgetExampleFragment newInstance() {
         return new WidgetExampleFragment();
     }
 
     @Override
+    @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.widget_example_fragment, container, false);

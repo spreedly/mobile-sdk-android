@@ -19,11 +19,13 @@ public class SecureFormBankAccountFragment extends Fragment {
 
     private SecureFormBankAccountViewModel mViewModel;
 
+    @NonNull
     public static SecureFormBankAccountFragment newInstance() {
         return new SecureFormBankAccountFragment();
     }
 
     @Override
+    @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.secure_form_bank_account_fragment, container, false);

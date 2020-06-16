@@ -24,6 +24,7 @@ import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.results.TransactionResult;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.Nullable;
@@ -232,7 +233,7 @@ public class SecureFormLayout extends LinearLayout {
         try {
             for (int i = 0; i < errors.size(); i++) {
                 SpreedlyError error = errors.get(i);
-                WidgetError widgetError = WidgetError.valueOf(error.attribute.toUpperCase());
+                WidgetError widgetError = WidgetError.valueOf(error.attribute.toUpperCase(Locale.US));
                 if (widgetError != null) {
                     int resourceId = widgetError.getResourceId();
                     View view = findViewById(resourceId);
@@ -263,7 +264,7 @@ public class SecureFormLayout extends LinearLayout {
 
 
     private int nameTold(@NonNull String name) {
-        WidgetError widgetError = WidgetError.valueOf(name.toUpperCase());
+        WidgetError widgetError = WidgetError.valueOf(name.toUpperCase(Locale.US));
         if (widgetError == null) {
             return 0;
         } else {

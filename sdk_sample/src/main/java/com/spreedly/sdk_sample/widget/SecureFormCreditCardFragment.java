@@ -17,11 +17,13 @@ public class SecureFormCreditCardFragment extends Fragment {
 
     private SecureFormCreditCardViewModel mViewModel;
 
+    @NonNull
     public static SecureFormCreditCardFragment newInstance() {
         return new SecureFormCreditCardFragment();
     }
 
     @Override
+    @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.secure_form_credit_card_fragment, container, false);
