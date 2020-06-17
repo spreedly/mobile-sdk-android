@@ -22,7 +22,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             R.string.tab_core_api,
             R.string.tab_secure_widgets,
             R.string.tab_3ds2,
-            R.string.tab_drop_in
+            R.string.tab_express
     };
     private final Context mContext;
 
@@ -39,7 +39,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
         if (position == 1)
             return WidgetExampleFragment.newInstance();
-
+        if (position == 3)
+            return ExpressExampleFragment.newInstance();
         return PlaceholderFragment.newInstance();
     }
 
