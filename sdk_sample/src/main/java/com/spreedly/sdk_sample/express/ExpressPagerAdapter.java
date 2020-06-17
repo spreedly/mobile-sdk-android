@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.spreedly.sdk_sample.simple.CreditCardFragment;
-
 public class ExpressPagerAdapter extends FragmentPagerAdapter {
     public ExpressPagerAdapter(@NonNull FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -28,7 +26,7 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return CreditCardFragment.newInstance();
+                return ExpressCreditCard.newInstance();
         }
         throw new IndexOutOfBoundsException();
     }

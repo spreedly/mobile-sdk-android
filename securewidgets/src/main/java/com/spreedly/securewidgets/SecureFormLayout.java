@@ -89,6 +89,10 @@ public class SecureFormLayout extends LinearLayout {
         super(context, attrs);
     }
 
+    public SecureFormLayout(@NonNull Context context) {
+        super(context);
+    }
+
     public void setSpreedlyClient(@NonNull String envKey, @NonNull String envSecret, boolean test) {
         spreedlyClient = SpreedlyClient.newInstance(envKey, envSecret, test);
     }

@@ -160,6 +160,7 @@
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation-experimental:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:1.1.3@aar" level="project" />
     <orderEntry type="module" module-name="securewidgets" />
+    <orderEntry type="module" module-name="express" />
     <orderEntry type="module" module-name="core-sdk" />
   </component>
 </module>

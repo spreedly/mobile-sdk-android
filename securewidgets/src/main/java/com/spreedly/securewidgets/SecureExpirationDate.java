@@ -76,11 +76,15 @@ public class SecureExpirationDate extends FrameLayout {
                     s = s.delete(5, s.length());
                 }
                 if (s.length() == 5) {
-                    month = Integer.parseInt(s.toString().substring(0, 2));
-                    if (month > 12) {
+                    try {
+                        month = Integer.parseInt(s.toString().substring(0, 2));
+                        if (month > 12) {
+                            textLayout.setError("Invalid Date");
+                        } else {
+                            textLayout.setError(null);
+                        }
+                    } catch (NumberFormatException e) {
                         textLayout.setError("Invalid Date");
-                    } else {
-                        textLayout.setError(null);
                     }
                 }
             }
