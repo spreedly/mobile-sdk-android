@@ -33,6 +33,10 @@ public class SecureCreditCardField extends SecureTextField {
         ccTransformationMethod = new CreditCardTransformationMethod();
     }
 
+    public SecureCreditCardField(@NonNull Context context) {
+        super(context);
+    }
+
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();

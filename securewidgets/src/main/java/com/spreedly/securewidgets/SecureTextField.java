@@ -24,6 +24,10 @@ public class SecureTextField extends FrameLayout {
         super(context, attrs);
     }
 
+    public SecureTextField(@NonNull Context context) {
+        super(context);
+    }
+
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();

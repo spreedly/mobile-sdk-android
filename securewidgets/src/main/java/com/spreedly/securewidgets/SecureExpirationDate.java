@@ -22,6 +22,11 @@ public class SecureExpirationDate extends FrameLayout {
         init();
     }
 
+    public SecureExpirationDate(@NonNull Context context) {
+        super(context);
+        init();
+    }
+
     private void init() {
         textLayout = new TextInputLayout(this.getContext());
         editText = new TextInputEditText(this.getContext());
