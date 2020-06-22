@@ -55,8 +55,6 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable TextInputLayout address2Input;
     @Nullable TextInputLayout cityInput;
     @Nullable TextInputLayout stateInput;
-    @Nullable Spinner stateSpinner;
-    @Nullable TextInputLayout countryInput;
     @Nullable Spinner countrySpinner;
     @Nullable TextInputLayout phoneInput;
     @Nullable TextInputLayout zipInput;
@@ -64,8 +62,6 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable TextInputLayout shippingAddress2Input;
     @Nullable TextInputLayout shippingCityInput;
     @Nullable TextInputLayout shippingStateInput;
-    @Nullable Spinner shippingStateSpinner;
-    @Nullable TextInputLayout shippingCountryInput;
     @Nullable Spinner shippingCountrySpinner;
     @Nullable TextInputLayout shippingPhoneInput;
     @Nullable TextInputLayout shippingZipInput;
@@ -213,7 +209,7 @@ public class SecureFormLayout extends LinearLayout {
         String state = getString(stateInput);
         String zip = getString(zipInput);
         String phone = getString(phoneInput);
-        String country = getString(countryInput);
+        String country = countrySpinner.toString();
         info.address = new Address(address1, address2, city, state, zip, country, phone);
     }
 
@@ -227,7 +223,7 @@ public class SecureFormLayout extends LinearLayout {
             String state = getString(shippingStateInput);
             String zip = getString(shippingZipInput);
             String phone = getString(shippingPhoneInput);
-            String country = getString(shippingCountryInput);
+            String country = shippingCountrySpinner.toString();
             info.shippingAddress = new Address(address1, address2, city, state, zip, country, phone);
         }
     }
@@ -338,8 +334,6 @@ public class SecureFormLayout extends LinearLayout {
             stateInput.setError(null);
         if (zipInput != null)
             zipInput.setError(null);
-        if (countryInput != null)
-            countryInput.setError(null);
         if (phoneInput != null)
             phoneInput.setError(null);
 
@@ -354,8 +348,6 @@ public class SecureFormLayout extends LinearLayout {
             shippingStateInput.setError(null);
         if (shippingZipInput != null)
             shippingZipInput.setError(null);
-        if (shippingCountryInput != null)
-            shippingCountryInput.setError(null);
         if (shippingPhoneInput != null)
             shippingPhoneInput.setError(null);
     }
@@ -394,10 +386,6 @@ public class SecureFormLayout extends LinearLayout {
             hasError = true;
             zipInput.setError("Zipcode cannot be blank");
         }
-        if (countryInput != null && getString(countryInput).length() == 0) {
-            hasError = true;
-            countryInput.setError("Country cannot be blank");
-        }
         if (shippingAddress1Input != null) {
             hasError = true;
             address1Input.setError("Address cannot be blank");
@@ -413,10 +401,6 @@ public class SecureFormLayout extends LinearLayout {
         if (shippingZipInput != null) {
             hasError = true;
             zipInput.setError("Zipcode cannot be blank");
-        }
-        if (shippingCountryInput != null) {
-            hasError = true;
-            countryInput.setError("Country cannot be blank");
         }
         return hasError;
     }
@@ -436,14 +420,12 @@ public class SecureFormLayout extends LinearLayout {
         cityInput = findViewById(R.id.spreedly_city);
         stateInput = findViewById(R.id.spreedly_state);
         zipInput = findViewById(R.id.spreedly_zip);
-        countryInput = findViewById(R.id.spreedly_country);
         phoneInput = findViewById(R.id.spreedly_phone_number);
         shippingAddress1Input = findViewById(R.id.spreedly_shipping_address1);
         shippingAddress2Input = findViewById(R.id.spreedly_shipping_address2);
         shippingCityInput = findViewById(R.id.spreedly_shipping_city);
         shippingStateInput = findViewById(R.id.spreedly_shipping_state);
         shippingZipInput = findViewById(R.id.spreedly_shipping_zip);
-        shippingCountryInput = findViewById(R.id.spreedly_shipping_country);
         shippingPhoneInput = findViewById(R.id.spreedly_shipping_phone_number);
         emailInput = findViewById(R.id.spreedly_email);
         bankAccountNumberField = findViewById(R.id.spreedly_ba_account_number);

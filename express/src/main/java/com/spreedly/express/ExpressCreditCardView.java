@@ -3,6 +3,7 @@ package com.spreedly.express;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -29,6 +30,7 @@ public class ExpressCreditCardView extends ScrollView {
     Button submitButton;
     AddressFieldView billingAddress;
     AddressFieldView shippingAddress;
+    CheckBox sameAddress;
 
     public ExpressCreditCardView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -59,8 +61,16 @@ public class ExpressCreditCardView extends ScrollView {
         secureExpirationDate = new SecureExpirationDate(layoutWrapper.getContext());
         secureExpirationDate.setId(R.id.spreedly_cc_expiration_date);
 
-        billingAddress = new AddressFieldView(layoutWrapper.getContext());
+        billingAddress = new AddressFieldView(layoutWrapper.getContext(), AddressFieldView.AddressType.BILLING);
         billingAddress.onFinishInflate();
+
+        shippingAddress = new AddressFieldView(layoutWrapper.getContext(), AddressFieldView.AddressType.SHIPPING);
+        shippingAddress.onFinishInflate();
+        sameAddress = new CheckBox(layoutWrapper.getContext());
+
+        sameAddress.setText("Use billing address for shipping");
+        sameAddress.setId(R.id.same_address);
+        sameAddress.setOnClickListener(b -> sameAddressClickListener());
 
         submitButton = new Button(layoutWrapper.getContext());
         submitButton.setText("Submit");
@@ -69,9 +79,21 @@ public class ExpressCreditCardView extends ScrollView {
         layoutWrapper.addView(ccvField);
         layoutWrapper.addView(secureExpirationDate);
         layoutWrapper.addView(billingAddress);
+        layoutWrapper.addView(sameAddress);
+        layoutWrapper.addView(shippingAddress);
         layoutWrapper.addView(submitButton);
         layoutWrapper.onFinishInflate();
         this.addView(layoutWrapper);
 
+    }
+
+    void sameAddressClickListener() {
+        if (sameAddress.isChecked()) {
+            //hide shipping address
+            layoutWrapper.removeView(shippingAddress);
+        } else {
+            //show shipping address
+            layoutWrapper.addView(shippingAddress);
+        }
     }
 }

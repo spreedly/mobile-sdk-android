@@ -71,6 +71,11 @@ public class AddressFieldView extends LinearLayout {
         stateWrapper.setHint("State/Province");
         stateWrapper.addView(stateContent);
 
+        phoneWrapper = new TextInputLayout(this.getContext());
+        phoneContent = new TextInputEditText(this.getContext());
+        phoneWrapper.setHint("Phone Number");
+        phoneWrapper.addView(phoneContent);
+
         ArrayAdapter countryAdapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.country_array, android.R.layout.simple_spinner_item);
         country = new Spinner(this.getContext());
