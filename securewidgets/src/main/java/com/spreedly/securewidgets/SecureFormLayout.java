@@ -441,6 +441,4 @@ public class SecureFormLayout extends LinearLayout {
         errorView = findViewById(R.id.spreedly_generic_error);
 
     }
-
-
 }

@@ -31,11 +31,13 @@ public class AddressFieldView extends LinearLayout {
     TextInputLayout zipWrapper;
     TextInputEditText zipContent;
 
-    Spinner country;
+    Spinner countryContent;
+    TextInputLayout countryWrapper;
 
     TextInputLayout phoneWrapper;
     TextInputEditText phoneContent;
 
+    boolean visible = true;
     public AddressFieldView(@NonNull Context context, @NonNull AddressType addressType) {
         super(context);
         this.addressType = addressType;
@@ -76,10 +78,13 @@ public class AddressFieldView extends LinearLayout {
         phoneWrapper.setHint("Phone Number");
         phoneWrapper.addView(phoneContent);
 
+        countryWrapper = new TextInputLayout(this.getContext());
+        countryWrapper.setHint("Country");
         ArrayAdapter countryAdapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.country_array, android.R.layout.simple_spinner_item);
-        country = new Spinner(this.getContext());
-        country.setAdapter(countryAdapter);
+        countryContent = new Spinner(this.getContext());
+        countryContent.setAdapter(countryAdapter);
+        countryWrapper.addView(countryContent);
 
         zipWrapper = new TextInputLayout(this.getContext());
         zipWrapper.setHint("Zipcode");
@@ -92,7 +97,7 @@ public class AddressFieldView extends LinearLayout {
             cityWrapper.setId(R.id.spreedly_city);
             stateWrapper.setId(R.id.spreedly_state);
             zipWrapper.setId(R.id.spreedly_zip);
-            country.setId(R.id.spreedly_country);
+            countryWrapper.setId(R.id.spreedly_country);
             phoneWrapper.setId(R.id.spreedly_phone_number);
         } else {
             address1Wrapper.setId(R.id.spreedly_shipping_address1);
@@ -100,7 +105,7 @@ public class AddressFieldView extends LinearLayout {
             cityWrapper.setId(R.id.spreedly_shipping_city);
             stateWrapper.setId(R.id.spreedly_shipping_state);
             zipWrapper.setId(R.id.spreedly_shipping_zip);
-            country.setId(R.id.spreedly_shipping_country);
+            countryWrapper.setId(R.id.spreedly_shipping_country);
             phoneWrapper.setId(R.id.spreedly_shipping_phone_number);
         }
 
@@ -109,7 +114,7 @@ public class AddressFieldView extends LinearLayout {
         this.addView(cityWrapper);
         this.addView(stateWrapper);
         this.addView(zipWrapper);
-        this.addView(country);
+        this.addView(countryWrapper);
     }
 
     public enum AddressType {BILLING, SHIPPING}

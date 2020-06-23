@@ -1,4 +1,11 @@
 <resources>
-    <declare-styleable name="ExpressCreditCardView">
+    <declare-styleable name="ExpressView">
+        <attr name="paymentType" format="enum">
+            <enum name="card_only" value="0" />
+            <enum name="account_only" value="1" />
+            <enum name="any" value="2" />
+        </attr>
+        <attr name="includeBillingAddress" format="boolean" />
+        <attr name="includeShippingAddress" format="boolean" />
     </declare-styleable>
 </resources>
