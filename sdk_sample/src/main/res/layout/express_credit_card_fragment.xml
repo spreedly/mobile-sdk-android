@@ -7,4 +7,5 @@
     android:layout_marginEnd="@dimen/activity_horizontal_margin"
     android:gravity="center"
     android:orientation="vertical"
-    app:includeBillingAddress="false" />
+    app:includeBillingAddress="false"
+    app:paymentType="account_only" />

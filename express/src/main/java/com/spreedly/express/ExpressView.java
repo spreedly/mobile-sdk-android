@@ -42,6 +42,9 @@ public class ExpressView extends ScrollView {
     TextView paymentLabel;
     TextView billingLabel;
     TextView shippingLabel;
+    TextInputLayout routingNumberWrapper;
+    SecureTextField accountNumberField;
+    TextInputEditText routingNumberContent;
 
     public ExpressView(@NonNull Context context) {
         super(context);
@@ -63,68 +66,87 @@ public class ExpressView extends ScrollView {
     public void init() {
         layoutWrapper = new SecureFormLayout(this.getContext());
         layoutWrapper.setOrientation(LinearLayout.VERTICAL);
-        fullNameWrapper = new TextInputLayout(layoutWrapper.getContext());
-        fullNameContent = new TextInputEditText(layoutWrapper.getContext());
-        fullNameWrapper.setHint("Full Name");
-        fullNameWrapper.addView(fullNameContent);
-
-        secureCreditCardField = new SecureCreditCardField(layoutWrapper.getContext());
-        secureCreditCardField.setId(R.id.spreedly_credit_card_number);
-        secureCreditCardField.onFinishInflate();
-
-        ccvField = new SecureTextField(layoutWrapper.getContext());
-        ccvField.setId(R.id.spreedly_ccv);
-        ccvField.onFinishInflate();
-
-        secureExpirationDate = new SecureExpirationDate(layoutWrapper.getContext());
-        secureExpirationDate.setId(R.id.spreedly_cc_expiration_date);
-
-        billingAddress = new AddressFieldView(layoutWrapper.getContext(), AddressFieldView.AddressType.BILLING);
-        billingAddress.onFinishInflate();
-
-        shippingAddress = new AddressFieldView(layoutWrapper.getContext(), AddressFieldView.AddressType.SHIPPING);
-        shippingAddress.onFinishInflate();
-        sameAddress = new CheckBox(layoutWrapper.getContext());
-
-        sameAddress.setText("Use billing address for shipping");
-        sameAddress.setId(R.id.same_address);
-        sameAddress.setOnClickListener(b -> sameAddressClickListener());
-
-        submitButton = new Button(layoutWrapper.getContext());
-        submitButton.setText("Submit");
-        submitButton.setOnClickListener(b -> submit());
 
         paymentLabel = new TextView(this.getContext());
         paymentLabel.setText("Payment Information");
         paymentLabel.setTextAppearance(this.getContext(), android.R.style.TextAppearance_Material_Subhead);
         paymentLabel.setPadding(0, 12, 0, 0);
-
-        billingLabel = new MaterialTextView(this.getContext());
-        billingLabel.setText("Billing Address");
-        billingLabel.setTextAppearance(this.getContext(), android.R.style.TextAppearance_DeviceDefault_Large);
-        billingLabel.setPadding(0, 12, 0, 0);
-
-        shippingLabel = new MaterialTextView(this.getContext());
-        shippingLabel.setText("Shipping Address");
-        shippingLabel.setTextAppearance(this.getContext(), android.R.style.TextAppearance_Holo_Large);
-        shippingLabel.setPadding(0, 12, 0, 0);
-
         layoutWrapper.addView(paymentLabel);
+
+        fullNameWrapper = new TextInputLayout(layoutWrapper.getContext());
+        fullNameContent = new TextInputEditText(layoutWrapper.getContext());
+        fullNameWrapper.setHint("Full Name");
+        fullNameWrapper.addView(fullNameContent);
+
         layoutWrapper.addView(fullNameWrapper);
-        layoutWrapper.addView(secureCreditCardField);
-        layoutWrapper.addView(ccvField);
-        layoutWrapper.addView(secureExpirationDate);
+
+        if (paymentType == 0 || paymentType == 2) {
+            secureCreditCardField = new SecureCreditCardField(layoutWrapper.getContext());
+            secureCreditCardField.setId(R.id.spreedly_credit_card_number);
+            secureCreditCardField.onFinishInflate();
+
+            ccvField = new SecureTextField(layoutWrapper.getContext());
+            ccvField.setId(R.id.spreedly_ccv);
+            ccvField.onFinishInflate();
+
+            secureExpirationDate = new SecureExpirationDate(layoutWrapper.getContext());
+            secureExpirationDate.setId(R.id.spreedly_cc_expiration_date);
+
+
+            layoutWrapper.addView(secureCreditCardField);
+            layoutWrapper.addView(ccvField);
+            layoutWrapper.addView(secureExpirationDate);
+        }
+        if (paymentType == 1 || paymentType == 2) {
+            accountNumberField = new SecureTextField(layoutWrapper.getContext());
+            accountNumberField.setId(R.id.spreedly_ba_account_number);
+            accountNumberField.onFinishInflate();
+
+            routingNumberWrapper = new TextInputLayout(layoutWrapper.getContext());
+            routingNumberWrapper.setId(R.id.spreedly_ba_routing_number);
+            routingNumberContent = new TextInputEditText(layoutWrapper.getContext());
+            routingNumberWrapper.addView(routingNumberContent);
+
+            layoutWrapper.addView(accountNumberField);
+            layoutWrapper.addView(routingNumberWrapper);
+
+        }
+
         if (showBilling == true) {
+            billingLabel = new MaterialTextView(this.getContext());
+            billingLabel.setText("Billing Address");
+            billingLabel.setTextAppearance(this.getContext(), android.R.style.TextAppearance_DeviceDefault_Large);
+            billingLabel.setPadding(0, 12, 0, 0);
+
+            billingAddress = new AddressFieldView(layoutWrapper.getContext(), AddressFieldView.AddressType.BILLING);
+            billingAddress.onFinishInflate();
+
             layoutWrapper.addView(billingLabel);
             layoutWrapper.addView(billingAddress);
         }
         if (showBilling && showShipping) {
+            sameAddress = new CheckBox(layoutWrapper.getContext());
+            sameAddress.setText("Use billing address for shipping");
+            sameAddress.setId(R.id.same_address);
+            sameAddress.setOnClickListener(b -> sameAddressClickListener());
             layoutWrapper.addView(sameAddress);
         }
         if (showShipping) {
+            shippingLabel = new MaterialTextView(this.getContext());
+            shippingLabel.setText("Shipping Address");
+            shippingLabel.setTextAppearance(this.getContext(), android.R.style.TextAppearance_Holo_Large);
+            shippingLabel.setPadding(0, 12, 0, 0);
+
+            shippingAddress = new AddressFieldView(layoutWrapper.getContext(), AddressFieldView.AddressType.SHIPPING);
+            shippingAddress.onFinishInflate();
+
             layoutWrapper.addView(shippingLabel);
             layoutWrapper.addView(shippingAddress);
         }
+
+        submitButton = new Button(layoutWrapper.getContext());
+        submitButton.setText("Submit");
+        submitButton.setOnClickListener(b -> submit());
         layoutWrapper.addView(submitButton);
         layoutWrapper.onFinishInflate();
         this.addView(layoutWrapper);
