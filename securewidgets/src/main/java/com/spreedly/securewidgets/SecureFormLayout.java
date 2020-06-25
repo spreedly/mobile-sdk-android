@@ -209,8 +209,8 @@ public class SecureFormLayout extends LinearLayout {
         String state = getString(stateInput);
         String zip = getString(zipInput);
         String phone = getString(phoneInput);
-        String country = countrySpinner.toString();
-        info.address = new Address(address1, address2, city, state, zip, country, phone);
+        //String country = getString(countrySpinner);
+        info.address = new Address(address1, address2, city, state, zip, "", phone);
     }
 
     private void addShippingAddress(PaymentMethodMeta info) {
@@ -223,8 +223,8 @@ public class SecureFormLayout extends LinearLayout {
             String state = getString(shippingStateInput);
             String zip = getString(shippingZipInput);
             String phone = getString(shippingPhoneInput);
-            String country = shippingCountrySpinner.toString();
-            info.shippingAddress = new Address(address1, address2, city, state, zip, country, phone);
+            //String country = getString(shippingCountrySpinner);
+            info.shippingAddress = new Address(address1, address2, city, state, zip, "", phone);
         }
     }
 
@@ -386,21 +386,21 @@ public class SecureFormLayout extends LinearLayout {
             hasError = true;
             zipInput.setError("Zipcode cannot be blank");
         }
-        if (shippingAddress1Input != null) {
+        if (shippingAddress1Input != null && getString(shippingAddress1Input).length() == 0) {
             hasError = true;
-            address1Input.setError("Address cannot be blank");
+            shippingAddress1Input.setError("Address cannot be blank");
         }
-        if (shippingCityInput != null) {
+        if (shippingCityInput != null && getString(shippingCityInput).length() == 0) {
             hasError = true;
-            cityInput.setError("City cannot be blank");
+            shippingCityInput.setError("City cannot be blank");
         }
-        if (shippingStateInput != null) {
+        if (shippingStateInput != null && getString(shippingStateInput).length() == 0) {
             hasError = true;
-            stateInput.setError("State cannot be blank");
+            shippingStateInput.setError("State cannot be blank");
         }
-        if (shippingZipInput != null) {
+        if (shippingZipInput != null && getString(shippingZipInput).length() == 0) {
             hasError = true;
-            zipInput.setError("Zipcode cannot be blank");
+            shippingZipInput.setError("Zipcode cannot be blank");
         }
         return hasError;
     }
@@ -420,12 +420,14 @@ public class SecureFormLayout extends LinearLayout {
         cityInput = findViewById(R.id.spreedly_city);
         stateInput = findViewById(R.id.spreedly_state);
         zipInput = findViewById(R.id.spreedly_zip);
+        countrySpinner = findViewById(R.id.spreedly_country);
         phoneInput = findViewById(R.id.spreedly_phone_number);
         shippingAddress1Input = findViewById(R.id.spreedly_shipping_address1);
         shippingAddress2Input = findViewById(R.id.spreedly_shipping_address2);
         shippingCityInput = findViewById(R.id.spreedly_shipping_city);
         shippingStateInput = findViewById(R.id.spreedly_shipping_state);
         shippingZipInput = findViewById(R.id.spreedly_shipping_zip);
+        shippingCountrySpinner = findViewById(R.id.spreedly_shipping_country);
         shippingPhoneInput = findViewById(R.id.spreedly_shipping_phone_number);
         emailInput = findViewById(R.id.spreedly_email);
         bankAccountNumberField = findViewById(R.id.spreedly_ba_account_number);
