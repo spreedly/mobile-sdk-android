@@ -1,11 +1,23 @@
-<com.spreedly.express.ExpressView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/express_credit_card_form"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/activity_horizontal_margin"
-    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-    android:gravity="center"
-    android:orientation="vertical"
-    app:includeBillingAddress="false"
-    app:paymentType="new_card_and_bank" />
+    android:orientation="vertical">
+
+    <com.spreedly.express.ExpressView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/express_credit_card_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:includeBillingAddress="false"
+        app:includeShippingAddress="false"
+        app:paymentType="new_card_and_bank" />
+
+    <TextView
+        android:id="@id/token"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
