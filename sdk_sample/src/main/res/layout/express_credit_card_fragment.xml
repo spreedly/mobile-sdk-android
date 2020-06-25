@@ -8,4 +8,4 @@
     android:gravity="center"
     android:orientation="vertical"
     app:includeBillingAddress="false"
-    app:paymentType="account_only" />
+    app:paymentType="new_card_and_bank" />
