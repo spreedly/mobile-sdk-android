@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -24,12 +25,12 @@ public class PaymentMenuView extends LinearLayout {
     boolean showShipping;
     String submitButtonText;
 
-    public PaymentMenuView(Context context, @Nullable AttributeSet attrs) {
+    public PaymentMenuView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         applyAttributes(context, attrs);
     }
 
-    public PaymentMenuView(Context context) {
+    public PaymentMenuView(@NonNull Context context) {
         super(context);
         setPaymentType(0);
         setAddressUse(true, true);

@@ -5,6 +5,9 @@ import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.spreedly.securewidgets.SecureCreditCardField;
 import com.spreedly.securewidgets.SecureExpirationDate;
 import com.spreedly.securewidgets.SecureFormLayout;
@@ -15,11 +18,11 @@ public class CreditCardPaymentView extends PaymentView {
     SecureTextField ccvField;
     SecureExpirationDate secureExpirationDate;
 
-    public CreditCardPaymentView(Context context, AttributeSet attrs) {
+    public CreditCardPaymentView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CreditCardPaymentView(Context context, boolean showBilling, boolean showShipping, String submitButtonText, boolean includeBackButton) {
+    public CreditCardPaymentView(@NonNull Context context, boolean showBilling, boolean showShipping, @Nullable String submitButtonText, boolean includeBackButton) {
         super(context);
         this.showBilling = showBilling;
         this.showShipping = showShipping;

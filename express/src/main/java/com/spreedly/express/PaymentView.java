@@ -35,6 +35,7 @@ public class PaymentView extends ScrollView {
     boolean showShipping;
     String submitButtonText;
     boolean includeBackButton;
+    @Nullable
     public OnCustomEventListener backButtonListener;
 
     SecureFormLayout secureFormLayout;

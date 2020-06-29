@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.models.enums.BankAccountHolderType;
@@ -22,11 +25,11 @@ public class BankAccountPaymentView extends PaymentView {
     Spinner accountType;
     Spinner holderType;
 
-    public BankAccountPaymentView(Context context, AttributeSet attrs) {
+    public BankAccountPaymentView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BankAccountPaymentView(Context context, boolean showBilling, boolean showShipping, String submitButtonText, boolean includeBackButton) {
+    public BankAccountPaymentView(@NonNull Context context, boolean showBilling, boolean showShipping, @Nullable String submitButtonText, boolean includeBackButton) {
         super(context);
         this.showBilling = showBilling;
         this.showShipping = showShipping;
