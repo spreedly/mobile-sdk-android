@@ -10,9 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -20,6 +17,9 @@ import com.spreedly.securewidgets.SecureCreditCardField;
 import com.spreedly.securewidgets.SecureExpirationDate;
 import com.spreedly.securewidgets.SecureFormLayout;
 import com.spreedly.securewidgets.SecureTextField;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * TODO: document your custom view class.
@@ -64,13 +64,18 @@ public class ExpressView extends ScrollView {
     }
 
     public void init() {
+        final float pixelDensity = getResources().getDisplayMetrics().density;
+        int padding = (int)( 16 * pixelDensity);
+        int labelPadding = (int)( 12 * pixelDensity);
+
         layoutWrapper = new SecureFormLayout(this.getContext());
         layoutWrapper.setOrientation(LinearLayout.VERTICAL);
+        layoutWrapper.setPadding(padding, padding, padding, padding);
 
         paymentLabel = new TextView(this.getContext());
         paymentLabel.setText("Payment Information");
         paymentLabel.setTextAppearance(this.getContext(), android.R.style.TextAppearance_Material_Subhead);
-        paymentLabel.setPadding(0, 12, 0, 0);
+        paymentLabel.setPadding(0, labelPadding, 0, 0);
         layoutWrapper.addView(paymentLabel);
 
         fullNameWrapper = new TextInputLayout(layoutWrapper.getContext());
@@ -116,7 +121,7 @@ public class ExpressView extends ScrollView {
             billingLabel = new MaterialTextView(this.getContext());
             billingLabel.setText("Billing Address");
             billingLabel.setTextAppearance(this.getContext(), android.R.style.TextAppearance_DeviceDefault_Large);
-            billingLabel.setPadding(0, 12, 0, 0);
+            billingLabel.setPadding(0, labelPadding, 0, 0);
 
             billingAddress = new AddressFieldView(layoutWrapper.getContext(), AddressFieldView.AddressType.BILLING);
             billingAddress.onFinishInflate();
@@ -135,7 +140,7 @@ public class ExpressView extends ScrollView {
             shippingLabel = new MaterialTextView(this.getContext());
             shippingLabel.setText("Shipping Address");
             shippingLabel.setTextAppearance(this.getContext(), android.R.style.TextAppearance_Holo_Large);
-            shippingLabel.setPadding(0, 12, 0, 0);
+            shippingLabel.setPadding(0, labelPadding, 0, 0);
 
             shippingAddress = new AddressFieldView(layoutWrapper.getContext(), AddressFieldView.AddressType.SHIPPING);
             shippingAddress.onFinishInflate();
