@@ -26,11 +26,12 @@ public class BankAccountPaymentView extends PaymentView {
         super(context, attrs);
     }
 
-    public BankAccountPaymentView(Context context, boolean showBilling, boolean showShipping, String submitButtonText) {
+    public BankAccountPaymentView(Context context, boolean showBilling, boolean showShipping, String submitButtonText, boolean includeBackButton) {
         super(context);
         this.showBilling = showBilling;
         this.showShipping = showShipping;
         this.submitButtonText = submitButtonText;
+        this.includeBackButton = includeBackButton;
     }
 
     @Override
@@ -55,9 +56,7 @@ public class BankAccountPaymentView extends PaymentView {
         if (includeBackButton) {
             Button backButton = new Button(this.getContext());
             backButton.setText(R.string.back);
-            backButton.setOnClickListener((l) -> {
-                //update back button
-            });
+            backButton.setOnClickListener((l) -> backButtonListener.onEvent());
             secureFormLayout.addView(backButton);
         }
         submitButton = new Button(secureFormLayout.getContext());

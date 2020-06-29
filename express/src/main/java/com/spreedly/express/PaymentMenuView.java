@@ -83,28 +83,49 @@ public class PaymentMenuView extends LinearLayout {
         addCardButton = new Button(this.getContext());
         addCardButton.setText(R.string.add_a_card);
         addCardButton.setOnClickListener((l) -> {
-            paymentView = new CreditCardPaymentView(this.getContext(), showBilling, showShipping, submitButtonText);
+            paymentView = new CreditCardPaymentView(this.getContext(), showBilling, showShipping, submitButtonText, true);
             paymentView.onFinishInflate();
             this.removeAllViews();
             this.addView(paymentView);
+            paymentView.setBackButtonListener(new OnCustomEventListener() {
+                @Override
+                public void onEvent() {
+                    removeAllViews();
+                    addView(paymentSelectorLayout);
+                }
+            });
         });
         bankButton = new Button(this.getContext());
         bankButton.setText(R.string.pay_with_bank);
         bankButton.setOnClickListener((l) -> {
-            paymentView = new BankAccountPaymentView(this.getContext(), showBilling, showShipping, submitButtonText);
+            paymentView = new BankAccountPaymentView(this.getContext(), showBilling, showShipping, submitButtonText, true);
             paymentView.setAddressUse(showBilling, showShipping);
             paymentView.onFinishInflate();
             this.removeAllViews();
             this.addView(paymentView);
+            paymentView.setBackButtonListener(new OnCustomEventListener() {
+                @Override
+                public void onEvent() {
+                    removeAllViews();
+                    addView(paymentSelectorLayout);
+                }
+            });
         });
         cardButton = new Button(this.getContext());
         cardButton.setText(R.string.pay_with_card);
         cardButton.setOnClickListener((l) -> {
-            paymentView = new CreditCardPaymentView(this.getContext(), showBilling, showShipping, submitButtonText);
+            paymentView = new CreditCardPaymentView(this.getContext(), showBilling, showShipping, submitButtonText, true);
             paymentView.setAddressUse(showBilling, showShipping);
             paymentView.onFinishInflate();
             this.removeAllViews();
             this.addView(paymentView);
+            paymentView.setBackButtonListener(new OnCustomEventListener() {
+                @Override
+                public void onEvent() {
+                    removeAllViews();
+                    addView(paymentSelectorLayout);
+                }
+            });
         });
         paymentSelectorLayout = new LinearLayout(getContext());
         switch (paymentType) {

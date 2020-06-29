@@ -19,11 +19,12 @@ public class CreditCardPaymentView extends PaymentView {
         super(context, attrs);
     }
 
-    public CreditCardPaymentView(Context context, boolean showBilling, boolean showShipping, String submitButtonText) {
+    public CreditCardPaymentView(Context context, boolean showBilling, boolean showShipping, String submitButtonText, boolean includeBackButton) {
         super(context);
         this.showBilling = showBilling;
         this.showShipping = showShipping;
         this.submitButtonText = submitButtonText;
+        this.includeBackButton = true;
     }
 
     @Override
@@ -46,7 +47,10 @@ public class CreditCardPaymentView extends PaymentView {
             setShipping();
         }
         if (includeBackButton) {
-            //TODO: update back button
+            Button backButton = new Button(secureFormLayout.getContext());
+            backButton.setText(R.string.back);
+            backButton.setOnClickListener((l) -> backButtonListener.onEvent());
+            secureFormLayout.addView(backButton);
         }
         submitButton = new Button(secureFormLayout.getContext());
         submitButton.setText(submitButtonText);
