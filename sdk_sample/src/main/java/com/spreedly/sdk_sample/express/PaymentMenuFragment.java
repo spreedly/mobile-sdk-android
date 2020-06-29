@@ -10,7 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.spreedly.client.models.enums.CardBrand;
+import com.spreedly.express.StoredCard;
 import com.spreedly.sdk_sample.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PaymentMenuFragment extends Fragment {
 
@@ -33,6 +38,13 @@ public class PaymentMenuFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(PaymentMenuViewModel.class);
         mViewModel.mainView = getView().findViewById(R.id.express_payment_menu);
+        StoredCard card1 = new StoredCard("sample_token_1", CardBrand.visa, "Visa ending in XXXX");
+        StoredCard card2 = new StoredCard("sample_token_2", CardBrand.mastercard, "Mastercard ending in XXXX");
+        List<StoredCard> storedCards = new ArrayList<>();
+        storedCards.add(card1);
+        storedCards.add(card2);
+        mViewModel.mainView.addSavedCards(storedCards);
+        mViewModel.mainView.updateCardSlider();
     }
 
 }

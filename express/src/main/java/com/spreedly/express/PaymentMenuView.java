@@ -25,6 +25,8 @@ public class PaymentMenuView extends LinearLayout {
     boolean showShipping;
     String submitButtonText;
 
+    CardSlider cardSlider;
+
     public PaymentMenuView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         applyAttributes(context, attrs);
@@ -62,22 +64,17 @@ public class PaymentMenuView extends LinearLayout {
         paymentType = value;
     }
 
-    public void addSavedCard(@Nullable List<StoredCard> cards) {
+    public void addSavedCards(@Nullable List<StoredCard> cards) {
         storedCards = cards;
     }
 
     private void createSavedCardList() {
-        if (storedCards == null || storedCards.size() == 0) {
-            return;
-        } else {
+        cardSlider = new CardSlider(getContext(), null);
+        paymentSelectorLayout.addView(cardSlider);
+    }
 
-            for (StoredCard card : storedCards) {
-                Button button = new Button(getContext());
-                button.setText(card.description);
-                paymentSelectorLayout.addView(button);
-
-            }
-        }
+    public void updateCardSlider() {
+        cardSlider.update(storedCards);
     }
 
     private void createMenu() {

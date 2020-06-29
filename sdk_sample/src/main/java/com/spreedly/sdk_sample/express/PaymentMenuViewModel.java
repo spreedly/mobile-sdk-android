@@ -1,10 +1,11 @@
 package com.spreedly.sdk_sample.express;
 
-import android.view.View;
 
 import androidx.lifecycle.ViewModel;
 
+import com.spreedly.express.PaymentMenuView;
+
 public class PaymentMenuViewModel extends ViewModel {
-    View mainView;
+    PaymentMenuView mainView;
     // TODO: Implement the ViewModel
 }
