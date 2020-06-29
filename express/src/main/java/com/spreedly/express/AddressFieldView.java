@@ -2,11 +2,13 @@ package com.spreedly.express;
 
 import android.content.Context;
 import android.text.InputType;
+import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -37,6 +39,11 @@ public class AddressFieldView extends LinearLayout {
     TextInputEditText phoneContent;
 
     boolean visible = true;
+
+    public AddressFieldView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
     public AddressFieldView(@NonNull Context context, @NonNull AddressType addressType) {
         super(context);
         this.addressType = addressType;
