@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="ExpressView">
+    <declare-styleable name="PaymentView">
         <attr name="includeBillingAddress" format="boolean" />
         <attr name="includeShippingAddress" format="boolean" />
         <attr name="submitButtonText" format="string" />

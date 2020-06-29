@@ -19,6 +19,13 @@ public class CreditCardPaymentView extends PaymentView {
         super(context, attrs);
     }
 
+    public CreditCardPaymentView(Context context, boolean showBilling, boolean showShipping, String submitButtonText) {
+        super(context);
+        this.showBilling = showBilling;
+        this.showShipping = showShipping;
+        this.submitButtonText = submitButtonText;
+    }
+
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();

@@ -6,5 +6,8 @@
             <enum name="new_card_and_bank" value="1" />
             <enum name="any" value="2" />
         </attr>
+        <attr name="includeBillingAddressOverride" format="boolean" />
+        <attr name="includeShippingAddressOverride" format="boolean" />
+        <attr name="submitButtonTextOverride" format="string" />
     </declare-styleable>
 </resources>

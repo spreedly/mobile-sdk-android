@@ -176,15 +176,15 @@ public class ExpressView extends ScrollView {
     private void applyAttributes(Context context, AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.ExpressView,
+                R.styleable.PaymentView,
                 0, 0);
         int paymentType = 0;
         paymentType = a.getInteger(R.styleable.PaymentMenuView_paymentType, 0);
         setPaymentType(paymentType);
         boolean shipping = true;
         boolean billing = true;
-        billing = a.getBoolean(R.styleable.ExpressView_includeBillingAddress, true);
-        shipping = a.getBoolean(R.styleable.ExpressView_includeShippingAddress, true);
+        billing = a.getBoolean(R.styleable.PaymentView_includeBillingAddress, true);
+        shipping = a.getBoolean(R.styleable.PaymentView_includeShippingAddress, true);
         setAddressUse(billing, shipping);
     }
 

@@ -13,7 +13,8 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:gravity="center"
         android:orientation="vertical"
-        app:includeBillingAddress="false"
-        app:includeShippingAddress="false" />
+        app:includeBillingAddressOverride="true"
+        app:includeShippingAddressOverride="false"
+        app:paymentType="any" />
 
 </FrameLayout>

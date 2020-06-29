@@ -20,6 +20,9 @@ public class PaymentMenuView extends LinearLayout {
     Button cardButton;
 
     PaymentView paymentView;
+    boolean showBilling;
+    boolean showShipping;
+    String submitButtonText;
 
     public PaymentMenuView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -29,6 +32,7 @@ public class PaymentMenuView extends LinearLayout {
     public PaymentMenuView(Context context) {
         super(context);
         setPaymentType(0);
+        setAddressUse(true, true);
     }
 
     @Override
@@ -40,11 +44,17 @@ public class PaymentMenuView extends LinearLayout {
     private void applyAttributes(Context context, AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.ExpressView,
+                R.styleable.PaymentMenuView,
                 0, 0);
         int paymentType = 0;
         paymentType = a.getInteger(R.styleable.PaymentMenuView_paymentType, 0);
         setPaymentType(paymentType);
+        boolean shipping = true;
+        boolean billing = true;
+        billing = a.getBoolean(R.styleable.PaymentMenuView_includeBillingAddressOverride, true);
+        shipping = a.getBoolean(R.styleable.PaymentMenuView_includeShippingAddressOverride, true);
+        submitButtonText = a.getString(R.styleable.PaymentMenuView_submitButtonTextOverride);
+        setAddressUse(billing, shipping);
     }
 
     public void setPaymentType(int value) {
@@ -73,7 +83,7 @@ public class PaymentMenuView extends LinearLayout {
         addCardButton = new Button(this.getContext());
         addCardButton.setText(R.string.add_a_card);
         addCardButton.setOnClickListener((l) -> {
-            paymentView = new CreditCardPaymentView(this.getContext(), null);
+            paymentView = new CreditCardPaymentView(this.getContext(), showBilling, showShipping, submitButtonText);
             paymentView.onFinishInflate();
             this.removeAllViews();
             this.addView(paymentView);
@@ -81,7 +91,8 @@ public class PaymentMenuView extends LinearLayout {
         bankButton = new Button(this.getContext());
         bankButton.setText(R.string.pay_with_bank);
         bankButton.setOnClickListener((l) -> {
-            paymentView = new BankAccountPaymentView(this.getContext(), null);
+            paymentView = new BankAccountPaymentView(this.getContext(), showBilling, showShipping, submitButtonText);
+            paymentView.setAddressUse(showBilling, showShipping);
             paymentView.onFinishInflate();
             this.removeAllViews();
             this.addView(paymentView);
@@ -89,7 +100,8 @@ public class PaymentMenuView extends LinearLayout {
         cardButton = new Button(this.getContext());
         cardButton.setText(R.string.pay_with_card);
         cardButton.setOnClickListener((l) -> {
-            paymentView = new CreditCardPaymentView(this.getContext(), null);
+            paymentView = new CreditCardPaymentView(this.getContext(), showBilling, showShipping, submitButtonText);
+            paymentView.setAddressUse(showBilling, showShipping);
             paymentView.onFinishInflate();
             this.removeAllViews();
             this.addView(paymentView);
@@ -113,5 +125,10 @@ public class PaymentMenuView extends LinearLayout {
                 break;
         }
         this.addView(paymentSelectorLayout);
+    }
+
+    public void setAddressUse(boolean billing, boolean shipping) {
+        showBilling = billing;
+        showShipping = shipping;
     }
 }
