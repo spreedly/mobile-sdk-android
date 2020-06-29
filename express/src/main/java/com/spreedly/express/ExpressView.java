@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -17,9 +20,6 @@ import com.spreedly.securewidgets.SecureCreditCardField;
 import com.spreedly.securewidgets.SecureExpirationDate;
 import com.spreedly.securewidgets.SecureFormLayout;
 import com.spreedly.securewidgets.SecureTextField;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * TODO: document your custom view class.
@@ -179,7 +179,7 @@ public class ExpressView extends ScrollView {
                 R.styleable.ExpressView,
                 0, 0);
         int paymentType = 0;
-        paymentType = a.getInteger(R.styleable.ExpressView_paymentType, 0);
+        paymentType = a.getInteger(R.styleable.PaymentMenuView_paymentType, 0);
         setPaymentType(paymentType);
         boolean shipping = true;
         boolean billing = true;

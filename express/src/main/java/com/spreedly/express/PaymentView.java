@@ -47,6 +47,10 @@ public class PaymentView extends ScrollView {
     TextInputLayout fullNameWrapper;
     TextInputEditText fullNameContent;
 
+    @Override
+    public void onFinishInflate() {
+        super.onFinishInflate();
+    }
     public PaymentView(@NonNull Context context) {
         super(context);
         setAddressUse(true, true);
@@ -89,10 +93,13 @@ public class PaymentView extends ScrollView {
     }
 
     void setLabel(String labelContent, MaterialTextView label) {
+        final float pixelDensity = getResources().getDisplayMetrics().density;
+        int padding = (int) (16 * pixelDensity);
+        int labelPadding = (int) (12 * pixelDensity);
         label = new MaterialTextView(this.getContext());
         label.setText(labelContent);
         label.setTextAppearance(this.getContext(), android.R.style.TextAppearance_DeviceDefault_Large);
-        label.setPadding(0, 12, 0, 0);
+        label.setPadding(0, labelPadding, 0, 0);
         secureFormLayout.addView(label);
     }
 

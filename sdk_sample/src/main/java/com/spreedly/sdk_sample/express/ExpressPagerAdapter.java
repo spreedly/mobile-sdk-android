@@ -16,9 +16,11 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Credit Card";
+                return "Menu";
             case 1:
                 return "Bank Account";
+            case 3:
+                return "Credit Card";
         }
         throw new IndexOutOfBoundsException();
     }
@@ -28,9 +30,11 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return ExpressCreditCardFragment.newInstance();
+                return PaymentMenuFragment.newInstance();
             case 1:
                 return ExpressBankAccountFragment.newInstance();
+            case 2:
+                return ExpressCreditCardFragment.newInstance();
         }
         throw new IndexOutOfBoundsException();
     }

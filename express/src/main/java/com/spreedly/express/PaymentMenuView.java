@@ -19,6 +19,8 @@ public class PaymentMenuView extends LinearLayout {
     Button bankButton;
     Button cardButton;
 
+    PaymentView paymentView;
+
     public PaymentMenuView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         applyAttributes(context, attrs);
@@ -27,6 +29,12 @@ public class PaymentMenuView extends LinearLayout {
     public PaymentMenuView(Context context) {
         super(context);
         setPaymentType(0);
+    }
+
+    @Override
+    public void onFinishInflate() {
+        super.onFinishInflate();
+        createMenu();
     }
 
     private void applyAttributes(Context context, AttributeSet attrs) {
@@ -65,35 +73,45 @@ public class PaymentMenuView extends LinearLayout {
         addCardButton = new Button(this.getContext());
         addCardButton.setText(R.string.add_a_card);
         addCardButton.setOnClickListener((l) -> {
-            //TODO: clicklistener
+            paymentView = new CreditCardPaymentView(this.getContext(), null);
+            paymentView.onFinishInflate();
+            this.removeAllViews();
+            this.addView(paymentView);
         });
         bankButton = new Button(this.getContext());
         bankButton.setText(R.string.pay_with_bank);
         bankButton.setOnClickListener((l) -> {
-            //TODO: clicklistener
+            paymentView = new BankAccountPaymentView(this.getContext(), null);
+            paymentView.onFinishInflate();
+            this.removeAllViews();
+            this.addView(paymentView);
         });
         cardButton = new Button(this.getContext());
         cardButton.setText(R.string.pay_with_card);
         cardButton.setOnClickListener((l) -> {
-            //TODO: click listener
+            paymentView = new CreditCardPaymentView(this.getContext(), null);
+            paymentView.onFinishInflate();
+            this.removeAllViews();
+            this.addView(paymentView);
         });
         paymentSelectorLayout = new LinearLayout(getContext());
         switch (paymentType) {
-            case 2:
+            case 0:
                 createSavedCardList();
                 paymentSelectorLayout.addView(addCardButton);
                 break;
-            case 3:
+            case 1:
                 paymentSelectorLayout = new LinearLayout(getContext());
                 paymentSelectorLayout.addView(cardButton);
                 paymentSelectorLayout.addView(bankButton);
                 break;
-            case 4:
+            case 2:
                 paymentSelectorLayout = new LinearLayout(getContext());
                 createSavedCardList();
                 paymentSelectorLayout.addView(addCardButton);
                 paymentSelectorLayout.addView(bankButton);
                 break;
         }
+        this.addView(paymentSelectorLayout);
     }
 }
