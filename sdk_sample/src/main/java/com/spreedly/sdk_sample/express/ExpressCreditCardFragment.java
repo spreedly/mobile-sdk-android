@@ -12,13 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.spreedly.sdk_sample.R;
 
-public class ExpressCreditCard extends Fragment {
+public class ExpressCreditCardFragment extends Fragment {
 
     private ExpressCreditCardViewModel mViewModel;
 
     @NonNull
-    public static ExpressCreditCard newInstance() {
-        return new ExpressCreditCard();
+    public static ExpressCreditCardFragment newInstance() {
+        return new ExpressCreditCardFragment();
     }
 
     @Override

@@ -17,6 +17,8 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return "Credit Card";
+            case 1:
+                return "Bank Account";
         }
         throw new IndexOutOfBoundsException();
     }
@@ -26,13 +28,15 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return ExpressCreditCard.newInstance();
+                return ExpressCreditCardFragment.newInstance();
+            case 1:
+                return ExpressBankAccountFragment.newInstance();
         }
         throw new IndexOutOfBoundsException();
     }
 
     @Override
     public int getCount() {
-        return 1;
+        return 2;
     }
 }

@@ -1,12 +1,5 @@
 <resources>
     <declare-styleable name="ExpressView">
-        <attr name="paymentType" format="enum">
-            <enum name="new_card_only" value="0" />
-            <enum name="account_only" value="1" />
-            <enum name="card_only" value="2" />
-            <enum name="new_card_and_bank" value="3" />
-            <enum name="any" value="4" />
-        </attr>
         <attr name="includeBillingAddress" format="boolean" />
         <attr name="includeShippingAddress" format="boolean" />
         <attr name="submitButtonText" format="string" />

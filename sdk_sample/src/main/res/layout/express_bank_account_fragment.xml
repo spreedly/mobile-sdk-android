@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.spreedly.express.CreditCardPaymentView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/express_credit_card_form"
+    <com.spreedly.express.BankAccountPaymentView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/express_bank_account_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"

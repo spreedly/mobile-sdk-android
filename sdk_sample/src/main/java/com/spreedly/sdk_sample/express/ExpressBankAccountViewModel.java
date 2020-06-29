@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
-import com.spreedly.express.CreditCardPaymentView;
+import com.spreedly.express.BankAccountPaymentView;
 import com.spreedly.express.OnCustomEventListener;
 import com.spreedly.sdk_sample.R;
 
@@ -16,9 +16,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 
-public class ExpressCreditCardViewModel extends ViewModel {
+public class ExpressBankAccountViewModel extends ViewModel {
     // TODO: Implement the ViewModel
-    CreditCardPaymentView mainView;
+    // TODO: Implement the ViewModel
+    BankAccountPaymentView mainView;
     TextView token;
 
     @NonNull
