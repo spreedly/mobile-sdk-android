@@ -44,7 +44,6 @@ public class PaymentMenuFragment extends Fragment {
         storedCards.add(card1);
         storedCards.add(card2);
         mViewModel.mainView.addSavedCards(storedCards);
-        mViewModel.mainView.updateCardSlider();
     }
 
 }

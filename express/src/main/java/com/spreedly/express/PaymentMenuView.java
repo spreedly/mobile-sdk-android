@@ -66,18 +66,17 @@ public class PaymentMenuView extends LinearLayout {
 
     public void addSavedCards(@Nullable List<StoredCard> cards) {
         storedCards = cards;
+        cardSlider.update(storedCards);
     }
 
     private void createSavedCardList() {
         cardSlider = new CardSlider(getContext(), null);
+        cardSlider.onFinishInflate();
         paymentSelectorLayout.addView(cardSlider);
     }
 
-    public void updateCardSlider() {
-        cardSlider.update(storedCards);
-    }
-
     private void createMenu() {
+        this.setOrientation(VERTICAL);
         addCardButton = new Button(this.getContext());
         addCardButton.setText(R.string.add_a_card);
         addCardButton.setOnClickListener((l) -> {
@@ -126,18 +125,17 @@ public class PaymentMenuView extends LinearLayout {
             });
         });
         paymentSelectorLayout = new LinearLayout(getContext());
+        paymentSelectorLayout.setOrientation(VERTICAL);
         switch (paymentType) {
             case 0:
                 createSavedCardList();
                 paymentSelectorLayout.addView(addCardButton);
                 break;
             case 1:
-                paymentSelectorLayout = new LinearLayout(getContext());
                 paymentSelectorLayout.addView(cardButton);
                 paymentSelectorLayout.addView(bankButton);
                 break;
             case 2:
-                paymentSelectorLayout = new LinearLayout(getContext());
                 createSavedCardList();
                 paymentSelectorLayout.addView(addCardButton);
                 paymentSelectorLayout.addView(bankButton);
