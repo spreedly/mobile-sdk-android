@@ -20,6 +20,11 @@ class CardSlider extends HorizontalScrollView {
         this.pixelDensity = getResources().getDisplayMetrics().density;
     }
 
+    public CardSlider(@NonNull Context context) {
+        super(context);
+        this.pixelDensity = getResources().getDisplayMetrics().density;
+    }
+
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
