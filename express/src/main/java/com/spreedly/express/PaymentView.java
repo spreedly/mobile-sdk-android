@@ -1,9 +1,7 @@
 package com.spreedly.express;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ScrollView;
@@ -60,29 +58,6 @@ public class PaymentView extends ScrollView {
 
     public PaymentView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        applyAttributes(context, attrs);
-    }
-
-    void setBilling() {
-        setLabel("Billing Address", billingLabel);
-        billingAddress = new AddressFieldView(secureFormLayout.getContext(), AddressFieldView.AddressType.BILLING);
-        billingAddress.onFinishInflate();
-        secureFormLayout.addView(billingAddress);
-    }
-
-    void setShipping() {
-        setLabel("Shipping Address", shippingLabel);
-        shippingAddress = new AddressFieldView(secureFormLayout.getContext(), AddressFieldView.AddressType.SHIPPING);
-        shippingAddress.onFinishInflate();
-        secureFormLayout.addView(shippingAddress);
-    }
-
-    void setSameAddress() {
-        sameAddress = new CheckBox(secureFormLayout.getContext());
-        sameAddress.setText(R.string.use_billing_toggle);
-        sameAddress.setId(R.id.same_address);
-        sameAddress.setOnClickListener(b -> sameAddressClickListener());
-        secureFormLayout.addView(sameAddress);
     }
 
     void setFullName() {
@@ -105,29 +80,6 @@ public class PaymentView extends ScrollView {
         secureFormLayout.addView(label);
     }
 
-    void sameAddressClickListener() {
-        if (sameAddress.isChecked()) {
-            //hide shipping address
-            shippingAddress.setVisibility(View.GONE);
-            shippingLabel.setVisibility(View.GONE);
-        } else {
-            //show shipping address
-            shippingLabel.setVisibility(View.VISIBLE);
-            shippingAddress.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void applyAttributes(Context context, AttributeSet attrs) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.PaymentMenuView,
-                0, 0);
-        boolean shipping = true;
-        boolean billing = true;
-        billing = a.getBoolean(R.styleable.PaymentView_includeBillingAddress, true);
-        shipping = a.getBoolean(R.styleable.PaymentView_includeShippingAddress, true);
-        setAddressUse(billing, shipping);
-    }
 
     public void setAddressUse(boolean billing, boolean shipping) {
         showBilling = billing;

@@ -42,13 +42,6 @@ public class CreditCardPaymentView extends PaymentView {
         setLabel("Payment Method", paymentLabel);
         setFullName();
         setCC();
-        if (showBilling)
-            setBilling();
-        if (showBilling && showShipping)
-            setSameAddress();
-        if (showShipping) {
-            setShipping();
-        }
         if (includeBackButton) {
             Button backButton = new Button(secureFormLayout.getContext());
             backButton.setText(R.string.back);

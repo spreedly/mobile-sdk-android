@@ -49,13 +49,6 @@ public class BankAccountPaymentView extends PaymentView {
         setLabel("Payment Method", paymentLabel);
         setFullName();
         setBankAccount();
-        if (showBilling)
-            setBilling();
-        if (showBilling && showShipping)
-            setSameAddress();
-        if (showShipping) {
-            setShipping();
-        }
         if (includeBackButton) {
             Button backButton = new Button(this.getContext());
             backButton.setText(R.string.back);
