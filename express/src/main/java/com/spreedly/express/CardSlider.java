@@ -1,7 +1,6 @@
 package com.spreedly.express;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -13,14 +12,12 @@ import java.util.List;
 class CardSlider extends HorizontalScrollView {
     List<StoredCard> cards;
     LinearLayout wrapper;
-
-    public CardSlider(@NonNull Context context) {
-        super(context);
-    }
+    final float pixelDensity;
 
     public CardSlider(@NonNull Context context, List<StoredCard> storedCards) {
         super(context);
-        cards = storedCards;
+        this.cards = storedCards;
+        this.pixelDensity = getResources().getDisplayMetrics().density;
     }
 
     @Override
@@ -32,23 +29,29 @@ class CardSlider extends HorizontalScrollView {
     private void init() {
         wrapper = new LinearLayout(this.getContext());
         this.addView(wrapper);
-        this.setBackgroundColor(getResources().getColor(R.color.design_default_color_on_secondary));
+
     }
 
 
     public void update(List<StoredCard> storedCards) {
-        // this.removeAllViews();
-        try {
-            cards = storedCards;
-            Button[] buttons = new Button[cards.size()];
-            for (int i = 0; i < cards.size(); i++) {
-                StoredCard card = cards.get(i);
-                buttons[i] = new Button(wrapper.getContext());
-                buttons[i].setText(card.description);
-                wrapper.addView(buttons[i]);
-            }
-        } catch (Exception e) {
-            Log.e("Spreedly", e.getMessage());
+        wrapper.removeAllViews();
+        cards = storedCards;
+        int padding = (int) (12 * pixelDensity);
+        int width = (int) (112 * pixelDensity);
+        int height = (int) (80 * pixelDensity);
+        float textSize = (4 * pixelDensity);
+        for (int i = 0; i < cards.size(); i++) {
+            StoredCard card = cards.get(i);
+            Button button = new Button(wrapper.getContext());
+            button.setCompoundDrawablesWithIntrinsicBounds(0, card.type.getIcon(), 0, 0);
+            button.setText(card.description);
+            button.setMinWidth(width);
+            button.setMaxWidth(width);
+            button.setMaxHeight(height);
+            button.setMinHeight(height);
+            button.setPadding(0, padding, 0, padding);
+            button.setTextSize(textSize);
+            wrapper.addView(button);
         }
     }
 }

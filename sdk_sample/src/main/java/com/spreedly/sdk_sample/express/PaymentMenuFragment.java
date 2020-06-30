@@ -38,8 +38,8 @@ public class PaymentMenuFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(PaymentMenuViewModel.class);
         mViewModel.mainView = getView().findViewById(R.id.express_payment_menu);
-        StoredCard card1 = new StoredCard("sample_token_1", CardBrand.visa, "Visa ending in XXXX");
-        StoredCard card2 = new StoredCard("sample_token_2", CardBrand.mastercard, "Mastercard ending in XXXX");
+        StoredCard card1 = new StoredCard("sample_token_1", CardBrand.visa, "Visa XXXX");
+        StoredCard card2 = new StoredCard("sample_token_2", CardBrand.mastercard, "Mastercard XXXX");
         List<StoredCard> storedCards = new ArrayList<>();
         storedCards.add(card1);
         storedCards.add(card2);
