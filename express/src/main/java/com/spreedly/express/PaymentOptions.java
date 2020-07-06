@@ -4,20 +4,24 @@ import androidx.annotation.Nullable;
 
 import com.spreedly.client.models.Address;
 
+import java.util.List;
+
 public class PaymentOptions {
-    public boolean showZipcode;
+    boolean showZipcode;
     @Nullable
-    public Address shippingAddress;
+    Address shippingAddress;
     @Nullable
-    public Address billingAddress;
+    Address billingAddress;
     @Nullable
-    public String merchantTitle;
+    String merchantTitle;
     @Nullable
-    public String merchantText;
+    String merchantText;
     @Nullable
-    public PaymentType paymentType;
+    PaymentType paymentType;
     @Nullable
-    public String buttonText;
+    String buttonText;
+    @Nullable
+    List<StoredCard> storedCardList;
 
     public void setMerchantTitle(@Nullable String merchantTitle) {
         this.merchantTitle = merchantTitle;
@@ -45,5 +49,9 @@ public class PaymentOptions {
 
     public void setShowZipcode(@Nullable boolean showZipcode) {
         this.showZipcode = showZipcode;
+    }
+
+    public void setStoredCardList(@Nullable List<StoredCard> storedCardList) {
+        this.storedCardList = storedCardList;
     }
 }

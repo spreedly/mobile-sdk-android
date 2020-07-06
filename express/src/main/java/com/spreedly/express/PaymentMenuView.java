@@ -35,7 +35,6 @@ public class PaymentMenuView extends LinearLayout {
     public PaymentMenuView(@NonNull Context context) {
         super(context);
         setPaymentType(0);
-        setAddressUse(true, true);
     }
 
     @Override
@@ -52,12 +51,7 @@ public class PaymentMenuView extends LinearLayout {
         int paymentType = 0;
         paymentType = a.getInteger(R.styleable.PaymentMenuView_paymentType, 0);
         setPaymentType(paymentType);
-        boolean shipping = true;
-        boolean billing = true;
-        billing = a.getBoolean(R.styleable.PaymentMenuView_includeBillingAddressOverride, true);
-        shipping = a.getBoolean(R.styleable.PaymentMenuView_includeShippingAddressOverride, true);
         submitButtonText = a.getString(R.styleable.PaymentMenuView_submitButtonTextOverride);
-        setAddressUse(billing, shipping);
     }
 
     public void setPaymentType(int value) {
@@ -96,7 +90,6 @@ public class PaymentMenuView extends LinearLayout {
         bankButton.setText(R.string.pay_with_bank);
         bankButton.setOnClickListener((l) -> {
             paymentView = new BankAccountPaymentView(this.getContext(), showBilling, showShipping, submitButtonText, true);
-            paymentView.setAddressUse(showBilling, showShipping);
             paymentView.onFinishInflate();
             this.removeAllViews();
             this.addView(paymentView);
@@ -112,7 +105,6 @@ public class PaymentMenuView extends LinearLayout {
         cardButton.setText(R.string.pay_with_card);
         cardButton.setOnClickListener((l) -> {
             paymentView = new CreditCardPaymentView(this.getContext(), showBilling, showShipping, submitButtonText, true);
-            paymentView.setAddressUse(showBilling, showShipping);
             paymentView.onFinishInflate();
             this.removeAllViews();
             this.addView(paymentView);
@@ -144,8 +136,4 @@ public class PaymentMenuView extends LinearLayout {
         this.addView(paymentSelectorLayout);
     }
 
-    public void setAddressUse(boolean billing, boolean shipping) {
-        showBilling = billing;
-        showShipping = shipping;
-    }
 }

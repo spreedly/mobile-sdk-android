@@ -24,8 +24,6 @@ public class CreditCardPaymentView extends PaymentView {
 
     public CreditCardPaymentView(@NonNull Context context, boolean showBilling, boolean showShipping, @Nullable String submitButtonText, boolean includeBackButton) {
         super(context);
-        this.showBilling = showBilling;
-        this.showShipping = showShipping;
         this.submitButtonText = submitButtonText;
         this.includeBackButton = true;
     }

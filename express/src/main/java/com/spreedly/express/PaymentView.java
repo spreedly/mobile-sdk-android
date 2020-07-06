@@ -3,7 +3,6 @@ package com.spreedly.express;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
@@ -29,8 +28,6 @@ public class PaymentView extends ScrollView {
     @Nullable
     String secret;
 
-    boolean showBilling;
-    boolean showShipping;
     String submitButtonText;
     boolean includeBackButton;
     @Nullable
@@ -38,12 +35,7 @@ public class PaymentView extends ScrollView {
 
     SecureFormLayout secureFormLayout;
     Button submitButton;
-    AddressFieldView billingAddress;
-    AddressFieldView shippingAddress;
-    CheckBox sameAddress;
     MaterialTextView paymentLabel;
-    MaterialTextView billingLabel;
-    MaterialTextView shippingLabel;
     TextInputLayout fullNameWrapper;
     TextInputEditText fullNameContent;
 
@@ -53,7 +45,6 @@ public class PaymentView extends ScrollView {
     }
     public PaymentView(@NonNull Context context) {
         super(context);
-        setAddressUse(true, true);
     }
 
     public PaymentView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -80,11 +71,6 @@ public class PaymentView extends ScrollView {
         secureFormLayout.addView(label);
     }
 
-
-    public void setAddressUse(boolean billing, boolean shipping) {
-        showBilling = billing;
-        showShipping = shipping;
-    }
 
     public void setClientInfo(@NonNull String key, @NonNull String secret, @NonNull boolean test) {
         this.key = key;

@@ -34,6 +34,7 @@ class CardSlider extends HorizontalScrollView {
     private void init() {
         wrapper = new LinearLayout(this.getContext());
         this.addView(wrapper);
+        update(cards);
 
     }
 

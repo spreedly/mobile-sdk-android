@@ -31,8 +31,6 @@ public class BankAccountPaymentView extends PaymentView {
 
     public BankAccountPaymentView(@NonNull Context context, boolean showBilling, boolean showShipping, @Nullable String submitButtonText, boolean includeBackButton) {
         super(context);
-        this.showBilling = showBilling;
-        this.showShipping = showShipping;
         this.submitButtonText = submitButtonText;
         this.includeBackButton = includeBackButton;
     }
