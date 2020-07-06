@@ -2,6 +2,7 @@ package com.spreedly.express;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -214,11 +215,13 @@ public class ExpressFragment extends Fragment {
 
     void setMerchantLogo() {
         MaterialTextView textView = new MaterialTextView(getContext());
-        if (options.merchantIcon != null) {
-            textView.setCompoundDrawables(options.merchantIcon, null, null, null);
+        if (options.merchantIcon != 0) {
+            textView.setCompoundDrawablesWithIntrinsicBounds(options.merchantIcon, 0, 0, 0);
         }
         if (options.merchantTitle != null) {
             textView.setText(options.merchantTitle);
+            textView.setTextAppearance(getContext(), R.style.TextAppearance_AppCompat_Large);
+            textView.setGravity(Gravity.CENTER);
         }
         mViewModel.layout.addView(textView, 0);
     }

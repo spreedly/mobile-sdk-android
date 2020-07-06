@@ -12,6 +12,7 @@ import com.spreedly.express.ExpressBuilder;
 import com.spreedly.express.PaymentOptions;
 import com.spreedly.express.PaymentType;
 import com.spreedly.express.StoredCard;
+import com.spreedly.sdk_sample.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,7 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
                 options.setPaymentType(PaymentType.ALL);
                 options.setStoredCardList(storedCards);
                 options.setMerchantTitle("Lucy's Shop");
+                options.setMerchantIcon(R.drawable.ic_rowing);
                 options.setMerchantText("<div><h1>My First Heading</h1>\n" +
                         "<p>My first paragraph.</p></div>");
                 ExpressBuilder builder = new ExpressBuilder(client, options);
