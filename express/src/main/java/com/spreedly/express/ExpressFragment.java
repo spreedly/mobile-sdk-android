@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -214,16 +215,21 @@ public class ExpressFragment extends Fragment {
     }
 
     void setMerchantLogo() {
+        LinearLayout wrapper = new LinearLayout(getContext());
+        wrapper.setGravity(Gravity.CENTER);
         MaterialTextView textView = new MaterialTextView(getContext());
         if (options.merchantIcon != 0) {
-            textView.setCompoundDrawablesWithIntrinsicBounds(options.merchantIcon, 0, 0, 0);
+            ImageView img = new ImageView(getContext());
+            img.setImageResource(options.merchantIcon);
+            wrapper.addView(img);
         }
         if (options.merchantTitle != null) {
             textView.setText(options.merchantTitle);
             textView.setTextAppearance(getContext(), R.style.TextAppearance_AppCompat_Large);
             textView.setGravity(Gravity.CENTER);
+            wrapper.addView(textView);
         }
-        mViewModel.layout.addView(textView, 0);
+        mViewModel.layout.addView(wrapper, 0);
     }
 
     void setMerchantText() {
