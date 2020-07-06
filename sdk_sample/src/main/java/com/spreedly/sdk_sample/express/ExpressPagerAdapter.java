@@ -50,6 +50,9 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
                 options.setButtonText("Pay now");
                 options.setPaymentType(PaymentType.ALL);
                 options.setStoredCardList(storedCards);
+                options.setMerchantTitle("Lucy's Shop");
+                options.setMerchantText("<div><h1>My First Heading</h1>\n" +
+                        "<p>My first paragraph.</p></div>");
                 ExpressBuilder builder = new ExpressBuilder(client, options);
                 builder.buildFragment();
                 return builder.fragment;

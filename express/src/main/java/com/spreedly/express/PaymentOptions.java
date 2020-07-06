@@ -1,5 +1,7 @@
 package com.spreedly.express;
 
+import android.graphics.drawable.Drawable;
+
 import androidx.annotation.Nullable;
 
 import com.spreedly.client.models.Address;
@@ -22,6 +24,8 @@ public class PaymentOptions {
     String buttonText;
     @Nullable
     List<StoredCard> storedCardList;
+    @Nullable
+    Drawable merchantIcon;
 
     public void setMerchantTitle(@Nullable String merchantTitle) {
         this.merchantTitle = merchantTitle;
@@ -53,5 +57,9 @@ public class PaymentOptions {
 
     public void setStoredCardList(@Nullable List<StoredCard> storedCardList) {
         this.storedCardList = storedCardList;
+    }
+
+    public void setMerchantIcon(@Nullable Drawable merchantIcon) {
+        this.merchantIcon = merchantIcon;
     }
 }

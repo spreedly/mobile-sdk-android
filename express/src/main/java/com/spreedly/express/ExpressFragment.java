@@ -1,6 +1,7 @@
 package com.spreedly.express;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class ExpressFragment extends Fragment {
     }
 
     private void createMenu() {
+        setMerchantLogo();
         mViewModel.addCardButton = new Button(this.getContext());
         mViewModel.addCardButton.setText(R.string.add_a_card);
         mViewModel.addCardButton.setOnClickListener((l) -> {
@@ -109,9 +111,10 @@ public class ExpressFragment extends Fragment {
     }
 
     private void createCardPayment(boolean includeBackButton) {
+        setMerchantLogo();
         mViewModel.secureFormLayout = new SecureFormLayout(this.getContext());
         mViewModel.secureFormLayout.setOrientation(LinearLayout.VERTICAL);
-        setLabel("Payment Method", mViewModel.paymentLabel);
+        setLabel("Payment Method");
         setFullName();
         mViewModel.secureCreditCardField = new SecureCreditCardField(mViewModel.secureFormLayout.getContext());
         mViewModel.secureCreditCardField.setId(R.id.spreedly_credit_card_number);
@@ -139,12 +142,14 @@ public class ExpressFragment extends Fragment {
         mViewModel.secureFormLayout.addView(mViewModel.submitButton);
         mViewModel.secureFormLayout.onFinishInflate();
         mViewModel.layout.addView(mViewModel.secureFormLayout);
+        setMerchantText();
     }
 
     private void createBankPayment(boolean includeBackButton) {
+        setMerchantLogo();
         mViewModel.secureFormLayout = new SecureFormLayout(this.getContext());
         mViewModel.secureFormLayout.setOrientation(LinearLayout.VERTICAL);
-        setLabel("Payment Method", mViewModel.paymentLabel);
+        setLabel("Payment Method");
         setFullName();
         mViewModel.accountNumberField = new SecureTextField(getContext());
         mViewModel.accountNumberField.setId(R.id.spreedly_ba_account_number);
@@ -179,6 +184,7 @@ public class ExpressFragment extends Fragment {
         mViewModel.secureFormLayout.addView(mViewModel.submitButton);
         mViewModel.secureFormLayout.onFinishInflate();
         mViewModel.layout.addView(mViewModel.secureFormLayout);
+        setMerchantText();
     }
 
 
@@ -195,15 +201,32 @@ public class ExpressFragment extends Fragment {
         mViewModel.secureFormLayout.addView(mViewModel.fullNameWrapper);
     }
 
-    void setLabel(String labelContent, MaterialTextView label) {
+    void setLabel(String labelContent) {
         final float pixelDensity = getResources().getDisplayMetrics().density;
         int padding = (int) (16 * pixelDensity);
         int labelPadding = (int) (12 * pixelDensity);
-        label = new MaterialTextView(this.getContext());
+        MaterialTextView label = new MaterialTextView(this.getContext());
         label.setText(labelContent);
         label.setTextAppearance(this.getContext(), android.R.style.TextAppearance_DeviceDefault_Large);
         label.setPadding(0, labelPadding, 0, 0);
         mViewModel.secureFormLayout.addView(label);
+    }
+
+    void setMerchantLogo() {
+        MaterialTextView textView = new MaterialTextView(getContext());
+        if (options.merchantIcon != null) {
+            textView.setCompoundDrawables(options.merchantIcon, null, null, null);
+        }
+        if (options.merchantTitle != null) {
+            textView.setText(options.merchantTitle);
+        }
+        mViewModel.layout.addView(textView, 0);
+    }
+
+    void setMerchantText() {
+        MaterialTextView textView = new MaterialTextView(getContext());
+        textView.setText(Html.fromHtml(options.merchantText));
+        mViewModel.layout.addView(textView);
     }
 
 
