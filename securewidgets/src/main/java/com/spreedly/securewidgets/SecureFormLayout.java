@@ -93,6 +93,10 @@ public class SecureFormLayout extends LinearLayout {
         spreedlyClient = SpreedlyClient.newInstance(envKey, envSecret, test);
     }
 
+    public void setSpreedlyClient(@NonNull SpreedlyClient client) {
+        spreedlyClient = client;
+    }
+
     @Nullable
     public SpreedlyClient getClient() {
         return spreedlyClient;
@@ -203,7 +207,7 @@ public class SecureFormLayout extends LinearLayout {
     }
 
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@Nullable Address shippingAddress, @Nullable Address billingAddress) {
+    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@Nullable Address billingAddress, @Nullable Address shippingAddress) {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         resetCardErrors();
         resetGenericErrors();
@@ -243,7 +247,7 @@ public class SecureFormLayout extends LinearLayout {
     }
 
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod(@Nullable Address shippingAddress, @Nullable Address billingAddress) {
+    public Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod(@Nullable Address billingAddress, @Nullable Address shippingAddress) {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         resetBankErrors();
         resetGenericErrors();

@@ -4,8 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.spreedly.client.models.Address;
+import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.TransactionResult;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.SingleObserver;
 
 public class PaymentOptions {
     boolean showZipcode;
@@ -26,7 +30,7 @@ public class PaymentOptions {
     @Nullable
     int merchantIcon;
     @NonNull
-    OnCustomEventListener submitCallback;
+    SingleObserver<TransactionResult<PaymentMethodResult>> submitCallback;
 
     public void setMerchantTitle(@Nullable String merchantTitle) {
         this.merchantTitle = merchantTitle;
@@ -62,5 +66,9 @@ public class PaymentOptions {
 
     public void setMerchantIcon(@Nullable int merchantIcon) {
         this.merchantIcon = merchantIcon;
+    }
+
+    public void setSubmitCallback(@NonNull SingleObserver<TransactionResult<PaymentMethodResult>> submitCallback) {
+        this.submitCallback = submitCallback;
     }
 }

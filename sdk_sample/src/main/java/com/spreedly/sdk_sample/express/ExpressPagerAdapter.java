@@ -1,5 +1,7 @@
 package com.spreedly.sdk_sample.express;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -8,6 +10,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.enums.CardBrand;
+import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.express.ExpressBuilder;
 import com.spreedly.express.PaymentOptions;
 import com.spreedly.express.PaymentType;
@@ -16,6 +20,9 @@ import com.spreedly.sdk_sample.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class ExpressPagerAdapter extends FragmentPagerAdapter {
     public ExpressPagerAdapter(@NonNull FragmentManager fm) {
@@ -55,6 +62,22 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
                 options.setMerchantIcon(R.drawable.ic_rowing);
                 options.setMerchantText("<div><h1>My First Heading</h1>\n" +
                         "<p>My first paragraph.</p></div>");
+                options.setSubmitCallback(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                        Log.i("Spreedly", "Subscribed");
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull TransactionResult<PaymentMethodResult> paymentMethodResultTransactionResult) {
+                        Log.i("Spreedly", "Token: " + paymentMethodResultTransactionResult.result.token);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Log.e("Spreedly", e.getMessage());
+                    }
+                });
                 ExpressBuilder builder = new ExpressBuilder(client, options);
                 builder.buildFragment();
                 return builder.fragment;

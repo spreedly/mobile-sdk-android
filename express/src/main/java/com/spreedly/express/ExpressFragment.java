@@ -23,10 +23,14 @@ import com.google.android.material.textview.MaterialTextView;
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.enums.BankAccountHolderType;
 import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.securewidgets.SecureCreditCardField;
 import com.spreedly.securewidgets.SecureExpirationDate;
 import com.spreedly.securewidgets.SecureFormLayout;
 import com.spreedly.securewidgets.SecureTextField;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class ExpressFragment extends Fragment {
 
@@ -116,6 +120,7 @@ public class ExpressFragment extends Fragment {
         setMerchantLogo();
         mViewModel.secureFormLayout = new SecureFormLayout(this.getContext());
         mViewModel.secureFormLayout.setOrientation(LinearLayout.VERTICAL);
+        mViewModel.secureFormLayout.setSpreedlyClient(client);
         setLabel("Payment Method");
         setFullName();
         mViewModel.secureCreditCardField = new SecureCreditCardField(mViewModel.secureFormLayout.getContext());
@@ -140,7 +145,7 @@ public class ExpressFragment extends Fragment {
         }
         mViewModel.submitButton = new Button(getContext());
         mViewModel.submitButton.setText(options.buttonText);
-        mViewModel.submitButton.setOnClickListener(b -> submit());
+        mViewModel.submitButton.setOnClickListener(b -> submitNewCard());
         mViewModel.secureFormLayout.addView(mViewModel.submitButton);
         mViewModel.secureFormLayout.onFinishInflate();
         mViewModel.layout.addView(mViewModel.secureFormLayout);
@@ -151,6 +156,7 @@ public class ExpressFragment extends Fragment {
         setMerchantLogo();
         mViewModel.secureFormLayout = new SecureFormLayout(this.getContext());
         mViewModel.secureFormLayout.setOrientation(LinearLayout.VERTICAL);
+        mViewModel.secureFormLayout.setSpreedlyClient(client);
         setLabel("Payment Method");
         setFullName();
         mViewModel.accountNumberField = new SecureTextField(getContext());
@@ -182,7 +188,7 @@ public class ExpressFragment extends Fragment {
         }
         mViewModel.submitButton = new Button(mViewModel.secureFormLayout.getContext());
         mViewModel.submitButton.setText(options.buttonText);
-        mViewModel.submitButton.setOnClickListener(b -> submit());
+        mViewModel.submitButton.setOnClickListener(b -> submitBank());
         mViewModel.secureFormLayout.addView(mViewModel.submitButton);
         mViewModel.secureFormLayout.onFinishInflate();
         mViewModel.layout.addView(mViewModel.secureFormLayout);
@@ -190,8 +196,19 @@ public class ExpressFragment extends Fragment {
     }
 
 
-    private void submit() {
-        //TODO: submit button
+    private void submitNewCard() {
+        Single<TransactionResult<PaymentMethodResult>> result = mViewModel.secureFormLayout.createCreditCardPaymentMethod(options.billingAddress, options.shippingAddress);
+        result.subscribe(options.submitCallback);
+    }
+
+    private void submitBank() {
+        Single<TransactionResult<PaymentMethodResult>> result = mViewModel.secureFormLayout.createBankAccountPaymentMethod(options.billingAddress, options.shippingAddress);
+        result.subscribe(options.submitCallback);
+    }
+
+    private void submitSavedCard() {
+        //        Single<TransactionResult<PaymentMethodResult>> result;
+        //        result.subscribe(options.submitCallback);
     }
 
     void setFullName() {
