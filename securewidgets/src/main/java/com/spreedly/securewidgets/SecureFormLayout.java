@@ -202,6 +202,104 @@ public class SecureFormLayout extends LinearLayout {
         });
     }
 
+    @NonNull
+    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@Nullable Address shippingAddress, @Nullable Address billingAddress) {
+        Log.i("Spreedly", "createCreditCardPaymentMethod firing");
+        resetCardErrors();
+        resetGenericErrors();
+        boolean hasError = validateNames();
+        hasError = validateAddress(hasError);
+        if (creditCardNumberField == null || creditCardNumberField.getText().detectCardType() == CardBrand.error) {
+            creditCardNumberField.setError("Invalid Card Number");
+            hasError = true;
+        }
+        if (expirationField != null && (expirationField.getYear() == 0 || expirationField.getMonth() == 0)) {
+            expirationField.setError("Invalid Date");
+            hasError = true;
+        }
+        if (hasError) {
+            return new Single<TransactionResult<PaymentMethodResult>>() {
+                @Override
+                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
+
+                }
+            };
+        }
+        CreditCardInfo info;
+        if (fullNameInput != null) {
+            info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+        } else {
+            info = new CreditCardInfo(getString(firstNameInput), getString(lastNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+        }
+        info.shippingAddress = shippingAddress;
+        info.address = billingAddress;
+        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, getString(emailInput), null);
+        return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
+            if (!transaction.succeeded) {
+                handleErrors(transaction.errors);
+            }
+            return transaction;
+        });
+    }
+
+    @NonNull
+    public Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod(@Nullable Address shippingAddress, @Nullable Address billingAddress) {
+        Log.i("Spreedly", "createCreditCardPaymentMethod firing");
+        resetBankErrors();
+        resetGenericErrors();
+        boolean hasError = validateNames();
+        hasError = validateAddress(hasError);
+        if (bankAccountNumberField != null) {
+            if (bankAccountNumberField.getText().length == 0) {
+                hasError = true;
+                bankAccountNumberField.setError("Account number cannot be blank");
+            } else if (!bankAccountNumberField.getText().isNumber()) {
+                hasError = true;
+                bankAccountNumberField.setError("Invalid account number");
+            }
+        }
+        if (routingNumberInput != null) {
+            if (getString(routingNumberInput).length() == 0) {
+                hasError = true;
+                routingNumberInput.setError("Account number cannot be blank");
+            } else {
+                try {
+                    Double.parseDouble(getString(routingNumberInput));
+                } catch (Exception e) {
+                    hasError = true;
+                    routingNumberInput.setError("Invalid routing number");
+                }
+            }
+        }
+        if (hasError) {
+            return new Single<TransactionResult<PaymentMethodResult>>() {
+                @Override
+                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
+
+                }
+            };
+        }
+        BankAccountInfo info;
+        Object accountType = bankAccountTypeSpinner.getSelectedItem();
+        if (fullNameInput != null) {
+            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType.toString()));
+        } else {
+            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType.toString()));
+        }
+        info.shippingAddress = shippingAddress;
+        info.address = billingAddress;
+        if (accountHolderTypeSpinner != null) {
+            info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
+        }
+        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info, getString(emailInput), null);
+        return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
+            if (!transaction.succeeded) {
+                handleErrors(transaction.errors);
+            }
+            return transaction;
+        });
+    }
+
     private void addAddress(PaymentMethodMeta info) {
         String address1 = getString(address1Input);
         String address2 = getString(address2Input);
