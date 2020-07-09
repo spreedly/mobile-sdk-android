@@ -64,7 +64,7 @@ public class PaymentMenuView extends LinearLayout {
     }
 
     private void createSavedCardList() {
-        cardSlider = new CardSlider(getContext(), null);
+        cardSlider = new CardSlider(getContext(), null, null);
         cardSlider.onFinishInflate();
         paymentSelectorLayout.addView(cardSlider);
     }

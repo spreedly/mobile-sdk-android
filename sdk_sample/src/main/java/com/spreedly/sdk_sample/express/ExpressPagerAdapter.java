@@ -80,6 +80,22 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
                         Log.e("Spreedly", e.getMessage());
                     }
                 });
+                options.setSavedCardCallback(new SingleObserver<StoredCard>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                        Log.i("Spreedly", "Subscribed");
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull StoredCard storedCard) {
+                        Log.i("Spreedly", "Token: " + storedCard.token);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Log.e("Spreedly", e.getMessage());
+                    }
+                });
                 ExpressBuilder builder = new ExpressBuilder(client, options);
                 builder.buildFragment();
                 return builder.fragment;

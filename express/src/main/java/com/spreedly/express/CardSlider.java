@@ -9,15 +9,20 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleObserver;
+
 class CardSlider extends HorizontalScrollView {
+    SingleObserver<StoredCard> storedCardCallback;
     List<StoredCard> cards;
     LinearLayout wrapper;
     final float pixelDensity;
 
-    public CardSlider(@NonNull Context context, List<StoredCard> storedCards) {
+    public CardSlider(@NonNull Context context, List<StoredCard> storedCards, SingleObserver<StoredCard> storedCardCallback) {
         super(context);
         this.cards = storedCards;
         this.pixelDensity = getResources().getDisplayMetrics().density;
+        this.storedCardCallback = storedCardCallback;
     }
 
     public CardSlider(@NonNull Context context) {
@@ -57,7 +62,16 @@ class CardSlider extends HorizontalScrollView {
             button.setMinHeight(height);
             button.setPadding(0, padding, 0, padding);
             button.setTextSize(textSize);
+            button.setOnClickListener((l) -> submit(card));
             wrapper.addView(button);
         }
+    }
+
+    private void submit(StoredCard card) {
+        Single<StoredCard> result = Single.create(emitter -> {
+            emitter.onSuccess(card);
+        });
+        result.subscribe(storedCardCallback);
+
     }
 }

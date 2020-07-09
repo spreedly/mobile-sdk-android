@@ -111,7 +111,7 @@ public class ExpressFragment extends Fragment {
     }
 
     private void createSavedCardList() {
-        mViewModel.cardSlider = new CardSlider(getContext(), options.storedCardList);
+        mViewModel.cardSlider = new CardSlider(getContext(), options.storedCardList, options.savedCardCallback);
         mViewModel.cardSlider.onFinishInflate();
         mViewModel.paymentSelectorLayout.addView(mViewModel.cardSlider);
     }
@@ -206,11 +206,6 @@ public class ExpressFragment extends Fragment {
     private void submitBank() {
         Single<TransactionResult<PaymentMethodResult>> result = mViewModel.secureFormLayout.createBankAccountPaymentMethod(options.billingAddress, options.shippingAddress);
         result.subscribe(options.submitCallback);
-    }
-
-    private void submitSavedCard() {
-        //        Single<TransactionResult<PaymentMethodResult>> result;
-        //        result.subscribe(options.submitCallback);
     }
 
     void setFullName() {
