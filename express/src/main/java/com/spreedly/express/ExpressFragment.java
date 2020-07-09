@@ -173,10 +173,10 @@ public class ExpressFragment extends Fragment {
         mViewModel.routingNumberContent = new TextInputEditText(mViewModel.secureFormLayout.getContext());
         mViewModel.routingNumberWrapper.addView(mViewModel.routingNumberContent);
         mViewModel.accountType = new Spinner(mViewModel.secureFormLayout.getContext());
-        mViewModel.accountType.setAdapter(new ArrayAdapter<BankAccountType>(mViewModel.secureFormLayout.getContext(), android.R.layout.simple_list_item_1, BankAccountType.values()));
+        mViewModel.accountType.setAdapter(new ArrayAdapter<>(mViewModel.secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountType.values()));
         mViewModel.accountType.setId(R.id.spreedly_ba_account_type);
         mViewModel.holderType = new Spinner(mViewModel.secureFormLayout.getContext());
-        mViewModel.holderType.setAdapter(new ArrayAdapter<BankAccountHolderType>(mViewModel.secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountHolderType.values()));
+        mViewModel.holderType.setAdapter(new ArrayAdapter<>(mViewModel.secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountHolderType.values()));
         mViewModel.holderType.setId(R.id.spreedly_ba_account_holder_type);
         addZipcode();
         mViewModel.secureFormLayout.addView(mViewModel.accountNumberField);

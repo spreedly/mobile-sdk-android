@@ -317,7 +317,7 @@ public class SecureFormLayout extends LinearLayout {
         String state = getString(stateInput);
         String zip = getString(zipInput);
         String phone = getString(phoneInput);
-        //String country = getString(countrySpinner);
+        String country = countrySpinner.getSelectedItem().toString();
         info.address = new Address(address1, address2, city, state, zip, "", phone);
     }
 
@@ -331,7 +331,7 @@ public class SecureFormLayout extends LinearLayout {
             String state = getString(shippingStateInput);
             String zip = getString(shippingZipInput);
             String phone = getString(shippingPhoneInput);
-            //String country = getString(shippingCountrySpinner);
+            String country = countrySpinner.getSelectedItem().toString();
             info.shippingAddress = new Address(address1, address2, city, state, zip, "", phone);
         }
     }
