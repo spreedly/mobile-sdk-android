@@ -130,6 +130,7 @@ public class ExpressFragment extends Fragment {
         mViewModel.ccvField.setId(R.id.spreedly_ccv);
         mViewModel.ccvField.onFinishInflate();
         mViewModel.secureExpirationDate = new SecureExpirationDate(mViewModel.secureFormLayout.getContext());
+        mViewModel.secureExpirationDate.onFinishInflate();
         mViewModel.secureExpirationDate.setId(R.id.spreedly_cc_expiration_date);
         addZipcode();
         mViewModel.secureFormLayout.addView(mViewModel.secureCreditCardField);

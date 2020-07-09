@@ -1,98 +1,98 @@
 package com.spreedly.securewidgets;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import java.util.Calendar;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
-public class SecureExpirationDate extends FrameLayout {
-    TextInputEditText editText;
-    TextInputLayout textLayout;
+public class SecureExpirationDate extends LinearLayout {
+    Spinner monthSpinner;
+    Spinner yearSpinner;
+    LinearLayout spinnerWrapper;
+    TextView error;
+    String month;
+    String year;
 
-    public SecureExpirationDate(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public SecureExpirationDate(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
-    public SecureExpirationDate(@NonNull Context context) {
+    public SecureExpirationDate(Context context) {
         super(context);
+    }
+
+    @Override
+    public void onFinishInflate() {
+
+        super.onFinishInflate();
         init();
     }
 
     private void init() {
-        textLayout = new TextInputLayout(this.getContext());
-        editText = new TextInputEditText(this.getContext());
-        editText.setInputType(InputType.TYPE_CLASS_DATETIME);
-        textLayout.addView(editText);
-        this.addView(textLayout);
-        editText.addTextChangedListener(new ExpirationDateTextWatcher());
-        textLayout.setHint("MMYY");
+        this.setOrientation(VERTICAL);
+        String[] monthArr = new String[]{"01", "02", "03", "04", "05", "06", "07", "06", "09", "10", "11", "12"};
+        Calendar c = Calendar.getInstance();
+        int currentYear = c.get(Calendar.YEAR);
+        String[] yearArr = new String[20];
+        for (int i = 0; i < 20; i++) {
+            int y = currentYear + i;
+            yearArr[i] = Integer.toString(y);
+        }
+        spinnerWrapper = new LinearLayout(getContext());
+        monthSpinner = new Spinner(getContext());
+        ArrayAdapter monthAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, monthArr);
+        monthSpinner.setAdapter(monthAdapter);
+        monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                month = monthArr[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                month = "01";
+            }
+        });
+        spinnerWrapper.addView(monthSpinner);
+        yearSpinner = new Spinner(getContext());
+
+        ArrayAdapter yearAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, yearArr);
+        yearSpinner.setAdapter(yearAdapter);
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                year = yearArr[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                year = Integer.toString(currentYear);
+            }
+        });
+        spinnerWrapper.addView(yearSpinner);
+        this.addView(spinnerWrapper);
     }
 
+
     public int getMonth() {
-        String input = editText.getEditableText().toString();
-        if (input.length() == 5) {
-            return Integer.parseInt(input.substring(0, 2));
-        }
-        return 0;
+        return Integer.parseInt(month);
     }
 
     public int getYear() {
-        String input = editText.getEditableText().toString();
-        if (input.length() == 5) {
-            return 2000 + Integer.parseInt(input.substring(3, 5));
-        }
-        return 0;
+        return Integer.parseInt(year);
     }
 
-    public void setError(@Nullable String error) {
-        textLayout.setError(error);
-    }
-
-
-    class ExpirationDateTextWatcher implements TextWatcher {
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            int month;
-            if (s.length() > 2) {
-                if (s.charAt(2) != '/') {
-                    s = s.insert(2, "/");
-                }
-                if (s.length() > 5) {
-                    s = s.delete(5, s.length());
-                }
-                if (s.length() == 5) {
-                    try {
-                        month = Integer.parseInt(s.toString().substring(0, 2));
-                        if (month > 12) {
-                            textLayout.setError("Invalid Date");
-                        } else {
-                            textLayout.setError(null);
-                        }
-                    } catch (NumberFormatException e) {
-                        textLayout.setError("Invalid Date");
-                    }
-                }
-            }
-        }
+    public void setError(String errorMessage) {
+        error = new TextView(getContext());
+        error.setText(errorMessage);
+        error.setTextAppearance(getContext(), R.style.InputError);
+        this.addView(error, 0);
     }
 }
