@@ -54,7 +54,7 @@ public class PaymentView extends ScrollView {
     void setFullName() {
         fullNameWrapper = new TextInputLayout(secureFormLayout.getContext());
         fullNameContent = new TextInputEditText(secureFormLayout.getContext());
-        fullNameWrapper.setHint("Full Name");
+        fullNameWrapper.setHint(getContext().getString(R.string.hint_full_name));
         fullNameWrapper.addView(fullNameContent);
         fullNameWrapper.setId(R.id.spreedly_full_name);
         secureFormLayout.addView(fullNameWrapper);

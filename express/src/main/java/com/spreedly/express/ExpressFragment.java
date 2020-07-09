@@ -34,22 +34,25 @@ import io.reactivex.rxjava3.core.Single;
 
 public class ExpressFragment extends Fragment {
 
+    @NonNull
     private final SpreedlyClient client;
     private ExpressFragmentViewModel mViewModel;
     private PaymentOptions options;
 
-    public ExpressFragment(PaymentOptions options, SpreedlyClient client) {
+    public ExpressFragment(@Nullable PaymentOptions options, @NonNull SpreedlyClient client) {
         super();
         this.options = options;
         this.client = client;
     }
 
-    public static ExpressFragment newInstance(PaymentOptions options, SpreedlyClient client) {
+    @NonNull
+    public static ExpressFragment newInstance(@Nullable PaymentOptions options, @NonNull SpreedlyClient client) {
         return new ExpressFragment(options, client);
     }
 
 
     @Override
+    @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.express_fragment, container, false);
@@ -121,7 +124,7 @@ public class ExpressFragment extends Fragment {
         mViewModel.secureFormLayout = new SecureFormLayout(this.getContext());
         mViewModel.secureFormLayout.setOrientation(LinearLayout.VERTICAL);
         mViewModel.secureFormLayout.setSpreedlyClient(client);
-        setLabel("Payment Method");
+        setLabel(getContext().getString(R.string.label_payment_method));
         setFullName();
         mViewModel.secureCreditCardField = new SecureCreditCardField(mViewModel.secureFormLayout.getContext());
         mViewModel.secureCreditCardField.setId(R.id.spreedly_credit_card_number);
@@ -159,14 +162,14 @@ public class ExpressFragment extends Fragment {
         mViewModel.secureFormLayout = new SecureFormLayout(this.getContext());
         mViewModel.secureFormLayout.setOrientation(LinearLayout.VERTICAL);
         mViewModel.secureFormLayout.setSpreedlyClient(client);
-        setLabel("Payment Method");
+        setLabel(getString(R.string.label_payment_method));
         setFullName();
         mViewModel.accountNumberField = new SecureTextField(getContext());
         mViewModel.accountNumberField.setId(R.id.spreedly_ba_account_number);
         mViewModel.accountNumberField.onFinishInflate();
         mViewModel.routingNumberWrapper = new TextInputLayout(mViewModel.secureFormLayout.getContext());
         mViewModel.routingNumberWrapper.setId(R.id.spreedly_ba_routing_number);
-        mViewModel.routingNumberWrapper.setHint("Routing Number");
+        mViewModel.routingNumberWrapper.setHint(getString(R.string.hint_routing_number));
         mViewModel.routingNumberContent = new TextInputEditText(mViewModel.secureFormLayout.getContext());
         mViewModel.routingNumberWrapper.addView(mViewModel.routingNumberContent);
         mViewModel.accountType = new Spinner(mViewModel.secureFormLayout.getContext());
@@ -212,7 +215,7 @@ public class ExpressFragment extends Fragment {
     void setFullName() {
         mViewModel.fullNameWrapper = new TextInputLayout(mViewModel.secureFormLayout.getContext());
         mViewModel.fullNameContent = new TextInputEditText(mViewModel.secureFormLayout.getContext());
-        mViewModel.fullNameWrapper.setHint("Full Name");
+        mViewModel.fullNameWrapper.setHint(getString(R.string.hint_full_name));
         mViewModel.fullNameWrapper.addView(mViewModel.fullNameContent);
         mViewModel.fullNameWrapper.setId(R.id.spreedly_full_name);
         mViewModel.secureFormLayout.addView(mViewModel.fullNameWrapper);

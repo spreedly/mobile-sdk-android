@@ -37,7 +37,7 @@ public class CreditCardPaymentView extends PaymentView {
     public void init() {
         secureFormLayout = new SecureFormLayout(this.getContext());
         secureFormLayout.setOrientation(LinearLayout.VERTICAL);
-        setLabel("Payment Method", paymentLabel);
+        setLabel(getContext().getString(R.string.label_payment_method), paymentLabel);
         setFullName();
         setCC();
         if (includeBackButton) {

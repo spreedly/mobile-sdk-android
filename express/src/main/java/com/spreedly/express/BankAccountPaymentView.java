@@ -44,7 +44,7 @@ public class BankAccountPaymentView extends PaymentView {
     public void init() {
         secureFormLayout = new SecureFormLayout(this.getContext());
         secureFormLayout.setOrientation(LinearLayout.VERTICAL);
-        setLabel("Payment Method", paymentLabel);
+        setLabel(getContext().getString(R.string.label_payment_method), paymentLabel);
         setFullName();
         setBankAccount();
         if (includeBackButton) {
@@ -67,7 +67,7 @@ public class BankAccountPaymentView extends PaymentView {
         accountNumberField.onFinishInflate();
         routingNumberWrapper = new TextInputLayout(secureFormLayout.getContext());
         routingNumberWrapper.setId(R.id.spreedly_ba_routing_number);
-        routingNumberWrapper.setHint("Routing Number");
+        routingNumberWrapper.setHint(getContext().getString(R.string.hint_routing_number));
         routingNumberContent = new TextInputEditText(secureFormLayout.getContext());
         routingNumberWrapper.addView(routingNumberContent);
         accountType = new Spinner(secureFormLayout.getContext());

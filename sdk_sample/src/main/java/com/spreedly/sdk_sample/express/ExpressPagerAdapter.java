@@ -17,6 +17,7 @@ import com.spreedly.express.ExpressBuilder;
 import com.spreedly.express.PaymentOptions;
 import com.spreedly.express.PaymentType;
 import com.spreedly.express.StoredCard;
+import com.spreedly.sdk_sample.BuildConfig;
 import com.spreedly.sdk_sample.R;
 
 import java.util.ArrayList;
@@ -72,7 +73,9 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
 
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull TransactionResult<PaymentMethodResult> paymentMethodResultTransactionResult) {
-                        Log.i("Spreedly", "Token: " + paymentMethodResultTransactionResult.result.token);
+                        if (BuildConfig.DEBUG) {
+                            Log.i("Spreedly", "Token: " + paymentMethodResultTransactionResult.result.token);
+                        }
                     }
 
                     @Override
@@ -88,7 +91,9 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
 
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull StoredCard storedCard) {
-                        Log.i("Spreedly", "Token: " + storedCard.token);
+                        if (BuildConfig.DEBUG) {
+                            Log.i("Spreedly", "Token: " + storedCard.token);
+                        }
                     }
 
                     @Override

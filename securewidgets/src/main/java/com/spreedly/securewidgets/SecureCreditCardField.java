@@ -55,7 +55,7 @@ public class SecureCreditCardField extends SecureTextField {
             }
             editText.setSelection(s);
         };
-        textLayout.setHint("Credit Card Number");
+        textLayout.setHint(getContext().getString(R.string.hint_credit_card_number));
         editText.setInputType(InputType.TYPE_CLASS_PHONE);
         setEndIcons();
         setStartIcon();
@@ -114,7 +114,7 @@ public class SecureCreditCardField extends SecureTextField {
                     brand = CardBrand.error;
                 }
                 if (brand == CardBrand.error) {
-                    textLayout.setError("Invalid credit card number");
+                    textLayout.setError(getContext().getString(R.string.error_bad_card_number));
                 } else {
                     textLayout.setError(null);
                 }

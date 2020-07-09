@@ -60,28 +60,28 @@ public class AddressFieldView extends LinearLayout {
 
         address1Wrapper = new TextInputLayout(this.getContext());
         address1Content = new TextInputEditText(this.getContext());
-        address1Wrapper.setHint("Address Line 1");
+        address1Wrapper.setHint(getContext().getString(R.string.hint_address_line_1));
         address1Wrapper.addView(address1Content);
 
 
         address2Wrapper = new TextInputLayout(this.getContext());
         address2Content = new TextInputEditText(this.getContext());
-        address2Wrapper.setHint("Line 2 (Apt, Unit, etc)");
+        address2Wrapper.setHint(getContext().getString(R.string.hint_address_2));
         address2Wrapper.addView(address2Content);
 
         cityWrapper = new TextInputLayout(this.getContext());
         cityContent = new TextInputEditText(this.getContext());
-        cityWrapper.setHint("City");
+        cityWrapper.setHint(getContext().getString(R.string.hint_city));
         cityWrapper.addView(cityContent);
 
         stateWrapper = new TextInputLayout(this.getContext());
         stateContent = new TextInputEditText(this.getContext());
-        stateWrapper.setHint("State/Province");
+        stateWrapper.setHint(getContext().getString(R.string.hint_state));
         stateWrapper.addView(stateContent);
 
         phoneWrapper = new TextInputLayout(this.getContext());
         phoneContent = new TextInputEditText(this.getContext());
-        phoneWrapper.setHint("Phone Number");
+        phoneWrapper.setHint(getContext().getString(R.string.hint_phone));
         phoneWrapper.addView(phoneContent);
 
         ArrayAdapter countryAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -90,7 +90,7 @@ public class AddressFieldView extends LinearLayout {
         countrySpinner.setAdapter(countryAdapter);
 
         zipWrapper = new TextInputLayout(this.getContext());
-        zipWrapper.setHint("Zipcode");
+        zipWrapper.setHint(getContext().getString(R.string.hint_zip));
         zipContent = new TextInputEditText(this.getContext());
         zipContent.setInputType(InputType.TYPE_CLASS_PHONE);
         zipWrapper.addView(zipContent);

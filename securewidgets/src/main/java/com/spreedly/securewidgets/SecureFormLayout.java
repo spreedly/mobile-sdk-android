@@ -116,11 +116,11 @@ public class SecureFormLayout extends LinearLayout {
         boolean hasError = validateNames();
         hasError = validateAddress(hasError);
         if (creditCardNumberField == null || creditCardNumberField.getText().detectCardType() == CardBrand.error) {
-            creditCardNumberField.setError("Invalid Card Number");
+            creditCardNumberField.setError(getContext().getString(R.string.error_bad_card_number));
             hasError = true;
         }
         if (expirationField != null && (expirationField.getYear() == 0 || expirationField.getMonth() == 0)) {
-            expirationField.setError("Invalid Date");
+            expirationField.setError(getContext().getString(R.string.error_bad_date));
             hasError = true;
         }
         if (hasError) {
@@ -158,22 +158,22 @@ public class SecureFormLayout extends LinearLayout {
         if (bankAccountNumberField != null) {
             if (bankAccountNumberField.getText().length == 0) {
                 hasError = true;
-                bankAccountNumberField.setError("Account number cannot be blank");
+                bankAccountNumberField.setError(getContext().getString(R.string.error_blank_account_number));
             } else if (!bankAccountNumberField.getText().isNumber()) {
                 hasError = true;
-                bankAccountNumberField.setError("Invalid account number");
+                bankAccountNumberField.setError(getContext().getString(R.string.error_bad_account_number));
             }
         }
         if (routingNumberInput != null) {
             if (getString(routingNumberInput).length() == 0) {
                 hasError = true;
-                routingNumberInput.setError("Account number cannot be blank");
+                routingNumberInput.setError(getContext().getString(R.string.error_blank_routing_number));
             } else {
                 try {
                     Double.parseDouble(getString(routingNumberInput));
                 } catch (Exception e) {
                     hasError = true;
-                    routingNumberInput.setError("Invalid routing number");
+                    routingNumberInput.setError(getContext().getString(R.string.error_bad_routing_number));
                 }
             }
         }
@@ -214,11 +214,11 @@ public class SecureFormLayout extends LinearLayout {
         boolean hasError = validateNames();
         hasError = validateAddress(hasError);
         if (creditCardNumberField == null || creditCardNumberField.getText().detectCardType() == CardBrand.error) {
-            creditCardNumberField.setError("Invalid Card Number");
+            creditCardNumberField.setError(getContext().getString(R.string.error_bad_card_number));
             hasError = true;
         }
         if (expirationField != null && (expirationField.getYear() == 0 || expirationField.getMonth() == 0)) {
-            expirationField.setError("Invalid Date");
+            expirationField.setError(getContext().getString(R.string.error_bad_date));
             hasError = true;
         }
         if (hasError) {
@@ -259,22 +259,22 @@ public class SecureFormLayout extends LinearLayout {
         if (bankAccountNumberField != null) {
             if (bankAccountNumberField.getText().length == 0) {
                 hasError = true;
-                bankAccountNumberField.setError("Account number cannot be blank");
+                bankAccountNumberField.setError(getContext().getString(R.string.error_blank_account_number));
             } else if (!bankAccountNumberField.getText().isNumber()) {
                 hasError = true;
-                bankAccountNumberField.setError("Invalid account number");
+                bankAccountNumberField.setError(getContext().getString(R.string.error_bad_account_number));
             }
         }
         if (routingNumberInput != null) {
             if (getString(routingNumberInput).length() == 0) {
                 hasError = true;
-                routingNumberInput.setError("Account number cannot be blank");
+                routingNumberInput.setError(getContext().getString(R.string.error_blank_routing_number));
             } else {
                 try {
                     Double.parseDouble(getString(routingNumberInput));
                 } catch (Exception e) {
                     hasError = true;
-                    routingNumberInput.setError("Invalid routing number");
+                    routingNumberInput.setError(getContext().getString(R.string.error_bad_routing_number));
                 }
             }
         }
@@ -463,15 +463,15 @@ public class SecureFormLayout extends LinearLayout {
     private boolean validateNames() {
         boolean hasError = false;
         if (fullNameInput != null && getString(fullNameInput).length() == 0) {
-            fullNameInput.setError("Full name cannot be blank");
+            fullNameInput.setError(getContext().getString(R.string.error_blank_first_name));
             hasError = true;
         }
         if (firstNameInput != null && getString(firstNameInput).length() == 0) {
-            firstNameInput.setError("First name cannot be blank");
+            firstNameInput.setError(getContext().getString(R.string.error_blank_first_name));
             hasError = true;
         }
         if (lastNameInput != null && getString(lastNameInput).length() == 0) {
-            lastNameInput.setError("Last name cannot be blank");
+            lastNameInput.setError(getContext().getString(R.string.error_blank_last_name));
             hasError = true;
         }
         return hasError;
@@ -480,35 +480,35 @@ public class SecureFormLayout extends LinearLayout {
     private boolean validateAddress(boolean hasError) {
         if (address1Input != null && getString(address1Input).length() == 0) {
             hasError = true;
-            address1Input.setError("Address cannot be blank");
+            address1Input.setError(getContext().getString(R.string.error_blank_address));
         }
         if (cityInput != null && getString(cityInput).length() == 0) {
             hasError = true;
-            cityInput.setError("City cannot be blank");
+            cityInput.setError(getContext().getString(R.string.error_blank_city));
         }
         if (stateInput != null && getString(stateInput).length() == 0) {
             hasError = true;
-            stateInput.setError("State cannot be blank");
+            stateInput.setError(getContext().getString(R.string.error_blank_state));
         }
         if (zipInput != null && getString(zipInput).length() == 0) {
             hasError = true;
-            zipInput.setError("Zipcode cannot be blank");
+            zipInput.setError(getContext().getString(R.string.error_blank_zipcode));
         }
         if (shippingAddress1Input != null && getString(shippingAddress1Input).length() == 0) {
             hasError = true;
-            shippingAddress1Input.setError("Address cannot be blank");
+            shippingAddress1Input.setError(getContext().getString(R.string.error_blank_address));
         }
         if (shippingCityInput != null && getString(shippingCityInput).length() == 0) {
             hasError = true;
-            shippingCityInput.setError("City cannot be blank");
+            shippingCityInput.setError(getContext().getString(R.string.error_blank_city));
         }
         if (shippingStateInput != null && getString(shippingStateInput).length() == 0) {
             hasError = true;
-            shippingStateInput.setError("State cannot be blank");
+            shippingStateInput.setError(getContext().getString(R.string.error_blank_state));
         }
         if (shippingZipInput != null && getString(shippingZipInput).length() == 0) {
             hasError = true;
-            shippingZipInput.setError("Zipcode cannot be blank");
+            shippingZipInput.setError(getContext().getString(R.string.error_blank_zipcode));
         }
         return hasError;
     }

@@ -9,6 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Calendar;
 
 
@@ -20,11 +23,11 @@ public class SecureExpirationDate extends LinearLayout {
     String month;
     String year;
 
-    public SecureExpirationDate(Context context, AttributeSet attrs) {
+    public SecureExpirationDate(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SecureExpirationDate(Context context) {
+    public SecureExpirationDate(@NonNull Context context) {
         super(context);
     }
 
@@ -47,7 +50,7 @@ public class SecureExpirationDate extends LinearLayout {
         }
         spinnerWrapper = new LinearLayout(getContext());
         monthSpinner = new Spinner(getContext());
-        ArrayAdapter monthAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, monthArr);
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, monthArr);
         monthSpinner.setAdapter(monthAdapter);
         monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -63,7 +66,7 @@ public class SecureExpirationDate extends LinearLayout {
         spinnerWrapper.addView(monthSpinner);
         yearSpinner = new Spinner(getContext());
 
-        ArrayAdapter yearAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, yearArr);
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, yearArr);
         yearSpinner.setAdapter(yearAdapter);
         yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -89,7 +92,7 @@ public class SecureExpirationDate extends LinearLayout {
         return Integer.parseInt(year);
     }
 
-    public void setError(String errorMessage) {
+    public void setError(@Nullable String errorMessage) {
         error = new TextView(getContext());
         error.setText(errorMessage);
         error.setTextAppearance(getContext(), R.style.InputError);

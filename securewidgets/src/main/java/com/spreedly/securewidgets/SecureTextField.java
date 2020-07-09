@@ -103,11 +103,11 @@ public class SecureTextField extends FrameLayout {
     private void setHint() {
         int id = getId();
         if (id == R.id.spreedly_credit_card_number) {
-            textLayout.setHint("Credit Card Number");
+            textLayout.setHint(getContext().getString(R.string.hint_credit_card_number));
         } else if (id == R.id.spreedly_ccv) {
-            textLayout.setHint("CCV");
+            textLayout.setHint(getContext().getString(R.string.hint_ccv));
         } else if (id == R.id.spreedly_ba_account_number) {
-            textLayout.setHint("Account Number");
+            textLayout.setHint(getContext().getString(R.string.hint_account_number));
         }
     }
 

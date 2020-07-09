@@ -12,6 +12,7 @@ import java.util.List;
 import io.reactivex.rxjava3.core.SingleObserver;
 
 public class PaymentOptions {
+    @Nullable
     public SingleObserver<StoredCard> savedCardCallback;
     boolean showZipcode;
     @Nullable
@@ -73,7 +74,7 @@ public class PaymentOptions {
         this.submitCallback = submitCallback;
     }
 
-    public void setSavedCardCallback(SingleObserver<StoredCard> savedCardCallback) {
+    public void setSavedCardCallback(@Nullable SingleObserver<StoredCard> savedCardCallback) {
         this.savedCardCallback = savedCardCallback;
     }
 }
