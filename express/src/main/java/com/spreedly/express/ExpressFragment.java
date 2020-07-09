@@ -131,6 +131,7 @@ public class ExpressFragment extends Fragment {
         mViewModel.ccvField.onFinishInflate();
         mViewModel.secureExpirationDate = new SecureExpirationDate(mViewModel.secureFormLayout.getContext());
         mViewModel.secureExpirationDate.setId(R.id.spreedly_cc_expiration_date);
+        addZipcode();
         mViewModel.secureFormLayout.addView(mViewModel.secureCreditCardField);
         mViewModel.secureFormLayout.addView(mViewModel.ccvField);
         mViewModel.secureFormLayout.addView(mViewModel.secureExpirationDate);
@@ -173,6 +174,7 @@ public class ExpressFragment extends Fragment {
         mViewModel.holderType = new Spinner(mViewModel.secureFormLayout.getContext());
         mViewModel.holderType.setAdapter(new ArrayAdapter<BankAccountHolderType>(mViewModel.secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountHolderType.values()));
         mViewModel.holderType.setId(R.id.spreedly_ba_account_holder_type);
+        addZipcode();
         mViewModel.secureFormLayout.addView(mViewModel.accountNumberField);
         mViewModel.secureFormLayout.addView(mViewModel.routingNumberWrapper);
         mViewModel.secureFormLayout.addView(mViewModel.accountType);
@@ -253,6 +255,17 @@ public class ExpressFragment extends Fragment {
         MaterialTextView textView = new MaterialTextView(getContext());
         textView.setText(Html.fromHtml(options.merchantText));
         mViewModel.layout.addView(textView);
+    }
+
+    void addZipcode() {
+        if (options.showZipcode && options.billingAddress == null) {
+            TextInputLayout zipWrapper = new TextInputLayout(getContext());
+            TextInputEditText zipContent = new TextInputEditText(getContext());
+            zipWrapper.addView(zipContent);
+            zipWrapper.setId(R.id.spreedly_zip);
+            zipWrapper.setHint(getResources().getString(R.string.zipcode_hint));
+            mViewModel.secureFormLayout.addView(zipWrapper);
+        }
     }
 
 

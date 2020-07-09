@@ -237,6 +237,9 @@ public class SecureFormLayout extends LinearLayout {
         }
         info.shippingAddress = shippingAddress;
         info.address = billingAddress;
+        if (billingAddress == null) {
+            addAddress(info);
+        }
         Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, getString(emailInput), null);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
@@ -292,6 +295,9 @@ public class SecureFormLayout extends LinearLayout {
         }
         info.shippingAddress = shippingAddress;
         info.address = billingAddress;
+        if (billingAddress == null) {
+            addAddress(info);
+        }
         if (accountHolderTypeSpinner != null) {
             info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
         }

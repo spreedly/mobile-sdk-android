@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.spreedly.client.SpreedlyClient;
+import com.spreedly.client.models.Address;
 import com.spreedly.client.models.enums.CardBrand;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
@@ -62,6 +63,7 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
                 options.setMerchantIcon(R.drawable.ic_rowing);
                 options.setMerchantText("<div><h1>My First Heading</h1>\n" +
                         "<p>My first paragraph.</p></div>");
+                options.setBillingAddress(new Address("555 Main St", "", "Anytown", "WA", "98006", "United States", null));
                 options.setSubmitCallback(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
