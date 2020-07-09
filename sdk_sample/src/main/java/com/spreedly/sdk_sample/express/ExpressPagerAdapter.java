@@ -50,66 +50,75 @@ public class ExpressPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                StoredCard card1 = new StoredCard("sample_token_1", CardBrand.visa, "Visa XXXX");
-                StoredCard card2 = new StoredCard("sample_token_2", CardBrand.mastercard, "Mastercard XXXX");
-                List<StoredCard> storedCards = new ArrayList<>();
-                storedCards.add(card1);
-                storedCards.add(card2);
-                SpreedlyClient client = SpreedlyClient.newInstance("XsQXqPtrgCOnpexSwyhzN9ngr2c", "ghEGueczUT4BhJv54K24G6B4Oy9yWaM5R4dR2yt5gRsx3xnwbZE0OZ0mRg2zyI5g", true);
-                PaymentOptions options = new PaymentOptions();
-                options.setButtonText("Pay now");
-                options.setPaymentType(PaymentType.ALL);
-                options.setStoredCardList(storedCards);
-                options.setMerchantTitle("Lucy's Shop");
-                options.setMerchantIcon(R.drawable.ic_rowing);
-                options.setMerchantText("<div><h1>My First Heading</h1>\n" +
-                        "<p>My first paragraph.</p></div>");
-                options.setBillingAddress(new Address("555 Main St", "", "Anytown", "WA", "98006", "United States", null));
-                options.setSubmitCallback(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        Log.i("Spreedly", "Subscribed");
-                    }
-
-                    @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull TransactionResult<PaymentMethodResult> paymentMethodResultTransactionResult) {
-                        if (BuildConfig.DEBUG) {
-                            Log.i("Spreedly", "Token: " + paymentMethodResultTransactionResult.result.token);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Log.e("Spreedly", e.getMessage());
-                    }
-                });
-                options.setSavedCardCallback(new SingleObserver<StoredCard>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        Log.i("Spreedly", "Subscribed");
-                    }
-
-                    @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull StoredCard storedCard) {
-                        if (BuildConfig.DEBUG) {
-                            Log.i("Spreedly", "Token: " + storedCard.token);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Log.e("Spreedly", e.getMessage());
-                    }
-                });
-                ExpressBuilder builder = new ExpressBuilder(client, options);
-                builder.buildFragment();
-                return builder.fragment;
+                return createFragment();
             case 1:
                 return ExpressBankAccountFragment.newInstance();
             case 2:
                 return ExpressCreditCardFragment.newInstance();
         }
         throw new IndexOutOfBoundsException();
+    }
+
+    private Fragment createFragment() {
+        StoredCard card1 = new StoredCard("sample_token_1", CardBrand.visa, "Visa XXXX");
+        StoredCard card2 = new StoredCard("sample_token_2", CardBrand.mastercard, "Mastercard XXXX");
+        StoredCard card3 = new StoredCard("sample_token_3", CardBrand.americanExpress, "Amex XXXX");
+        StoredCard card4 = new StoredCard("sample_token_4", CardBrand.dinersClub, "Diners XXXX");
+        List<StoredCard> storedCards = new ArrayList<>();
+        storedCards.add(card1);
+        storedCards.add(card2);
+        storedCards.add(card3);
+        storedCards.add(card4);
+        SpreedlyClient client = SpreedlyClient.newInstance("XsQXqPtrgCOnpexSwyhzN9ngr2c", "ghEGueczUT4BhJv54K24G6B4Oy9yWaM5R4dR2yt5gRsx3xnwbZE0OZ0mRg2zyI5g", true);
+        PaymentOptions options = new PaymentOptions();
+        options.setButtonText("Pay now");
+        options.setPaymentType(PaymentType.ALL);
+        options.setStoredCardList(storedCards);
+        options.setMerchantTitle("Lucy's Shop");
+        options.setMerchantIcon(R.drawable.ic_rowing);
+        options.setMerchantText("<div style=\"text-align: center;\">\n" +
+                "<h1 style=\"text-align: center;\">$20.12</h1>\n" +
+                "Pass in your customized merchant text.</div>");
+        options.setBillingAddress(new Address("555 Main St", "", "Anytown", "WA", "98006", "United States", null));
+        options.setSubmitCallback(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+            @Override
+            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                Log.i("Spreedly", "Subscribed");
+            }
+
+            @Override
+            public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull TransactionResult<PaymentMethodResult> paymentMethodResultTransactionResult) {
+                if (BuildConfig.DEBUG) {
+                    Log.i("Spreedly", "Token: " + paymentMethodResultTransactionResult.result.token);
+                }
+            }
+
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                Log.e("Spreedly", e.getMessage());
+            }
+        });
+        options.setSavedCardCallback(new SingleObserver<StoredCard>() {
+            @Override
+            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                Log.i("Spreedly", "Subscribed");
+            }
+
+            @Override
+            public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull StoredCard storedCard) {
+                if (BuildConfig.DEBUG) {
+                    Log.i("Spreedly", "Token: " + storedCard.token);
+                }
+            }
+
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                Log.e("Spreedly", e.getMessage());
+            }
+        });
+        ExpressBuilder builder = new ExpressBuilder(client, options);
+        builder.buildFragment();
+        return builder.fragment;
     }
 
     @Override

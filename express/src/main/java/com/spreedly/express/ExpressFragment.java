@@ -91,7 +91,9 @@ public class ExpressFragment extends Fragment {
         mViewModel.paymentSelectorLayout.setOrientation(LinearLayout.VERTICAL);
         switch (options.paymentType) {
             case CARDS_ONLY:
+                setLabel("Select Payment Method", mViewModel.paymentSelectorLayout);
                 createSavedCardList();
+                setLabel("Add Payment Method", mViewModel.paymentSelectorLayout);
                 mViewModel.paymentSelectorLayout.addView(mViewModel.addCardButton);
                 break;
             case BANK_ONLY:
@@ -101,16 +103,20 @@ public class ExpressFragment extends Fragment {
                 createCardPayment(false);
                 break;
             case NEW_CARD_AND_BANK:
+                setLabel("Add Payment Method", mViewModel.paymentSelectorLayout);
                 mViewModel.paymentSelectorLayout.addView(mViewModel.cardButton);
                 mViewModel.paymentSelectorLayout.addView(mViewModel.bankButton);
                 break;
             case ALL:
+                setLabel("Select Payment Method", mViewModel.paymentSelectorLayout);
                 createSavedCardList();
+                setLabel("Add Payment Method", mViewModel.paymentSelectorLayout);
                 mViewModel.paymentSelectorLayout.addView(mViewModel.addCardButton);
                 mViewModel.paymentSelectorLayout.addView(mViewModel.bankButton);
                 break;
         }
         mViewModel.layout.addView(mViewModel.paymentSelectorLayout);
+        setMerchantText();
     }
 
     private void createSavedCardList() {
@@ -124,7 +130,6 @@ public class ExpressFragment extends Fragment {
         mViewModel.secureFormLayout = new SecureFormLayout(this.getContext());
         mViewModel.secureFormLayout.setOrientation(LinearLayout.VERTICAL);
         mViewModel.secureFormLayout.setSpreedlyClient(client);
-        setLabel(getContext().getString(R.string.label_payment_method));
         setFullName();
         mViewModel.secureCreditCardField = new SecureCreditCardField(mViewModel.secureFormLayout.getContext());
         mViewModel.secureCreditCardField.setId(R.id.spreedly_credit_card_number);
@@ -162,7 +167,6 @@ public class ExpressFragment extends Fragment {
         mViewModel.secureFormLayout = new SecureFormLayout(this.getContext());
         mViewModel.secureFormLayout.setOrientation(LinearLayout.VERTICAL);
         mViewModel.secureFormLayout.setSpreedlyClient(client);
-        setLabel(getString(R.string.label_payment_method));
         setFullName();
         mViewModel.accountNumberField = new SecureTextField(getContext());
         mViewModel.accountNumberField.setId(R.id.spreedly_ba_account_number);
@@ -221,15 +225,15 @@ public class ExpressFragment extends Fragment {
         mViewModel.secureFormLayout.addView(mViewModel.fullNameWrapper);
     }
 
-    void setLabel(String labelContent) {
+    void setLabel(String labelContent, LinearLayout layout) {
         final float pixelDensity = getResources().getDisplayMetrics().density;
         int padding = (int) (16 * pixelDensity);
         int labelPadding = (int) (12 * pixelDensity);
         MaterialTextView label = new MaterialTextView(this.getContext());
         label.setText(labelContent);
-        label.setTextAppearance(this.getContext(), android.R.style.TextAppearance_DeviceDefault_Large);
+        label.setTextAppearance(this.getContext(), android.R.style.TextAppearance_DeviceDefault_Medium);
         label.setPadding(0, labelPadding, 0, 0);
-        mViewModel.secureFormLayout.addView(label);
+        layout.addView(label);
     }
 
     void setMerchantLogo() {
