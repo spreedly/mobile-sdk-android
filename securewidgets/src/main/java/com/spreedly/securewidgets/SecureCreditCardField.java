@@ -35,6 +35,7 @@ public class SecureCreditCardField extends SecureTextField {
 
     public SecureCreditCardField(@NonNull Context context) {
         super(context);
+        ccTransformationMethod = new CreditCardTransformationMethod();
     }
 
     @Override

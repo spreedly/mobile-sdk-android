@@ -96,6 +96,6 @@ public class SecureExpirationDate extends LinearLayout {
         error = new TextView(getContext());
         error.setText(errorMessage);
         error.setTextAppearance(getContext(), R.style.InputError);
-        this.addView(error, 0);
+        this.addView(error);
     }
 }
