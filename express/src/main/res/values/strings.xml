@@ -4,7 +4,7 @@
     <string name="back">Back</string>
     <string name="add_a_card">Debit or Credit Card</string>
     <string name="pay_with_bank">Bank Account</string>
-    <string name="pay_with_card">Debit or Credit Card</string>
+    <string name="pay_with_card">Credit or Debit Card</string>
     <string name="label_payment_method">Payment Method</string>
     <string name="hint_routing_number">Routing Number</string>
     <string name="hint_full_name">Full Name</string>
