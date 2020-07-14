@@ -1,6 +1,8 @@
 package com.spreedly.express;
 
 import android.content.Context;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -11,14 +13,15 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.functions.Consumer;
 
 class CardSlider extends HorizontalScrollView {
-    SingleObserver<StoredCard> storedCardCallback;
+    Consumer<StoredCard> storedCardCallback;
     List<StoredCard> cards;
     LinearLayout wrapper;
     final float pixelDensity;
 
-    public CardSlider(@NonNull Context context, List<StoredCard> storedCards, SingleObserver<StoredCard> storedCardCallback) {
+    public CardSlider(@NonNull Context context, List<StoredCard> storedCards, Consumer<StoredCard> storedCardCallback) {
         super(context);
         this.cards = storedCards;
         this.pixelDensity = getResources().getDisplayMetrics().density;
@@ -47,20 +50,19 @@ class CardSlider extends HorizontalScrollView {
     public void update(List<StoredCard> storedCards) {
         wrapper.removeAllViews();
         cards = storedCards;
-        int padding = (int) (12 * pixelDensity);
-        int width = (int) (112 * pixelDensity);
+        int hpadding = (int) (10 * pixelDensity);
+        int vpadding = (int) (20 * pixelDensity);
+        int width = (int) (108 * pixelDensity);
         int height = (int) (80 * pixelDensity);
         float textSize = (4 * pixelDensity);
         for (int i = 0; i < cards.size(); i++) {
             StoredCard card = cards.get(i);
             Button button = new Button(wrapper.getContext());
+            button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             button.setCompoundDrawablesWithIntrinsicBounds(0, card.type.getIcon(), 0, 0);
             button.setText(card.description);
             button.setMinWidth(width);
-            button.setMaxWidth(width);
-            button.setMaxHeight(height);
-            button.setMinHeight(height);
-            button.setPadding(0, padding, 0, padding);
+            button.setPadding(hpadding, vpadding, hpadding, vpadding);
             button.setTextSize(textSize);
             button.setOnClickListener((l) -> submit(card));
             wrapper.addView(button);

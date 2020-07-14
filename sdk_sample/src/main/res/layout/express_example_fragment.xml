@@ -5,19 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".ui.main.SimpleExamplesFragment">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/pay_now_fragment"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        app:tabTextColor="@android:color/white" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:text="Pay Now! (fragment)" />
+    <Button
+        android:id="@+id/pay_now_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pay Now! (activity" />
 
 </LinearLayout>

@@ -2,9 +2,11 @@ package com.spreedly.client.models;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class Address {
+public class Address implements Serializable {
     public final @Nullable String address1;
     public final @Nullable String address2;
     public final @Nullable String city;

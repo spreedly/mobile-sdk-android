@@ -3,7 +3,9 @@
     package="com.spreedly.express">
 
     <application>
-        <activity android:name=".ExpressActivity"></activity>
+        <activity android:name=".ExpressPaymentActivity" android:theme="@style/ExpressTransparent">
+
+        </activity>
     </application>
 
 </manifest>

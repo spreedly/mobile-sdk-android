@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.spreedly.client.models.enums.CardBrand;
 
-public class StoredCard {
+import java.io.Serializable;
+
+public class StoredCard implements Serializable {
     @NonNull
     public final String token;
     @NonNull

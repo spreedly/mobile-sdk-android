@@ -7,13 +7,12 @@ import com.spreedly.client.models.Address;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 
+import java.io.Serializable;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.SingleObserver;
 
-public class PaymentOptions {
-    @Nullable
-    public SingleObserver<StoredCard> savedCardCallback;
+public class PaymentOptions implements Serializable {
     boolean showZipcode;
     @Nullable
     Address shippingAddress;
@@ -31,8 +30,6 @@ public class PaymentOptions {
     List<StoredCard> storedCardList;
     @Nullable
     int merchantIcon;
-    @NonNull
-    SingleObserver<TransactionResult<PaymentMethodResult>> submitCallback;
 
     public void setMerchantTitle(@Nullable String merchantTitle) {
         this.merchantTitle = merchantTitle;
@@ -68,13 +65,5 @@ public class PaymentOptions {
 
     public void setMerchantIcon(@Nullable int merchantIcon) {
         this.merchantIcon = merchantIcon;
-    }
-
-    public void setSubmitCallback(@NonNull SingleObserver<TransactionResult<PaymentMethodResult>> submitCallback) {
-        this.submitCallback = submitCallback;
-    }
-
-    public void setSavedCardCallback(@Nullable SingleObserver<StoredCard> savedCardCallback) {
-        this.savedCardCallback = savedCardCallback;
     }
 }

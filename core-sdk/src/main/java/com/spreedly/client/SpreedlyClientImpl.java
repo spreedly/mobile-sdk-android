@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,16 +37,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-class SpreedlyClientImpl implements SpreedlyClient {
+class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     @NonNull
     private final String credentials;
-    @NonNull
-    private final OkHttpClient httpClient;
     private final boolean test;
 
     SpreedlyClientImpl(@NonNull String user, @NonNull String password, boolean test) {
         this.credentials = "Basic " + safeBase64((user + ":" + password).getBytes());
-        this.httpClient = new OkHttpClient();
         this.test = test;
     }
 
@@ -192,7 +190,7 @@ class SpreedlyClientImpl implements SpreedlyClient {
     @NonNull
     private Single<JSONObject> sendRequest(@NonNull JSONObject requestBody, @NonNull String url) {
         String baseUrl = "https://core.spreedly.com/v1";
-        final Call call = httpClient.newCall(new Request.Builder()
+        final Call call = new OkHttpClient().newCall(new Request.Builder()
                 .url(baseUrl + url)
                 .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
                 .header("Authorization", credentials)
