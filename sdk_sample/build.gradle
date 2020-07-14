@@ -43,7 +43,8 @@ android {
         ])
         disable.addAll([
                 'GoogleAppIndexingWarning',
-                'OldTargetApi'
+                'OldTargetApi',
+                'NewerVersionAvailable'
         ])
     }
     compileOptions {

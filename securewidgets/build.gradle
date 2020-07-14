@@ -36,7 +36,8 @@ android {
                 'GoogleAppIndexingWarning',
                 'OldTargetApi',
                 'IconLocation',
-                'ConvertToWebp'
+                'ConvertToWebp',
+                'NewerVersionAvailable'
         ])
     }
     compileOptions {

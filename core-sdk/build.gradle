@@ -26,7 +26,8 @@ lintOptions {
     ])
     disable.addAll([
             'GoogleAppIndexingWarning',
-            'OldTargetApi'
+            'OldTargetApi',
+            'NewerVersionAvailable'
     ])
 }
 
