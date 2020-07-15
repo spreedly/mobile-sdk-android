@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PaymentMenuView">
+        <attr name="paymentType" format="enum">
+            <enum name="card_only" value="0" />
+            <enum name="new_card_and_bank" value="1" />
+            <enum name="any" value="2" />
+        </attr>
+        <attr name="includeBillingAddressOverride" format="boolean" />
+        <attr name="includeShippingAddressOverride" format="boolean" />
+        <attr name="submitButtonTextOverride" format="string" />
+    </declare-styleable>
+</resources>

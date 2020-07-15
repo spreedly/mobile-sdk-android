@@ -4,10 +4,10 @@ apply plugin: 'com.android.lint'
 apply plugin: 'jacoco'
 
 dependencies {
-    api 'io.reactivex.rxjava3:rxjava:3.0.3'
+    api 'io.reactivex.rxjava3:rxjava:3.0.4'
 
-    implementation "com.squareup.okhttp3:okhttp:4.7.0"
-    implementation 'org.json:json:20190722'
+    implementation "com.squareup.okhttp3:okhttp:4.7.2"
+    implementation 'org.json:json:20200518'
 
     testImplementation "junit:junit:4.13"
     implementation 'org.jetbrains:annotations:19.0.0'
@@ -26,7 +26,8 @@ lintOptions {
     ])
     disable.addAll([
             'GoogleAppIndexingWarning',
-            'OldTargetApi'
+            'OldTargetApi',
+            'NewerVersionAvailable'
     ])
 }
 

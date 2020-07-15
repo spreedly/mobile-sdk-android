@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="zipcode_hint" value="Zip code" />
+    <string name="error_bad_card_number">Invalid credit card number</string>
+    <string name="error_blank_account_number">Account number cannot be blank</string>
+    <string name="error_bad_account_number">Invalid account number</string>
+    <string name="error_blank_routing_number">Routing number cannot be blank</string>
+    <string name="error_bad_routing_number">Invalid routing number</string>
+    <string name="error_bad_date">Invalid Date</string>
+    <string name="error_blank_first_name">Full name cannot be blank</string>
+    <string name="error_blank_last_name">Last name cannot be blank</string>
+    <string name="error_blank_address">Address cannot be blank</string>
+    <string name="error_blank_city">City cannot be blank</string>
+    <string name="error_blank_state">State cannot be blank</string>
+    <string name="error_blank_zipcode">Zipcode cannot be blank</string>
+    <string name="hint_credit_card_number">Credit Card Number</string>
+    <string name="hint_ccv">CCV</string>
+    <string name="hint_account_number">Account Number</string>
+</resources>

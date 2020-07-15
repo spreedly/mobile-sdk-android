@@ -1,11 +1,12 @@
 package com.spreedly.client.models.results;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class TransactionResult<T> {
+public class TransactionResult<T> implements Serializable {
     public final @Nullable String token;
     public final @Nullable Date createdAt;
     public final @Nullable Date updatedAt;
