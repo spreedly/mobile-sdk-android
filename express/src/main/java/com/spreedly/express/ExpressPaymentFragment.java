@@ -252,21 +252,19 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         routingNumberWrapper.setHint(getString(R.string.hint_routing_number));
         routingNumberContent = new TextInputEditText(secureFormLayout.getContext());
         routingNumberWrapper.addView(routingNumberContent);
-        accountType = new Spinner(secureFormLayout.getContext());
-        accountType.setAdapter(new ArrayAdapter<>(secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountType.values()));
-        accountType.setId(R.id.spreedly_ba_account_type);
-
-        holderType = new Spinner(secureFormLayout.getContext());
-        holderType.setAdapter(new ArrayAdapter<>(secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountHolderType.values()));
-        holderType.setId(R.id.spreedly_ba_account_holder_type);
         addZipcode();
         secureFormLayout.addView(accountNumberField);
         secureFormLayout.addView(routingNumberWrapper);
-        secureFormLayout.addView(accountType);
         holderType = buildSpinner(
                 secureFormLayout,
-                R.id.spreedly_ba_account_holder_type,
+                R.id.spreedly_ba_account_type,
                 R.string.hint_account_type,
+                new ArrayAdapter<>(secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountType.values())
+        );
+        accountType = buildSpinner(
+                secureFormLayout,
+                R.id.spreedly_ba_account_holder_type,
+                R.string.hint_holder_type,
                 new ArrayAdapter<>(secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountHolderType.values())
         );
         if (includeBackButton) {
