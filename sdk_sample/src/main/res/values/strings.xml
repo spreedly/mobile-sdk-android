@@ -13,4 +13,6 @@
     <string name="routing_number_hint">Routing Number</string>
     <string name="bank_account_hint">Bank Account</string>
     <string name="generic_error">Unexpected Error</string>
+    <string name="pay_now_activity">Pay Now! (activity)</string>
+    <string name="pay_now_fragment">Pay Now! (fragment)</string>
 </resources>

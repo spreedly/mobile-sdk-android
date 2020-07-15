@@ -17,6 +17,11 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
@@ -34,10 +39,6 @@ import com.spreedly.securewidgets.SecureTextField;
 
 import java.io.Serializable;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -97,7 +98,8 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         dismiss();
     };
 
-    public static ExpressPaymentFragment newInstance(SpreedlyClient client, PaymentOptions options) {
+    @NonNull
+    public static ExpressPaymentFragment newInstance(@NonNull SpreedlyClient client, @NonNull PaymentOptions options) {
         final ExpressPaymentFragment fragment = new ExpressPaymentFragment();
         final Bundle args = new Bundle();
         args.putSerializable("client", (Serializable) client);

@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.spreedly.client.SpreedlyClient;
-
-import java.io.Serializable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.spreedly.client.SpreedlyClient;
+
+import java.io.Serializable;
 
 public class ExpressBuilder {
     public static final String EXTRA_PAYMENT_METHOD_TOKEN = "com.spreedly.express.ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN";
@@ -28,24 +28,25 @@ public class ExpressBuilder {
         this.options = options;
     }
 
-    public Intent buildIntent(Context context) {
+    @NonNull
+    public Intent buildIntent(@NonNull Context context) {
         Intent intent = new Intent(context, ExpressPaymentActivity.class);
         intent.putExtra("client", (Serializable) client);
         intent.putExtra("options", options);
         return intent;
     }
 
-    public void show(Activity context, int resultCode) {
+    public void show(@NonNull Activity context, @NonNull int resultCode) {
         context.startActivityForResult(buildIntent(context), resultCode);
     }
 
-    public void showDialog(@NonNull FragmentManager fm, @Nullable String tag, int requestCode) {
+    public void showDialog(@NonNull FragmentManager fm, @Nullable String tag, @NonNull int requestCode) {
         ExpressPaymentFragment fragment = ExpressPaymentFragment.newInstance(client, options);
         fragment.setTargetFragment(null, requestCode);
         fragment.show(fm, tag);
     }
 
-    public void showDialog(@NonNull FragmentManager fm, @Nullable String tag, Fragment target, int requestCode) {
+    public void showDialog(@NonNull FragmentManager fm, @Nullable String tag, @NonNull Fragment target, @NonNull int requestCode) {
         ExpressPaymentFragment fragment = ExpressPaymentFragment.newInstance(client, options);
         fragment.setTargetFragment(target, requestCode);
         fragment.show(fm, tag);

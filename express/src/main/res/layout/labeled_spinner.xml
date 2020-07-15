@@ -10,7 +10,8 @@
         android:id="@android:id/title"
         style="@style/TextView.ExpressInputLabel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textIsSelectable="false" />
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@android:id/text1"
