@@ -16,4 +16,5 @@
     <string name="hint_credit_card_number">Credit Card Number</string>
     <string name="hint_ccv">CCV</string>
     <string name="hint_account_number">Account Number</string>
+    <string name="hint_expiration">Expiration Date</string>
 </resources>

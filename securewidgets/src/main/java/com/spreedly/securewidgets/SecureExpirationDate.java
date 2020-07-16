@@ -22,6 +22,7 @@ public class SecureExpirationDate extends LinearLayout {
     TextView error;
     String month;
     String year;
+    TextView label;
 
     public SecureExpirationDate(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -48,7 +49,11 @@ public class SecureExpirationDate extends LinearLayout {
             int y = currentYear + i;
             yearArr[i] = Integer.toString(y);
         }
+        //.setTextAppearance(getContext(), R.style.TextView_SpreedlyInputLabel);
         spinnerWrapper = new LinearLayout(getContext());
+        label = new TextView(getContext());
+        label.setText(R.string.hint_expiration);
+        spinnerWrapper.addView(label);
         monthSpinner = new Spinner(getContext());
         ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, monthArr);
         monthSpinner.setAdapter(monthAdapter);
