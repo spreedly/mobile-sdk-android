@@ -4,6 +4,8 @@ import com.spreedly.client.models.enums.BankAccountType;
 
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
@@ -44,12 +46,12 @@ public class BankAccountInfo extends PaymentMethodMeta {
         bankAccount.put("bank_routing_number", this.routingNumber);
         bankAccount.put("bank_account_number", this.accountNumber._encode());
         try {
-            bankAccount.put("bank_account_type", this.accountType.toString().toLowerCase());
+            bankAccount.put("bank_account_type", this.accountType.toString().toLowerCase(Locale.US));
         } catch (NullPointerException e) {
             bankAccount.put("bank_account_type", "");
         }
         try {
-            bankAccount.put("bank_account_holder_type", this.bankAccountHolderType.toLowerCase());
+            bankAccount.put("bank_account_holder_type", this.bankAccountHolderType.toLowerCase(Locale.US));
         } catch (NullPointerException e) {
         }
         paymentMethod.put("bank_account", bankAccount);

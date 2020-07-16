@@ -23,8 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:width="0dp"
-            android:checked="true" />
+            android:width="0dp" />
 
         <RadioButton
             android:id="@android:id/text2"

@@ -9,7 +9,8 @@ public enum WidgetError {
     ROUTING_NUMBER(R.id.spreedly_ba_routing_number),
     FULL_NAME(R.id.spreedly_full_name),
     LAST_NAME(R.id.spreedly_full_name),
-    FIRST_NAME(R.id.spreedly_full_name);
+    FIRST_NAME(R.id.spreedly_full_name),
+    ACCOUNT_HOLDER_TYPE(R.id.spreedly_ba_account_holder_type);
     private final int resourceId;
 
     WidgetError(int resourceId) {

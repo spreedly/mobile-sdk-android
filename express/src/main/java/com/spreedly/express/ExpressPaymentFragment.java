@@ -14,8 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -80,7 +79,11 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
 
     private Consumer<TransactionResult<PaymentMethodResult>> submitCallback = result -> {
         Intent data = new Intent();
-        data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN, result.result.token);
+        try {
+            data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN, result.result.token);
+        } catch (NullPointerException e) {
+            data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN, result.message);
+        }
         data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TRANSACTION, result);
         if (getTargetFragment() != null) {
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
@@ -220,13 +223,16 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         ccvField = new SecureTextField(secureFormLayout.getContext());
         ccvField.setId(R.id.spreedly_ccv);
         ccvField.onFinishInflate();
+        ccvField.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         secureExpirationDate = new SecureExpirationDate(secureFormLayout.getContext());
         secureExpirationDate.onFinishInflate();
         secureExpirationDate.setId(R.id.spreedly_cc_expiration_date);
+        LinearLayout formatter = new LinearLayout(getContext());
+        formatter.addView(ccvField);
+        formatter.addView(secureExpirationDate);
         addZipcode();
         secureFormLayout.addView(secureCreditCardField);
-        secureFormLayout.addView(ccvField);
-        secureFormLayout.addView(secureExpirationDate);
+        secureFormLayout.addView(formatter);
         if (includeBackButton) {
             canGoBack = true;
         }
@@ -256,8 +262,8 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         addZipcode();
         secureFormLayout.addView(accountNumberField);
         secureFormLayout.addView(routingNumberWrapper);
-        accountType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_type, R.string.hint_account_type, BankAccountType.values());
-        holderType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_holder_type, R.string.hint_holder_type, BankAccountHolderType.values());
+        accountType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_type, R.string.hint_account_type, BankAccountType.values(), false);
+        holderType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_holder_type, R.string.hint_holder_type, BankAccountHolderType.values(), true);
         if (includeBackButton) {
             canGoBack = true;
         }
@@ -336,20 +342,7 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         }
     }
 
-    Spinner buildSpinner(ViewGroup parent, int id, int rlabel, SpinnerAdapter adapter) {
-        View v = getLayoutInflater().inflate(R.layout.labeled_spinner,parent, false);
-        parent.addView(v);
-
-        TextView title = v.findViewById(android.R.id.title);
-        title.setText(rlabel);
-
-        Spinner spinnner = v.findViewById(android.R.id.text1);
-        spinnner.setId(id);
-        spinnner.setAdapter(adapter);
-        return spinnner;
-    }
-
-    RadioGroup buildRadioGroup(ViewGroup parent, int id, int rlabel, Object[] options) {
+    RadioGroup buildRadioGroup(ViewGroup parent, int id, int rlabel, Object[] options, boolean holderType) {
         View v = getLayoutInflater().inflate(R.layout.labeled_radio, parent, false);
         parent.addView(v);
         TextView title = v.findViewById(android.R.id.title);
@@ -361,6 +354,15 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         option2.setText(options[1].toString());
         RadioGroup radioGroup = v.findViewById(android.R.id.content);
         radioGroup.setId(id);
+        if (holderType) {
+            option1.setId(R.id.holder_button_1);
+            option2.setId(R.id.holder_button_2);
+            radioGroup.check(R.id.holder_button_1);
+        } else {
+            option1.setId(R.id.account_button_1);
+            option2.setId(R.id.account_button_2);
+            radioGroup.check(R.id.account_button_1);
+        }
         return radioGroup;
     }
 }
