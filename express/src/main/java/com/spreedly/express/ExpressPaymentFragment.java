@@ -9,10 +9,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -69,8 +70,8 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     TextInputLayout routingNumberWrapper;
     SecureTextField accountNumberField;
     TextInputEditText routingNumberContent;
-    Spinner accountType;
-    Spinner holderType;
+    RadioGroup accountType;
+    RadioGroup holderType;
 
     boolean canGoBack = false;
     private int dp4;
@@ -255,18 +256,8 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         addZipcode();
         secureFormLayout.addView(accountNumberField);
         secureFormLayout.addView(routingNumberWrapper);
-        holderType = buildSpinner(
-                secureFormLayout,
-                R.id.spreedly_ba_account_type,
-                R.string.hint_account_type,
-                new ArrayAdapter<>(secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountType.values())
-        );
-        accountType = buildSpinner(
-                secureFormLayout,
-                R.id.spreedly_ba_account_holder_type,
-                R.string.hint_holder_type,
-                new ArrayAdapter<>(secureFormLayout.getContext(), android.R.layout.simple_spinner_dropdown_item, BankAccountHolderType.values())
-        );
+        accountType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_type, R.string.hint_account_type, BankAccountType.values());
+        holderType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_holder_type, R.string.hint_holder_type, BankAccountHolderType.values());
         if (includeBackButton) {
             canGoBack = true;
         }
@@ -356,5 +347,20 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         spinnner.setId(id);
         spinnner.setAdapter(adapter);
         return spinnner;
+    }
+
+    RadioGroup buildRadioGroup(ViewGroup parent, int id, int rlabel, Object[] options) {
+        View v = getLayoutInflater().inflate(R.layout.labeled_radio, parent, false);
+        parent.addView(v);
+        TextView title = v.findViewById(android.R.id.title);
+        title.setText(rlabel);
+
+        RadioButton option1 = v.findViewById(android.R.id.text1);
+        option1.setText(options[0].toString());
+        RadioButton option2 = v.findViewById(android.R.id.text2);
+        option2.setText(options[1].toString());
+        RadioGroup radioGroup = v.findViewById(android.R.id.content);
+        radioGroup.setId(id);
+        return radioGroup;
     }
 }

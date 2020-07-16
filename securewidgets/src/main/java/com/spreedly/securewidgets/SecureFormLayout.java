@@ -6,10 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
@@ -73,8 +76,10 @@ public class SecureFormLayout extends LinearLayout {
 
     @Nullable TextInputLayout bankAccountTypeInput;
     @Nullable Spinner bankAccountTypeSpinner;
+    @Nullable RadioGroup bankAccountTypeRadio;
     @Nullable TextInputLayout accountHolderTypeInput;
     @Nullable Spinner accountHolderTypeSpinner;
+    @Nullable RadioGroup accountHolderTypeRadio;
 
     @Nullable TextView errorView;
 
@@ -287,11 +292,25 @@ public class SecureFormLayout extends LinearLayout {
             };
         }
         BankAccountInfo info;
-        Object accountType = bankAccountTypeSpinner.getSelectedItem();
-        if (fullNameInput != null) {
-            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType.toString()));
+        String accountType;
+        if (bankAccountTypeSpinner != null) {
+            accountType = bankAccountTypeSpinner.getSelectedItem().toString();
+        } else if (bankAccountTypeRadio != null) {
+            accountType = ((RadioButton) findViewById((bankAccountTypeRadio.getCheckedRadioButtonId()))).getText().toString();
         } else {
-            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType.toString()));
+            accountType = bankAccountTypeInput.getEditText().getText().toString();
+        }
+        if (fullNameInput != null) {
+            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType));
+        } else {
+            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType));
+        }
+        if (accountHolderTypeSpinner != null) {
+            info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
+        } else if (accountHolderTypeRadio != null) {
+            info.bankAccountHolderType = ((RadioButton) findViewById((accountHolderTypeRadio.getCheckedRadioButtonId()))).getText().toString();
+        } else if (accountHolderTypeInput != null) {
+            info.bankAccountHolderType = accountHolderTypeInput.getEditText().getText().toString();
         }
         info.shippingAddress = shippingAddress;
         info.address = billingAddress;
@@ -540,14 +559,28 @@ public class SecureFormLayout extends LinearLayout {
         emailInput = findViewById(R.id.spreedly_email);
         bankAccountNumberField = findViewById(R.id.spreedly_ba_account_number);
         routingNumberInput = findViewById(R.id.spreedly_ba_routing_number);
+
+
         View bankAccountTypeView = findViewById(R.id.spreedly_ba_account_type);
-        if (bankAccountTypeView != null && bankAccountTypeView.getClass() == TextInputLayout.class)
-            bankAccountTypeInput = (TextInputLayout) bankAccountTypeView;
-        else bankAccountTypeSpinner = (Spinner) bankAccountTypeView;
+        if (bankAccountTypeView != null) {
+            if (bankAccountTypeView.getClass() == TextInputLayout.class) {
+                bankAccountTypeInput = (TextInputLayout) bankAccountTypeView;
+            } else if (bankAccountTypeView.getClass() == Spinner.class || bankAccountTypeView.getClass() == AppCompatSpinner.class) {
+                bankAccountTypeSpinner = (Spinner) bankAccountTypeView;
+            } else {
+                bankAccountTypeRadio = (RadioGroup) bankAccountTypeView;
+            }
+        }
         View accountHolderTypeView = findViewById(R.id.spreedly_ba_account_holder_type);
-        if (accountHolderTypeView != null && accountHolderTypeView.getClass() == TextInputLayout.class)
-            accountHolderTypeInput = (TextInputLayout) accountHolderTypeView;
-        else accountHolderTypeSpinner = (Spinner) accountHolderTypeView;
+        if (accountHolderTypeView != null) {
+            if (accountHolderTypeView.getClass() == TextInputLayout.class) {
+                accountHolderTypeInput = (TextInputLayout) accountHolderTypeView;
+            } else if (accountHolderTypeView.getClass() == Spinner.class) {
+                accountHolderTypeSpinner = (Spinner) accountHolderTypeView;
+            } else {
+                accountHolderTypeRadio = (RadioGroup) accountHolderTypeView;
+            }
+        }
         errorView = findViewById(R.id.spreedly_generic_error);
 
     }
