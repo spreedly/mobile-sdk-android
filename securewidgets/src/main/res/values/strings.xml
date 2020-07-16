@@ -14,7 +14,7 @@
     <string name="error_blank_state">State cannot be blank</string>
     <string name="error_blank_zipcode">Zipcode cannot be blank</string>
     <string name="hint_credit_card_number">Credit Card Number</string>
-    <string name="hint_ccv">CCV</string>
+    <string name="hint_cvv">CVV</string>
     <string name="hint_account_number">Account Number</string>
     <string name="hint_expiration">Expiration Date</string>
 </resources>

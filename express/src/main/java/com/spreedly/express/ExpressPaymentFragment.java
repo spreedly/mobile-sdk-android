@@ -63,7 +63,7 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     TextInputEditText fullNameContent;
 
     SecureCreditCardField secureCreditCardField;
-    SecureTextField ccvField;
+    SecureTextField cvvField;
     SecureExpirationDate secureExpirationDate;
 
     TextInputLayout routingNumberWrapper;
@@ -220,15 +220,15 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         secureCreditCardField = new SecureCreditCardField(secureFormLayout.getContext());
         secureCreditCardField.setId(R.id.spreedly_credit_card_number);
         secureCreditCardField.onFinishInflate();
-        ccvField = new SecureTextField(secureFormLayout.getContext());
-        ccvField.setId(R.id.spreedly_ccv);
-        ccvField.onFinishInflate();
-        ccvField.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        cvvField = new SecureTextField(secureFormLayout.getContext());
+        cvvField.setId(R.id.spreedly_cvv);
+        cvvField.onFinishInflate();
+        cvvField.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         secureExpirationDate = new SecureExpirationDate(secureFormLayout.getContext());
         secureExpirationDate.onFinishInflate();
         secureExpirationDate.setId(R.id.spreedly_cc_expiration_date);
         LinearLayout formatter = new LinearLayout(getContext());
-        formatter.addView(ccvField);
+        formatter.addView(cvvField);
         formatter.addView(secureExpirationDate);
         addZipcode();
         secureFormLayout.addView(secureCreditCardField);

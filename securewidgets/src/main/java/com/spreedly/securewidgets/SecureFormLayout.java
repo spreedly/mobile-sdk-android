@@ -49,7 +49,7 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable TextInputLayout company;
 
     @Nullable SecureCreditCardField creditCardNumberField;
-    @Nullable SecureTextField ccvField;
+    @Nullable SecureTextField cvvField;
     @Nullable SecureExpirationDate expirationField;
     @Nullable TextInputLayout monthInput;
     @Nullable TextInputLayout yearInput;
@@ -138,9 +138,9 @@ public class SecureFormLayout extends LinearLayout {
         }
         CreditCardInfo info;
         if (fullNameInput != null) {
-            info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+            info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), cvvField.getText(), expirationField.getYear(), expirationField.getMonth());
         } else {
-            info = new CreditCardInfo(getString(firstNameInput), getString(lastNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+            info = new CreditCardInfo(getString(firstNameInput), getString(lastNameInput), creditCardNumberField.getText(), cvvField.getText(), expirationField.getYear(), expirationField.getMonth());
         }
         addAddress(info);
         addShippingAddress(info);
@@ -236,9 +236,9 @@ public class SecureFormLayout extends LinearLayout {
         }
         CreditCardInfo info;
         if (fullNameInput != null) {
-            info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+            info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), cvvField.getText(), expirationField.getYear(), expirationField.getMonth());
         } else {
-            info = new CreditCardInfo(getString(firstNameInput), getString(lastNameInput), creditCardNumberField.getText(), ccvField.getText(), expirationField.getYear(), expirationField.getMonth());
+            info = new CreditCardInfo(getString(firstNameInput), getString(lastNameInput), creditCardNumberField.getText(), cvvField.getText(), expirationField.getYear(), expirationField.getMonth());
         }
         info.shippingAddress = shippingAddress;
         info.address = billingAddress;
@@ -426,8 +426,8 @@ public class SecureFormLayout extends LinearLayout {
     private void resetCardErrors() {
         if (creditCardNumberField != null)
             creditCardNumberField.setError(null);
-        if (ccvField != null)
-            ccvField.setError(null);
+        if (cvvField != null)
+            cvvField.setError(null);
         if (expirationField != null)
             expirationField.setError(null);
         if (monthInput != null)
@@ -534,7 +534,7 @@ public class SecureFormLayout extends LinearLayout {
 
     private void init() {
         creditCardNumberField = findViewById(R.id.spreedly_credit_card_number);
-        ccvField = findViewById(R.id.spreedly_ccv);
+        cvvField = findViewById(R.id.spreedly_cvv);
         fullNameInput = findViewById(R.id.spreedly_full_name);
         expirationField = findViewById(R.id.spreedly_cc_expiration_date);
         firstNameInput = findViewById(R.id.spreedly_first_name);

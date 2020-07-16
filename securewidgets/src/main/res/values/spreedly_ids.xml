@@ -20,7 +20,7 @@
     <item name="spreedly_shipping_zip" type="id" />
     <item name="spreedly_shipping_country" type="id" />
     <item name="spreedly_shipping_phone_number" type="id" />
-    <item name="spreedly_ccv" type="id" />
+    <item name="spreedly_cvv" type="id" />
     <item name="spreedly_cc_month" type="id" />
     <item name="spreedly_cc_year" type="id" />
     <item name="spreedly_cc_expiration_date" type="id" />

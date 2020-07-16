@@ -6,7 +6,7 @@
     <string name="tab_express">Express</string>
     <string name="month_hint">Month</string>
     <string name="year_hint">Year</string>
-    <string name="ccv_hint">CCV</string>
+    <string name="cvv_hint">CVV</string>
     <string name="credit_card_hint">Credit Card</string>
     <string name="name_hint">Name</string>
     <string name="submit">Submit</string>
