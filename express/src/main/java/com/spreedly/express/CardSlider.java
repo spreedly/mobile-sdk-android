@@ -1,7 +1,6 @@
 package com.spreedly.express;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
@@ -9,10 +8,11 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.spreedly.securewidgets.CardBrandHelper;
+
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.functions.Consumer;
 
 class CardSlider extends HorizontalScrollView {
@@ -20,6 +20,7 @@ class CardSlider extends HorizontalScrollView {
     List<StoredCard> cards;
     LinearLayout wrapper;
     final float pixelDensity;
+    CardBrandHelper cardBrandHelper;
 
     public CardSlider(@NonNull Context context, List<StoredCard> storedCards, Consumer<StoredCard> storedCardCallback) {
         super(context);
@@ -36,6 +37,7 @@ class CardSlider extends HorizontalScrollView {
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
+        cardBrandHelper = new CardBrandHelper();
         init();
     }
 
@@ -59,7 +61,7 @@ class CardSlider extends HorizontalScrollView {
             StoredCard card = cards.get(i);
             Button button = new Button(wrapper.getContext());
             button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            button.setCompoundDrawablesWithIntrinsicBounds(0, card.type.getIcon(), 0, 0);
+            button.setCompoundDrawablesWithIntrinsicBounds(0, cardBrandHelper.getIcon(card.type), 0, 0);
             button.setText(card.description);
             button.setMinWidth(width);
             button.setPadding(hpadding, vpadding, hpadding, vpadding);
