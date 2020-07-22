@@ -1,9 +1,11 @@
 package com.spreedly.securewidgets;
 
+import androidx.annotation.NonNull;
+
 import com.spreedly.client.models.enums.CardBrand;
 
 public class CardBrandHelper {
-    public int getIcon(CardBrand brand) {
+    public int getIcon(@NonNull CardBrand brand) {
         int icon = 0;
         switch (brand) {
             case visa:
@@ -64,7 +66,7 @@ public class CardBrandHelper {
         return icon;
     }
 
-    public int getMonoIcon(CardBrand brand) {
+    public int getMonoIcon(@NonNull CardBrand brand) {
         int icon = 0;
         switch (brand) {
             case visa:

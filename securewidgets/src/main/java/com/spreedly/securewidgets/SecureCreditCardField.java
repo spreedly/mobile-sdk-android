@@ -24,7 +24,7 @@ public class SecureCreditCardField extends SecureTextField {
     boolean visible = true;
     private View.OnClickListener clickListener;
     private boolean hasError = false;
-    private CardBrandHelper cardBrandHelper;
+    CardBrandHelper cardBrandHelper;
     String previous = "";
     @NonNull
     private CreditCardTransformationMethod ccTransformationMethod;
@@ -83,7 +83,7 @@ public class SecureCreditCardField extends SecureTextField {
     }
 
     private void setStartIcon() {
-        textLayout.setStartIconDrawable(R.drawable.ic_spr_generic);
+        textLayout.setStartIconDrawable(R.drawable.ic_spr_mono_generic);
         textLayout.setStartIconTintList(null);
         editText.addTextChangedListener(new TextWatcher() {
             boolean lock;
