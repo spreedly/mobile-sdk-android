@@ -21,3 +21,10 @@ To see this locally run:
     ./gradlew test
 
 Then open [build/core-sdk/reports/jacoco/test/html/index.html](build/core-sdk/reports/jacoco/test/html/index.html)
+
+# Docs
+
+To build docs use:
+
+    rm -rf docs
+    ./gradlew alljavadoc

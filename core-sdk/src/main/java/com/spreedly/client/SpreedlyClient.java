@@ -14,6 +14,11 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
 
+/**
+ * SpreedlyClient
+ *
+ * This class handles all the client side API communication.
+ */
 public interface SpreedlyClient {
     @NonNull static SpreedlyClient newInstance(@NonNull String envKey, @NonNull String envSecret,@NonNull boolean test) {
         return new SpreedlyClientImpl(envKey, envSecret, test);
