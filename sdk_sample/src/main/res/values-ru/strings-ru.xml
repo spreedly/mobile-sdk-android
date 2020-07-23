@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="checking">checking_alt</string>
-    <string name="savings">savings_alt</string>
-    <string name="personal">personal_alt</string>
-    <string name="business">business_alt</string>
-</resources>

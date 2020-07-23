@@ -195,11 +195,25 @@ public class SecureFormLayout extends LinearLayout {
             };
         }
         BankAccountInfo info;
-        Object accountType = bankAccountTypeSpinner.getSelectedItem();
-        if (fullNameInput != null) {
-            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType.toString()));
+        String accountType;
+        if (bankAccountTypeSpinner != null) {
+            accountType = bankAccountTypeSpinner.getSelectedItem().toString();
+        } else if (bankAccountTypeRadio != null) {
+            accountType = (accountTypeHelper.getBankAccountType(((RadioButton) findViewById(bankAccountTypeRadio.getCheckedRadioButtonId())).getText().toString())).toString();
         } else {
-            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType.toString()));
+            accountType = bankAccountTypeInput.getEditText().getText().toString();
+        }
+        if (fullNameInput != null) {
+            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType));
+        } else {
+            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType));
+        }
+        if (accountHolderTypeSpinner != null) {
+            info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
+        } else if (accountHolderTypeRadio != null) {
+            info.bankAccountHolderType = accountTypeHelper.getBankAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString();
+        } else if (accountHolderTypeInput != null) {
+            info.bankAccountHolderType = accountHolderTypeInput.getEditText().getText().toString();
         }
         addAddress(info);
         addShippingAddress(info);
