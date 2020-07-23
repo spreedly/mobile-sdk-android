@@ -11,6 +11,7 @@
         style="@style/TextView.ExpressInputLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="0dp"
         android:textIsSelectable="false" />
 
     <androidx.appcompat.widget.AppCompatSpinner
@@ -18,6 +19,7 @@
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="0dp"
         android:spinnerMode="dialog" />
 
 </LinearLayout>

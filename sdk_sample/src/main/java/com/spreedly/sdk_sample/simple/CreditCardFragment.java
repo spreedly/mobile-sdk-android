@@ -6,12 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.spreedly.sdk_sample.R;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.spreedly.sdk_sample.R;
 
 public class CreditCardFragment extends BillingFragmentBase {
 
@@ -38,7 +38,7 @@ public class CreditCardFragment extends BillingFragmentBase {
         bindEditText(getView().findViewById(R.id.cc), mViewModel.cc);
         bindEditNumber(getView().findViewById(R.id.year), mViewModel.year);
         bindEditNumber(getView().findViewById(R.id.month), mViewModel.month);
-        bindEditText(getView().findViewById(R.id.ccv), mViewModel.ccv);
+        bindEditText(getView().findViewById(R.id.cvv), mViewModel.cvv);
         bindTextView(getView().findViewById(R.id.token), mViewModel.token);
         bindTextView(getView().findViewById(R.id.error), mViewModel.error);
 
@@ -47,7 +47,7 @@ public class CreditCardFragment extends BillingFragmentBase {
             public void onChanged(Boolean inProgress) {
                 getView().findViewById(R.id.name).setEnabled(!inProgress);
                 getView().findViewById(R.id.cc).setEnabled(!inProgress);
-                getView().findViewById(R.id.ccv).setEnabled(!inProgress);
+                getView().findViewById(R.id.cvv).setEnabled(!inProgress);
             }
         });
 

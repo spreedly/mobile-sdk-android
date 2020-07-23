@@ -44,10 +44,10 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/ccv"
+            android:id="@+id/cvv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/ccv_hint"
+            android:hint="@string/cvv_hint"
             android:inputType="textNoSuggestions"
             android:autofillHints="cvv"/>
     </com.google.android.material.textfield.TextInputLayout>

@@ -1,13 +1,16 @@
 package com.spreedly.sdk_sample;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
-
-import com.google.android.material.tabs.TabLayout;
-import com.spreedly.sdk_sample.ui.main.SectionsPagerAdapter;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+import com.spreedly.sdk_sample.ui.main.SectionsPagerAdapter;
+
+import java.util.Locale;
 
 import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
@@ -22,5 +25,13 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+        Locale locale = new Locale("ru");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(
+                config,
+                getResources().getDisplayMetrics()
+        );
     }
 }
