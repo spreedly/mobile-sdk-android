@@ -30,4 +30,8 @@
     <item name="spreedly_ba_account_holder_type" type="id" />
     <item name="spreedly_cc_submit" type="id" />
     <item name="spreedly_generic_error" type="id" />
+    <item name="spreedly_holder_button_personal" type="id" />
+    <item name="spreedly_holder_button_business" type="id" />
+    <item name="spreedly_account_button_checking" type="id" />
+    <item name="spreedly_account_button_saving" type="id" />
 </resources>

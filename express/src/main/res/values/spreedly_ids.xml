@@ -2,7 +2,4 @@
 <resources>
     <item name="express_fragment" type="id" />
     <item name="express_activity" type="id" />
-    <item name="holder_button_1" type="id" />
-    <item name="account_button_1" type="id" />
-    <item name="account_button_2" type="id" />
 </resources>

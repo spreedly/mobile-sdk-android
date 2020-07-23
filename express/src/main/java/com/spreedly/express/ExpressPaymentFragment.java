@@ -262,8 +262,8 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         addZipcode();
         secureFormLayout.addView(accountNumberField);
         secureFormLayout.addView(routingNumberWrapper);
-        accountType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_type, R.string.hint_account_type, BankAccountType.values(), false);
-        holderType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_holder_type, R.string.hint_holder_type, BankAccountHolderType.values(), true);
+        accountType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_type, R.string.hint_account_type, false);
+        holderType = buildRadioGroup(secureFormLayout, R.id.spreedly_ba_account_holder_type, R.string.hint_holder_type, true);
         if (includeBackButton) {
             canGoBack = true;
         }
@@ -342,26 +342,28 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         }
     }
 
-    RadioGroup buildRadioGroup(ViewGroup parent, int id, int rlabel, Object[] options, boolean holderType) {
+    RadioGroup buildRadioGroup(ViewGroup parent, int id, int rlabel, boolean holderType) {
         View v = getLayoutInflater().inflate(R.layout.labeled_radio, parent, false);
         parent.addView(v);
         TextView title = v.findViewById(android.R.id.title);
         title.setText(rlabel);
 
         RadioButton option1 = v.findViewById(android.R.id.text1);
-        option1.setText(options[0].toString());
         RadioButton option2 = v.findViewById(android.R.id.text2);
-        option2.setText(options[1].toString());
         RadioGroup radioGroup = v.findViewById(android.R.id.content);
         radioGroup.setId(id);
         if (holderType) {
-            option1.setId(R.id.holder_button_1);
-            option2.setId(R.id.holder_button_2);
-            radioGroup.check(R.id.holder_button_1);
+            option1.setText(secureFormLayout.accountTypeBundle.getContent(BankAccountHolderType.personal));
+            option2.setText(secureFormLayout.accountTypeBundle.getContent(BankAccountHolderType.business));
+            option1.setId(R.id.spreedly_holder_button_personal);
+            option2.setId(R.id.spreedly_holder_button_business);
+            radioGroup.check(R.id.spreedly_holder_button_personal);
         } else {
-            option1.setId(R.id.account_button_1);
-            option2.setId(R.id.account_button_2);
-            radioGroup.check(R.id.account_button_1);
+            option1.setText(secureFormLayout.accountTypeBundle.getContent(BankAccountType.checking));
+            option2.setText(secureFormLayout.accountTypeBundle.getContent(BankAccountType.savings));
+            option1.setId(R.id.spreedly_account_button_checking);
+            option2.setId(R.id.spreedly_account_button_saving);
+            radioGroup.check(R.id.spreedly_account_button_checking);
         }
         return radioGroup;
     }

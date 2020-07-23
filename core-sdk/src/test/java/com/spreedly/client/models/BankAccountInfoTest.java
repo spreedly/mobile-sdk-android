@@ -14,19 +14,19 @@ public class BankAccountInfoTest {
 
     @Test
     public void CanCreateBankAccountWithFullName() {
-        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), BankAccountType.Checking);
-        assertTrue(bankAccount.fullName == "Jane Doe" && bankAccount.routingNumber == "1234567" && bankAccount.accountNumber.length == 7 && bankAccount.accountType == BankAccountType.Checking);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), BankAccountType.checking);
+        assertTrue(bankAccount.fullName == "Jane Doe" && bankAccount.routingNumber == "1234567" && bankAccount.accountNumber.length == 7 && bankAccount.accountType == BankAccountType.checking);
     }
 
     @Test
     public void CanCreateBankAccountWithFirstAndLast() {
-        BankAccountInfo bankAccount = new BankAccountInfo("Jane", "Doe", "1234567", client.createString("0000000"), BankAccountType.Checking);
-        assertTrue(bankAccount.firstName == "Jane" && bankAccount.lastName == "Doe" && bankAccount.routingNumber == "1234567" && bankAccount.accountNumber.length == 7 && bankAccount.accountType == BankAccountType.Checking);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane", "Doe", "1234567", client.createString("0000000"), BankAccountType.checking);
+        assertTrue(bankAccount.firstName == "Jane" && bankAccount.lastName == "Doe" && bankAccount.routingNumber == "1234567" && bankAccount.accountNumber.length == 7 && bankAccount.accountType == BankAccountType.checking);
     }
 
     @Test
     public void CanEncodeBankAccount() {
-        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), BankAccountType.Checking);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), BankAccountType.checking);
         String expected = "{\"payment_method\":{\"bank_account\":{\"bank_account_number\":\"0000000\",\"full_name\":\"Jane Doe\",\"bank_routing_number\":\"1234567\",\"bank_account_type\":\"checking\"}}}";
         JSONObject actual = bankAccount.toJson(null, null);
         assertEquals(expected, actual.toString());
@@ -34,7 +34,7 @@ public class BankAccountInfoTest {
 
     @Test
     public void CanEncodeFullBankAccount() {
-        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), BankAccountType.Checking);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), BankAccountType.checking);
         bankAccount.retained = true;
         bankAccount.shippingAddress = new Address("555 Main St", "Apt 33", "Anytown", "WA", "98000", "USA", "5555555555");
         bankAccount.address = new Address("555 Main St", "", "Anytown", "WA", "98000", "USA", "5555555555");

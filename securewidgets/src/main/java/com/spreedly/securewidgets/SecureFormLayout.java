@@ -42,6 +42,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SecureFormLayout extends LinearLayout {
     @NonNull
     SpreedlyClient spreedlyClient;
+    @Nullable
+    public AccountTypeBundle accountTypeBundle;
 
     @Nullable TextInputLayout fullNameInput;
     @Nullable TextInputLayout firstNameInput;
@@ -88,10 +90,12 @@ public class SecureFormLayout extends LinearLayout {
 
     public SecureFormLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        accountTypeBundle = new AccountTypeBundle();
     }
 
     public SecureFormLayout(@NonNull Context context) {
         super(context);
+        accountTypeBundle = new AccountTypeBundle();
     }
 
     public void setSpreedlyClient(@NonNull String envKey, @NonNull String envSecret, boolean test) {
@@ -296,7 +300,7 @@ public class SecureFormLayout extends LinearLayout {
         if (bankAccountTypeSpinner != null) {
             accountType = bankAccountTypeSpinner.getSelectedItem().toString();
         } else if (bankAccountTypeRadio != null) {
-            accountType = ((RadioButton) findViewById((bankAccountTypeRadio.getCheckedRadioButtonId()))).getText().toString();
+            accountType = (accountTypeBundle.getAccountType(((RadioButton) findViewById(bankAccountTypeRadio.getCheckedRadioButtonId())).getText().toString())).toString();
         } else {
             accountType = bankAccountTypeInput.getEditText().getText().toString();
         }
@@ -308,7 +312,7 @@ public class SecureFormLayout extends LinearLayout {
         if (accountHolderTypeSpinner != null) {
             info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
         } else if (accountHolderTypeRadio != null) {
-            info.bankAccountHolderType = ((RadioButton) findViewById((accountHolderTypeRadio.getCheckedRadioButtonId()))).getText().toString();
+            info.bankAccountHolderType = accountTypeBundle.getAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString();
         } else if (accountHolderTypeInput != null) {
             info.bankAccountHolderType = accountHolderTypeInput.getEditText().getText().toString();
         }
