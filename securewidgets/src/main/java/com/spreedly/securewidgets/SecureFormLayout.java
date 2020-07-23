@@ -43,7 +43,7 @@ public class SecureFormLayout extends LinearLayout {
     @NonNull
     SpreedlyClient spreedlyClient;
     @Nullable
-    public AccountTypeBundle accountTypeBundle;
+    public AccountTypeHelper accountTypeHelper;
 
     @Nullable TextInputLayout fullNameInput;
     @Nullable TextInputLayout firstNameInput;
@@ -90,12 +90,12 @@ public class SecureFormLayout extends LinearLayout {
 
     public SecureFormLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        accountTypeBundle = new AccountTypeBundle();
+        accountTypeHelper = new AccountTypeHelper(context);
     }
 
     public SecureFormLayout(@NonNull Context context) {
         super(context);
-        accountTypeBundle = new AccountTypeBundle();
+        accountTypeHelper = new AccountTypeHelper(context);
     }
 
     public void setSpreedlyClient(@NonNull String envKey, @NonNull String envSecret, boolean test) {
@@ -300,7 +300,7 @@ public class SecureFormLayout extends LinearLayout {
         if (bankAccountTypeSpinner != null) {
             accountType = bankAccountTypeSpinner.getSelectedItem().toString();
         } else if (bankAccountTypeRadio != null) {
-            accountType = (accountTypeBundle.getAccountType(((RadioButton) findViewById(bankAccountTypeRadio.getCheckedRadioButtonId())).getText().toString())).toString();
+            accountType = (accountTypeHelper.getBankAccountType(((RadioButton) findViewById(bankAccountTypeRadio.getCheckedRadioButtonId())).getText().toString())).toString();
         } else {
             accountType = bankAccountTypeInput.getEditText().getText().toString();
         }
@@ -312,7 +312,7 @@ public class SecureFormLayout extends LinearLayout {
         if (accountHolderTypeSpinner != null) {
             info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
         } else if (accountHolderTypeRadio != null) {
-            info.bankAccountHolderType = accountTypeBundle.getAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString();
+            info.bankAccountHolderType = accountTypeHelper.getBankAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString();
         } else if (accountHolderTypeInput != null) {
             info.bankAccountHolderType = accountHolderTypeInput.getEditText().getText().toString();
         }

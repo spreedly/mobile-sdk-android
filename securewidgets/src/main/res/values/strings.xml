@@ -17,4 +17,8 @@
     <string name="hint_cvv">CVV</string>
     <string name="hint_account_number">Account Number</string>
     <string name="hint_expiration">Expiration Date</string>
+    <string name="checking">checking</string>
+    <string name="savings">savings</string>
+    <string name="personal">personal</string>
+    <string name="business">business</string>
 </resources>

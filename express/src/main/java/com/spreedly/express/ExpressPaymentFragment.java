@@ -353,14 +353,14 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         RadioGroup radioGroup = v.findViewById(android.R.id.content);
         radioGroup.setId(id);
         if (holderType) {
-            option1.setText(secureFormLayout.accountTypeBundle.getContent(BankAccountHolderType.personal));
-            option2.setText(secureFormLayout.accountTypeBundle.getContent(BankAccountHolderType.business));
+            option1.setText(secureFormLayout.accountTypeHelper.getString(BankAccountHolderType.personal));
+            option2.setText(secureFormLayout.accountTypeHelper.getString(BankAccountHolderType.business));
             option1.setId(R.id.spreedly_holder_button_personal);
             option2.setId(R.id.spreedly_holder_button_business);
             radioGroup.check(R.id.spreedly_holder_button_personal);
         } else {
-            option1.setText(secureFormLayout.accountTypeBundle.getContent(BankAccountType.checking));
-            option2.setText(secureFormLayout.accountTypeBundle.getContent(BankAccountType.savings));
+            option1.setText(secureFormLayout.accountTypeHelper.getString(BankAccountType.checking));
+            option2.setText(secureFormLayout.accountTypeHelper.getString(BankAccountType.savings));
             option1.setId(R.id.spreedly_account_button_checking);
             option2.setId(R.id.spreedly_account_button_saving);
             radioGroup.check(R.id.spreedly_account_button_checking);
