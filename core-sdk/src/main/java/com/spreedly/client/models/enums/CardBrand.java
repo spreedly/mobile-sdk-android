@@ -36,13 +36,4 @@ public enum CardBrand {
         this.range = range;
     }
 
-    @Nullable
-    public int getIcon() {
-        return this.icon;
-    }
-
-    public void setIcon(@NonNull int icon) {
-        this.icon = icon;
-    }
-
 }

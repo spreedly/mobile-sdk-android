@@ -18,9 +18,9 @@ test_task:
   publish_coverage_script:
     - git config --global user.name "Cirrus CI"
     - git config --global user.email "ci@ergonlabs.com"
-    - git clone https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/ergonlabs/spreedly-docs.git docs
-    - mkdir -p docs/coverage/pr/core-sdk/android
-    - cp -fR build/core-sdk/reports/jacoco/test/html/* docs/coverage/pr/core-sdk/android
-    - cd docs
+    - git clone https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/ergonlabs/spreedly-docs.git docs_report
+    - mkdir -p docs_report/coverage/pr/core-sdk/android
+    - cp -fR build/core-sdk/reports/jacoco/test/html/* docs_report/coverage/pr/core-sdk/android
+    - cd docs_report
     - git add .
     - git commit -m "reports for java" && git push || echo "No code coverage changes"

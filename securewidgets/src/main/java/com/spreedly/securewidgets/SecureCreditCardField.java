@@ -24,6 +24,7 @@ public class SecureCreditCardField extends SecureTextField {
     boolean visible = true;
     private View.OnClickListener clickListener;
     private boolean hasError = false;
+    CardBrandHelper cardBrandHelper;
     String previous = "";
     @NonNull
     private CreditCardTransformationMethod ccTransformationMethod;
@@ -41,7 +42,7 @@ public class SecureCreditCardField extends SecureTextField {
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
-        setIcons();
+        cardBrandHelper = new CardBrandHelper();
         clickListener = v -> {
             Log.i("Spreedly", "button clicked");
             int s = editText.getSelectionEnd();
@@ -82,7 +83,7 @@ public class SecureCreditCardField extends SecureTextField {
     }
 
     private void setStartIcon() {
-        textLayout.setStartIconDrawable(R.drawable.spr_card_unknown);
+        textLayout.setStartIconDrawable(R.drawable.ic_spr_mono_generic);
         textLayout.setStartIconTintList(null);
         editText.addTextChangedListener(new TextWatcher() {
             boolean lock;
@@ -107,8 +108,11 @@ public class SecureCreditCardField extends SecureTextField {
                     return;
                 }
                 previous = text;
+                boolean mono = false;
                 if (text.length() < 16) {
                     brand = secureString.softDetect();
+                    mono = true;
+
                 } else if (text.length() < 20) {
                     brand = secureString.detectCardType();
                 } else {
@@ -126,7 +130,11 @@ public class SecureCreditCardField extends SecureTextField {
                     visible = true;
                     setEndIcons();
                 }
-                textLayout.setStartIconDrawable(brand.getIcon());
+                if (mono) {
+                    textLayout.setStartIconDrawable(cardBrandHelper.getMonoIcon(brand));
+                } else {
+                    textLayout.setStartIconDrawable(cardBrandHelper.getIcon(brand));
+                }
 
 
                 if (lock) {
@@ -144,25 +152,5 @@ public class SecureCreditCardField extends SecureTextField {
                 lock = false;
             }
         });
-    }
-
-    public void setIcons() {
-        CardBrand.visa.setIcon(R.drawable.spr_card_visa);
-        CardBrand.americanExpress.setIcon(R.drawable.spr_card_amex);
-        CardBrand.mastercard.setIcon(R.drawable.spr_card_mastercard);
-        CardBrand.dinersClub.setIcon(R.drawable.spr_card_diners);
-        CardBrand.discover.setIcon(R.drawable.spr_card_discover);
-        CardBrand.jcb.setIcon(R.drawable.spr_card_jcb);
-        CardBrand.unknown.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.error.setIcon(R.drawable.spr_card_error);
-        CardBrand.alelo.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.elo.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.cabal.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.carnet.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.dankort.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.maestro.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.naranja.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.sodexo.setIcon(R.drawable.spr_card_unknown);
-        CardBrand.vr.setIcon(R.drawable.spr_card_unknown);
     }
 }

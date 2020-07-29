@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class CreditCardFragmentViewModel extends ViewModel {
     MutableLiveData<String> name = new MutableLiveData<>("");
     MutableLiveData<String> cc = new MutableLiveData<>("");
-    MutableLiveData<String> ccv = new MutableLiveData<>("");
+    MutableLiveData<String> cvv = new MutableLiveData<>("");
     MutableLiveData<Integer> year = new MutableLiveData<>(null);
     MutableLiveData<Integer> month = new MutableLiveData<>(null);
     MutableLiveData<Boolean> inProgress = new MutableLiveData<>(false);
@@ -26,7 +26,7 @@ public class CreditCardFragmentViewModel extends ViewModel {
 
     void create() {
         final SpreedlyClient client = SpreedlyClient.newInstance("", "", true);
-        final CreditCardInfo info = new CreditCardInfo(name.getValue(),client.createString(cc.getValue()), client.createString(ccv.getValue()), year.getValue() == null ? 0 : year.getValue(), month.getValue() == null ? 0 : month.getValue());
+        final CreditCardInfo info = new CreditCardInfo(name.getValue(), client.createString(cc.getValue()), client.createString(cvv.getValue()), year.getValue() == null ? 0 : year.getValue(), month.getValue() == null ? 0 : month.getValue());
         inProgress.setValue(true);
         token.postValue("");
         error.postValue("");
