@@ -215,7 +215,51 @@ The `SecureForm` has the following methods:
  - `Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod()`: Captures data from user input (name, bank account number, routing number, account type and optionally billing and shipping address), and makes a `create bank account payment request` to the Spreedly API.
  - `public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@Nullable Address billingAddress, @Nullable Address shippingAddress)`: Behaves the same as `createCreditCardPaymentMethod()`except it doesn't not search for billing or shipping address components. Use this if addresses have been submitted on a different view.
  - `Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod(@Nullable Address billingAddress, @Nullable Address shippingAddress)`: Behaves the same as `createBankAccountPaymentMethod()`except it doesn't not search for billing or shipping address components. Use this if addresses have been submitted on a different view.
+
 ## Full Customization with Core SDK
+If you prefer a completely customized payment method collection and selection experience, you can use the Core SDK and `SpreedlyClient`
+For example, to create a new credit card payment method with Spreedly, create and configure a `CreditCardInfo` object, and send is using `SpreedlyClient`
+
+Constructors:
+```java
+CreditCardInfo(@NonNull String: fullName, @NonNull SpreedlySecureOpaqueString: number, @Nullable SpreedlySecureOpaqueString: verificationValue, @NonNull int: year, @NonNull int: month);
+```
+```java
+SpreedlyClient.newInstance(@NonNull String envKey, @NonNull String envSecret,@NonNull boolean test)
+```
+
+Example code:
+```java
+CreditCardInfo info = new CreditCardInfo("Full Name", new SpreedlySecureOpaqueString("4111111111111111"), new SpreedlySecureOpaqueString("432"), 2025, 12);
+SpreedlyClient client = SpreedlyClient.newInstance("you key", true);
+client.createCreditCardPaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+    @Override
+  public void onSubscribe(@NonNull Disposable d) {
+
+    }
+
+    @Override
+  public void onSuccess(TransactionResult<PaymentMethodResult> trans) {
+        try {
+            if (trans.succeeded) {
+                Log.i("Spreedly", "trans.result.token: " + trans.result.token);
+                //do something with trans result
+            } else {
+                Log.e("Spreedly", "trans.message: " + trans.message);
+               // do something with error
+            }
+        } finally {
+          //finish
+        }
+    }
+
+    @Override
+  public void onError(@NonNull Throwable e) {
+        Log.e("Spreedly", e.getMessage(), e);
+        //do something with error
+    }
+});
+```
 
 
 
