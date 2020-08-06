@@ -231,7 +231,7 @@ SpreedlyClient.newInstance(@NonNull String envKey, @NonNull String envSecret,@No
 Example code:
 ```java
 CreditCardInfo info = new CreditCardInfo("Full Name", new SpreedlySecureOpaqueString("4111111111111111"), new SpreedlySecureOpaqueString("432"), 2025, 12);
-SpreedlyClient client = SpreedlyClient.newInstance("you key", true);
+SpreedlyClient client = SpreedlyClient.newInstance("your key", "your secret", true);
 client.createCreditCardPaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
     @Override
   public void onSubscribe(@NonNull Disposable d) {
