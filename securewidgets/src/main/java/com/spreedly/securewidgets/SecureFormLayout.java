@@ -60,7 +60,6 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable TextInputLayout address2Input;
     @Nullable TextInputLayout cityInput;
     @Nullable TextInputLayout stateInput;
-    @Nullable Spinner countrySpinner;
     @Nullable TextInputLayout phoneInput;
     @Nullable TextInputLayout zipInput;
     @Nullable TextInputLayout shippingAddress1Input;
@@ -354,7 +353,6 @@ public class SecureFormLayout extends LinearLayout {
         String state = getString(stateInput);
         String zip = getString(zipInput);
         String phone = getString(phoneInput);
-        String country = countrySpinner.getSelectedItem().toString();
         info.address = new Address(address1, address2, city, state, zip, "", phone);
     }
 
@@ -368,7 +366,6 @@ public class SecureFormLayout extends LinearLayout {
             String state = getString(shippingStateInput);
             String zip = getString(shippingZipInput);
             String phone = getString(shippingPhoneInput);
-            String country = countrySpinner.getSelectedItem().toString();
             info.shippingAddress = new Address(address1, address2, city, state, zip, "", phone);
         }
     }
@@ -565,7 +562,6 @@ public class SecureFormLayout extends LinearLayout {
         cityInput = findViewById(R.id.spreedly_city);
         stateInput = findViewById(R.id.spreedly_state);
         zipInput = findViewById(R.id.spreedly_zip);
-        countrySpinner = findViewById(R.id.spreedly_country);
         phoneInput = findViewById(R.id.spreedly_phone_number);
         shippingAddress1Input = findViewById(R.id.spreedly_shipping_address1);
         shippingAddress2Input = findViewById(R.id.spreedly_shipping_address2);
