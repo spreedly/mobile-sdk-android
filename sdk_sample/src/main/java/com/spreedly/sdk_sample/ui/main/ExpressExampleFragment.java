@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.Address;
 import com.spreedly.client.models.enums.CardBrand;
@@ -20,10 +24,6 @@ import com.spreedly.sdk_sample.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 public class ExpressExampleFragment extends Fragment {
     @NonNull
     public static ExpressExampleFragment newInstance() {
@@ -34,6 +34,7 @@ public class ExpressExampleFragment extends Fragment {
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.express_example_fragment, container, false);
     }
 
@@ -50,7 +51,6 @@ public class ExpressExampleFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         getView().findViewById(R.id.pay_now_activity).setOnClickListener(v -> {
             ExpressBuilder builder = getExpressBuilder();
             builder.show(getActivity(), 1000);

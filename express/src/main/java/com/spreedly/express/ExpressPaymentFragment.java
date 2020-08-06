@@ -2,8 +2,10 @@ package com.spreedly.express;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -115,16 +117,15 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         client = (SpreedlyClient) getArguments().getSerializable("client");
         options = (PaymentOptions) getArguments().getSerializable("options");
 
         dp4 = (int) (getResources().getDisplayMetrics().density * 4);
         dp8 = (int) (getResources().getDisplayMetrics().density * 8);
         dp16 = (int) (getResources().getDisplayMetrics().density * 16);
-
         LinearLayoutCompat root = new LinearLayoutCompat(getContext());
         root.setOrientation(LinearLayoutCompat.VERTICAL);
+        int x;
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         BottomSheetBehavior<LinearLayout> behavior = new BottomSheetBehavior<>(getContext(), null);
         behavior.setHideable(false);
@@ -133,6 +134,18 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         root.setLayoutParams(params);
         root.setPadding(dp16, dp16, dp16, 0);
         layout = root;
+        Configuration configuration = getResources().getConfiguration();
+        int currentNightMode = configuration.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        int color = R.color.design_default_color_on_primary;
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            TypedValue a = new TypedValue();
+            getContext().getTheme().resolveAttribute(android.R.attr.windowBackground, a, true);
+            if (a.type >= TypedValue.TYPE_FIRST_COLOR_INT && a.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+                // windowBackground is a color
+                color = a.data;
+            }
+            layout.setBackgroundColor(color);
+        }
         createMenu();
         return root;
     }
