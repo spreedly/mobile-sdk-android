@@ -1,7 +1,7 @@
 package com.spreedly.client;
 
 import com.spreedly.client.models.BankAccountInfo;
-import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.AccountType;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 
@@ -23,7 +23,7 @@ public class CreateBankAccountPaymentTest {
 
     @Test
     public void CreateBankAccountSucceeds() throws InterruptedException {
-        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", "021000021", client.createString("9876543210"), BankAccountType.checking);
+        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", "021000021", client.createString("9876543210"), AccountType.checking);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createBankPaymentMethod(bankAccountInfo, null, null).subscribe(test);
         test.await();
@@ -32,7 +32,7 @@ public class CreateBankAccountPaymentTest {
 
     @Test
     public void CreateBankAccountGetsToken() throws InterruptedException {
-        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", "021000021", client.createString("9876543210"), BankAccountType.checking);
+        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", "021000021", client.createString("9876543210"), AccountType.checking);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createBankPaymentMethod(bankAccountInfo, null, null).subscribe(test);
         test.await();
@@ -45,7 +45,7 @@ public class CreateBankAccountPaymentTest {
 
     @Test
     public void BadInfoReturnsErrors() throws InterruptedException {
-        BankAccountInfo bankAccountInfo = new BankAccountInfo("", "021000021", client.createString("9876543210"), BankAccountType.checking);
+        BankAccountInfo bankAccountInfo = new BankAccountInfo("", "021000021", client.createString("9876543210"), AccountType.checking);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createBankPaymentMethod(bankAccountInfo, null, null).subscribe(test);
         test.await();

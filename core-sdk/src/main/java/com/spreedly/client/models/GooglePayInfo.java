@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class GooglePayInfo extends PaymentMethodMeta {
+public class GooglePayInfo extends PaymentMethodInfo {
     @NonNull
     public String paymentData;
 

@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class ApplePayInfo extends PaymentMethodMeta {
+public class ApplePayInfo extends PaymentMethodInfo {
     @Nullable public String testCardNumber;
     @NonNull
     public String paymentData;

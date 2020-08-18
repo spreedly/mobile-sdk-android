@@ -5,15 +5,15 @@ import org.json.JSONObject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class CreditCardInfo extends PaymentMethodMeta {
+public class CreditCardInfo extends PaymentMethodInfo {
 
     @Nullable
     public SpreedlySecureOpaqueString number;
-    @NonNull
+    @Nullable
     public SpreedlySecureOpaqueString verificationValue;
-    @NonNull
+    @Nullable
     public int month;
-    @NonNull
+    @Nullable
     public int year;
 
     @Nullable

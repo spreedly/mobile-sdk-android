@@ -5,8 +5,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.spreedly.client.models.enums.BankAccountHolderType;
-import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.AccountHolderType;
+import com.spreedly.client.models.enums.AccountType;
 
 import java.util.HashMap;
 
@@ -30,27 +30,27 @@ public class AccountTypeHelper {
     }
 
     @Nullable
-    public String getString(@NonNull BankAccountHolderType type) {
+    public String getString(@NonNull AccountHolderType type) {
         String string = context.getString(localizedMap.get(type.toString()));
         enumdMap.put(string, type);
         return string;
     }
 
     @Nullable
-    public String getString(@NonNull BankAccountType type) {
+    public String getString(@NonNull AccountType type) {
         String string = context.getString(localizedMap.get(type.toString()));
         enumdMap.put(string, type);
         return string;
     }
 
     @Nullable
-    public BankAccountType getBankAccountType(@NonNull String string) {
-        return (BankAccountType) enumdMap.get(string);
+    public AccountType getBankAccountType(@NonNull String string) {
+        return (AccountType) enumdMap.get(string);
     }
 
     @Nullable
-    public BankAccountHolderType getBankAccountHolderType(@NonNull String string) {
-        return (BankAccountHolderType) enumdMap.get(string);
+    public AccountHolderType getBankAccountHolderType(@NonNull String string) {
+        return (AccountHolderType) enumdMap.get(string);
     }
 
 

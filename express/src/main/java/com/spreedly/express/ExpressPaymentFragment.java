@@ -30,8 +30,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.spreedly.client.SpreedlyClient;
-import com.spreedly.client.models.enums.BankAccountHolderType;
-import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.AccountHolderType;
+import com.spreedly.client.models.enums.AccountType;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.securewidgets.SecureCreditCardField;
@@ -366,14 +366,14 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         RadioGroup radioGroup = v.findViewById(android.R.id.content);
         radioGroup.setId(id);
         if (holderType) {
-            option1.setText(secureFormLayout.accountTypeHelper.getString(BankAccountHolderType.personal));
-            option2.setText(secureFormLayout.accountTypeHelper.getString(BankAccountHolderType.business));
+            option1.setText(secureFormLayout.accountTypeHelper.getString(AccountHolderType.personal));
+            option2.setText(secureFormLayout.accountTypeHelper.getString(AccountHolderType.business));
             option1.setId(R.id.spreedly_holder_button_personal);
             option2.setId(R.id.spreedly_holder_button_business);
             radioGroup.check(R.id.spreedly_holder_button_personal);
         } else {
-            option1.setText(secureFormLayout.accountTypeHelper.getString(BankAccountType.checking));
-            option2.setText(secureFormLayout.accountTypeHelper.getString(BankAccountType.savings));
+            option1.setText(secureFormLayout.accountTypeHelper.getString(AccountType.checking));
+            option2.setText(secureFormLayout.accountTypeHelper.getString(AccountType.savings));
             option1.setId(R.id.spreedly_account_button_checking);
             option2.setId(R.id.spreedly_account_button_saving);
             radioGroup.check(R.id.spreedly_account_button_checking);

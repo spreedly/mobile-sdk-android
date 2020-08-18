@@ -19,8 +19,9 @@ import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.Address;
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
-import com.spreedly.client.models.PaymentMethodMeta;
-import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.PaymentMethodInfo;
+import com.spreedly.client.models.enums.AccountHolderType;
+import com.spreedly.client.models.enums.AccountType;
 import com.spreedly.client.models.enums.CardBrand;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.SpreedlyError;
@@ -203,21 +204,21 @@ public class SecureFormLayout extends LinearLayout {
             accountType = bankAccountTypeInput.getEditText().getText().toString();
         }
         if (fullNameInput != null) {
-            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType));
+            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), AccountType.valueOf(accountType));
         } else {
-            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType));
+            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), AccountType.valueOf(accountType));
         }
         if (accountHolderTypeSpinner != null) {
-            info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
+            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
         } else if (accountHolderTypeRadio != null) {
-            info.bankAccountHolderType = accountTypeHelper.getBankAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString();
+            info.bankAccountHolderType = AccountHolderType.valueOf(accountTypeHelper.getBankAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString());
         } else if (accountHolderTypeInput != null) {
-            info.bankAccountHolderType = accountHolderTypeInput.getEditText().getText().toString();
+            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeInput.getEditText().getText().toString());
         }
         addAddress(info);
         addShippingAddress(info);
         if (accountHolderTypeSpinner != null) {
-            info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
+            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
         }
         Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info, getString(emailInput), null);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
@@ -318,16 +319,16 @@ public class SecureFormLayout extends LinearLayout {
             accountType = bankAccountTypeInput.getEditText().getText().toString();
         }
         if (fullNameInput != null) {
-            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType));
+            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), AccountType.valueOf(accountType));
         } else {
-            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), BankAccountType.valueOf(accountType));
+            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), AccountType.valueOf(accountType));
         }
         if (accountHolderTypeSpinner != null) {
-            info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
+            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
         } else if (accountHolderTypeRadio != null) {
-            info.bankAccountHolderType = accountTypeHelper.getBankAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString();
+            info.bankAccountHolderType = AccountHolderType.valueOf(accountTypeHelper.getBankAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString());
         } else if (accountHolderTypeInput != null) {
-            info.bankAccountHolderType = accountHolderTypeInput.getEditText().getText().toString();
+            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeInput.getEditText().getText().toString());
         }
         info.shippingAddress = shippingAddress;
         info.address = billingAddress;
@@ -335,7 +336,7 @@ public class SecureFormLayout extends LinearLayout {
             addAddress(info);
         }
         if (accountHolderTypeSpinner != null) {
-            info.bankAccountHolderType = accountHolderTypeSpinner.getSelectedItem().toString();
+            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
         }
         Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info, getString(emailInput), null);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
@@ -346,7 +347,7 @@ public class SecureFormLayout extends LinearLayout {
         });
     }
 
-    private void addAddress(PaymentMethodMeta info) {
+    private void addAddress(PaymentMethodInfo info) {
         String address1 = getString(address1Input);
         String address2 = getString(address2Input);
         String city = getString(cityInput);
@@ -356,7 +357,7 @@ public class SecureFormLayout extends LinearLayout {
         info.address = new Address(address1, address2, city, state, zip, "", phone);
     }
 
-    private void addShippingAddress(PaymentMethodMeta info) {
+    private void addShippingAddress(PaymentMethodInfo info) {
         if (getBoolean(sameAddress)) {
             addAddress(info);
         } else {

@@ -1,6 +1,7 @@
 package com.spreedly.client.models;
 
-import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.AccountHolderType;
+import com.spreedly.client.models.enums.AccountType;
 
 import org.json.JSONObject;
 
@@ -9,17 +10,17 @@ import java.util.Locale;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class BankAccountInfo extends PaymentMethodMeta {
-    @NonNull
+public class BankAccountInfo extends PaymentMethodInfo {
+    @Nullable
     public String routingNumber;
-    @NonNull
+    @Nullable
     public SpreedlySecureOpaqueString accountNumber;
-    @NonNull
-    public BankAccountType accountType;
-    @NonNull
-    public String bankAccountHolderType;
+    @Nullable
+    public AccountType accountType;
+    @Nullable
+    public AccountHolderType bankAccountHolderType;
 
-    public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull BankAccountType accountType) {
+    public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull AccountType accountType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.routingNumber = routingNumber;
@@ -27,7 +28,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
         this.accountType = accountType;
     }
 
-    public BankAccountInfo(@NonNull String fullName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull BankAccountType accountType) {
+    public BankAccountInfo(@NonNull String fullName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull AccountType accountType) {
         this.fullName = fullName;
         this.routingNumber = routingNumber;
         this.accountNumber = accountNumber;
@@ -51,7 +52,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
             bankAccount.put("bank_account_type", "");
         }
         try {
-            bankAccount.put("bank_account_holder_type", this.bankAccountHolderType.toLowerCase(Locale.US));
+            bankAccount.put("bank_account_holder_type", this.bankAccountHolderType.toString().toLowerCase(Locale.US));
         } catch (NullPointerException e) {
         }
         paymentMethod.put("bank_account", bankAccount);
