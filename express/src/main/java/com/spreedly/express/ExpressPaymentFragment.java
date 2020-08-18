@@ -12,17 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -41,6 +35,10 @@ import com.spreedly.securewidgets.SecureTextField;
 
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -321,27 +319,20 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     }
 
     void setMerchantLogo() {
-        LinearLayout wrapper = new LinearLayout(getContext());
-        wrapper.setGravity(Gravity.CENTER);
-        MaterialTextView textView = new MaterialTextView(getContext());
-        if (options.merchantIcon != 0) {
-            ImageView img = new ImageView(getContext());
-            img.setImageResource(options.merchantIcon);
-            wrapper.addView(img);
+        if (options.header != null) {
+            layout.addView(LayoutInflater.from(getContext()).inflate(options.header, layout, false));
         }
-        if (options.merchantTitle != null) {
-            textView.setText(options.merchantTitle);
-            textView.setTextAppearance(getContext(), R.style.TextAppearance_AppCompat_Large);
-            textView.setGravity(Gravity.CENTER);
-            wrapper.addView(textView);
-        }
-        layout.addView(wrapper, 0);
     }
 
     void setMerchantText() {
-        MaterialTextView textView = new MaterialTextView(getContext());
-        textView.setText(Html.fromHtml(options.merchantText));
-        layout.addView(textView);
+        if (options.merchantText != null) {
+            MaterialTextView textView = new MaterialTextView(getContext());
+            textView.setText(Html.fromHtml(options.merchantText));
+            layout.addView(textView);
+        }
+        if (options.footer != null) {
+            layout.addView(LayoutInflater.from(getContext()).inflate(options.footer, layout, false));
+        }
     }
 
     void addZipcode() {
