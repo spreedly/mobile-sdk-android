@@ -1,6 +1,7 @@
 package com.spreedly.express;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.spreedly.client.models.Address;
@@ -15,8 +16,6 @@ public class PaymentOptions implements Serializable {
     @Nullable
     Address billingAddress;
     @Nullable
-    String merchantTitle;
-    @Nullable
     String merchantText;
     @Nullable
     PaymentType paymentType;
@@ -25,13 +24,11 @@ public class PaymentOptions implements Serializable {
     @Nullable
     List<StoredCard> storedCardList;
     @Nullable
-    int merchantIcon;
+    @LayoutRes
+    Integer header;
     @Nullable
     @LayoutRes
-    int header;
-    @Nullable
-    @LayoutRes
-    int footer;
+    Integer footer;
 
     public void setHeader(@LayoutRes int layout) {
         header = layout;

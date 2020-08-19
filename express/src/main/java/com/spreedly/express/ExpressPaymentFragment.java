@@ -17,11 +17,6 @@ import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
@@ -39,6 +34,10 @@ import com.spreedly.securewidgets.SecureTextField;
 
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -325,11 +324,13 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     }
 
     void setMerchantText() {
-        MaterialTextView textView = new MaterialTextView(getContext());
-        textView.setText(Html.fromHtml(options.merchantText));
-        layout.addView(textView);
+        if (options.merchantText != null) {
+            MaterialTextView textView = new MaterialTextView(getContext());
+            textView.setText(Html.fromHtml(options.merchantText));
+            layout.addView(textView);
+        }
         if (options.footer != null) {
-            layout.addView(LayoutInflater.from(getContext()).inflate(options.header, layout, false));
+            layout.addView(LayoutInflater.from(getContext()).inflate(options.footer, layout, false));
         }
     }
 
