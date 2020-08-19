@@ -1,16 +1,12 @@
 package com.spreedly.express;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
 import com.spreedly.client.models.Address;
-import com.spreedly.client.models.results.PaymentMethodResult;
-import com.spreedly.client.models.results.TransactionResult;
 
 import java.io.Serializable;
 import java.util.List;
-
-import io.reactivex.rxjava3.core.SingleObserver;
 
 public class PaymentOptions implements Serializable {
     boolean showZipcode;
@@ -30,9 +26,19 @@ public class PaymentOptions implements Serializable {
     List<StoredCard> storedCardList;
     @Nullable
     int merchantIcon;
+    @Nullable
+    @LayoutRes
+    int header;
+    @Nullable
+    @LayoutRes
+    int footer;
 
-    public void setMerchantTitle(@Nullable String merchantTitle) {
-        this.merchantTitle = merchantTitle;
+    public void setHeader(@LayoutRes int layout) {
+        header = layout;
+    }
+
+    public void setFooter(@LayoutRes int layout) {
+        footer = layout;
     }
 
     public void setMerchantText(@Nullable String merchantText) {
@@ -61,9 +67,5 @@ public class PaymentOptions implements Serializable {
 
     public void setStoredCardList(@Nullable List<StoredCard> storedCardList) {
         this.storedCardList = storedCardList;
-    }
-
-    public void setMerchantIcon(@Nullable int merchantIcon) {
-        this.merchantIcon = merchantIcon;
     }
 }

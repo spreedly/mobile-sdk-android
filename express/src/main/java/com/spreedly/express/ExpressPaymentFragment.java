@@ -6,13 +6,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -321,27 +319,18 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     }
 
     void setMerchantLogo() {
-        LinearLayout wrapper = new LinearLayout(getContext());
-        wrapper.setGravity(Gravity.CENTER);
-        MaterialTextView textView = new MaterialTextView(getContext());
-        if (options.merchantIcon != 0) {
-            ImageView img = new ImageView(getContext());
-            img.setImageResource(options.merchantIcon);
-            wrapper.addView(img);
+        if (options.header != null) {
+            layout.addView(LayoutInflater.from(getContext()).inflate(options.header, layout, false));
         }
-        if (options.merchantTitle != null) {
-            textView.setText(options.merchantTitle);
-            textView.setTextAppearance(getContext(), R.style.TextAppearance_AppCompat_Large);
-            textView.setGravity(Gravity.CENTER);
-            wrapper.addView(textView);
-        }
-        layout.addView(wrapper, 0);
     }
 
     void setMerchantText() {
         MaterialTextView textView = new MaterialTextView(getContext());
         textView.setText(Html.fromHtml(options.merchantText));
         layout.addView(textView);
+        if (options.footer != null) {
+            layout.addView(LayoutInflater.from(getContext()).inflate(options.header, layout, false));
+        }
     }
 
     void addZipcode() {
