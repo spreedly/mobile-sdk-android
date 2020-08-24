@@ -45,7 +45,7 @@ public class SecureFormCreditCardViewModel extends ViewModel {
 
             @Override
             public void onError(@NonNull Throwable e) {
-
+                error.setText(R.string.generic_error);
             }
         });
     }

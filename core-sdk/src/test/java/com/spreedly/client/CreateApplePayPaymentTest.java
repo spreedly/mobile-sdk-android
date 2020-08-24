@@ -34,7 +34,7 @@ public class CreateApplePayPaymentTest {
                 "}\n");
         applePayInfo.testCardNumber = "4111111111111111";
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createApplePaymentMethod(applePayInfo, null, null).subscribe(test);
+        client.createApplePaymentMethod(applePayInfo).subscribe(test);
         test.await();
         test.assertComplete();
     }
@@ -53,7 +53,7 @@ public class CreateApplePayPaymentTest {
                 "}\n");
         applePayInfo.testCardNumber = "4111111111111111";
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createApplePaymentMethod(applePayInfo, null, null).subscribe(test);
+        client.createApplePaymentMethod(applePayInfo).subscribe(test);
         test.await();
         test.assertComplete();
 

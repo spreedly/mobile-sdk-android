@@ -1,10 +1,12 @@
 package com.spreedly.express;
 
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.spreedly.client.models.Address;
+import com.spreedly.client.models.BankAccountInfo;
+import com.spreedly.client.models.CreditCardInfo;
+import com.spreedly.client.models.PaymentMethodInfo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -29,6 +31,12 @@ public class PaymentOptions implements Serializable {
     @Nullable
     @LayoutRes
     Integer footer;
+    @Nullable
+    PaymentMethodInfo defaultPaymentMethodInfo;
+    @Nullable
+    CreditCardInfo defaultCreditCardInfo;
+    @Nullable
+    BankAccountInfo defaultBankAccountInfo;
 
     public void setHeader(@LayoutRes int layout) {
         header = layout;
@@ -64,5 +72,17 @@ public class PaymentOptions implements Serializable {
 
     public void setStoredCardList(@Nullable List<StoredCard> storedCardList) {
         this.storedCardList = storedCardList;
+    }
+
+    public void setDefaultPaymentMethodInfo(@Nullable PaymentMethodInfo defaultPaymentMethodInfo) {
+        this.defaultPaymentMethodInfo = defaultPaymentMethodInfo;
+    }
+
+    public void setDefaultCreditCardInfo(@Nullable CreditCardInfo defaultCreditCardInfo) {
+        this.defaultCreditCardInfo = defaultCreditCardInfo;
+    }
+
+    public void setDefaultBankInfo(@Nullable BankAccountInfo defaultBankAccountInfo) {
+        this.defaultBankAccountInfo = defaultBankAccountInfo;
     }
 }

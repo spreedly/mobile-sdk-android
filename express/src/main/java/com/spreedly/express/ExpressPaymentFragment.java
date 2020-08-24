@@ -17,6 +17,11 @@ import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
@@ -34,10 +39,6 @@ import com.spreedly.securewidgets.SecureTextField;
 
 import java.io.Serializable;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -288,12 +289,12 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
 
 
     private void submitNewCard() {
-        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createCreditCardPaymentMethod(options.billingAddress, options.shippingAddress);
+        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createCreditCardPaymentMethod();
         result.subscribe(submitCallback);
     }
 
     private void submitBank() {
-        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createBankAccountPaymentMethod(options.billingAddress, options.shippingAddress);
+        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createBankAccountPaymentMethod();
         result.subscribe(submitCallback);
     }
 

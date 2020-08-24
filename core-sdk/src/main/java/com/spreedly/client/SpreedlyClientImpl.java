@@ -73,24 +73,24 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
 
     @Override
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info, @Nullable String email, @Nullable JSONObject metadata) {
-        return sendRequest(info.toJson(email, metadata), "/payment_methods.json").map(this::processCCMap);
+    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info) {
+        return sendRequest(info.toJson(), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info, @Nullable String email, @Nullable JSONObject metadata) {
-        return sendRequest(info.toJson(email, metadata), "/payment_methods.json").map(this::processBAMap);
+    public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info) {
+        return sendRequest(info.toJson(), "/payment_methods.json").map(this::processBAMap);
     }
 
     @Override
-    public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info, @Nullable String email, @Nullable JSONObject metadata) {
-        return sendRequest(info.toJson(email, metadata), "/payment_methods.json").map(this::processCCMap);
+    public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info) {
+        return sendRequest(info.toJson(), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override
-    public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info, @Nullable String email, @Nullable JSONObject metadata) {
-        return sendRequest(info.toJson(email, metadata), "/payment_methods.json").map(this::processCCMap);
+    public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info) {
+        return sendRequest(info.toJson(), "/payment_methods.json").map(this::processCCMap);
     }
 
     @Override

@@ -7,14 +7,16 @@ import java.io.Serializable;
 import io.reactivex.rxjava3.annotations.Nullable;
 
 public class Address implements Serializable {
-    public final @Nullable String address1;
-    public final @Nullable String address2;
-    public final @Nullable String city;
-    public final @Nullable String state;
-    public final @Nullable String zip;
-    public final @Nullable String country;
-    public final @Nullable String phoneNumber;
+    public @Nullable String address1;
+    public @Nullable String address2;
+    public @Nullable String city;
+    public @Nullable String state;
+    public @Nullable String zip;
+    public @Nullable String country;
+    public @Nullable String phoneNumber;
 
+    public Address() {
+    }
     public Address(
             @Nullable String address1,
             @Nullable String address2,

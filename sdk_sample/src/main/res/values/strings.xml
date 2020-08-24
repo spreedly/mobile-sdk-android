@@ -15,4 +15,5 @@
     <string name="generic_error">Unexpected Error</string>
     <string name="pay_now_activity">Pay Now! (activity)</string>
     <string name="pay_now_fragment">Pay Now! (fragment)</string>
+    <string name="merchant_title">Lucy\'s shop</string>
 </resources>

@@ -39,7 +39,7 @@ public class ApplePayFragmentViewModel extends ViewModel {
         inProgress.setValue(true);
         token.postValue("");
         error.postValue("");
-        client.createApplePaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        client.createApplePaymentMethod(info).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 

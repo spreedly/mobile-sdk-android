@@ -18,7 +18,10 @@ public class BankAccountInfo extends PaymentMethodInfo {
     @Nullable
     public AccountType accountType;
     @Nullable
-    public AccountHolderType bankAccountHolderType;
+    public AccountHolderType accountHolderType;
+
+    public BankAccountInfo() {
+    }
 
     public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull AccountType accountType) {
         this.firstName = firstName;
@@ -37,12 +40,12 @@ public class BankAccountInfo extends PaymentMethodInfo {
 
     @Override
     @NonNull
-    public JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata) {
+    public JSONObject toJson() {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject bankAccount = new JSONObject();
 
-        addCommonJsonFields(paymentMethod, bankAccount, email, metadata);
+        addCommonJsonFields(paymentMethod, bankAccount);
 
         bankAccount.put("bank_routing_number", this.routingNumber);
         bankAccount.put("bank_account_number", this.accountNumber._encode());
@@ -52,7 +55,7 @@ public class BankAccountInfo extends PaymentMethodInfo {
             bankAccount.put("bank_account_type", "");
         }
         try {
-            bankAccount.put("bank_account_holder_type", this.bankAccountHolderType.toString().toLowerCase(Locale.US));
+            bankAccount.put("bank_account_holder_type", this.accountHolderType.toString().toLowerCase(Locale.US));
         } catch (NullPointerException e) {
         }
         paymentMethod.put("bank_account", bankAccount);

@@ -18,7 +18,9 @@ public class PaymentMethodMetaTest {
         JSONObject subType = new JSONObject();
         JSONObject metaData = new JSONObject();
         metaData.put("some", "data");
-        cc.addCommonJsonFields(wrapper, subType, "email@sample.com", metaData);
+        cc.metadata = metaData;
+        cc.email = "email@sample.com";
+        cc.addCommonJsonFields(wrapper, subType);
         assertEquals("{\"zip\":\"55555\",\"country\":\"USA\",\"full_name\":\"Joe Jones\",\"address2\":\"Unit 2\",\"city\":\"Anytown\",\"address1\":\"555 Sample Rd\",\"phone_number\":\"444-444-4444\",\"state\":\"WA\"}", subType.toString());
         assertEquals("{\"metadata\":{\"some\":\"data\"},\"email\":\"email@sample.com\"}", wrapper.toString());
     }

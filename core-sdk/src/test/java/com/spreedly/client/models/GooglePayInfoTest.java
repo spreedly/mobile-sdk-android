@@ -18,7 +18,7 @@ public class GooglePayInfoTest {
         GooglePayInfo googlePay = new GooglePayInfo("Jane", "Doe", "sample data", false);
         googlePay.testCardNumber = "111111111111111";
         String expected = "{\"payment_method\":{\"retained\":false,\"google_pay\":{\"test_card_number\":\"111111111111111\",\"last_name\":\"Doe\",\"payment_data\":\"sample data\",\"first_name\":\"Jane\"}}}";
-        JSONObject actual = googlePay.toJson(null, null);
+        JSONObject actual = googlePay.toJson();
         assertEquals(expected, actual.toString());
     }
 }

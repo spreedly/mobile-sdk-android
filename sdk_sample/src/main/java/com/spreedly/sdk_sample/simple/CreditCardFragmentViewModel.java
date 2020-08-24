@@ -30,7 +30,7 @@ public class CreditCardFragmentViewModel extends ViewModel {
         inProgress.setValue(true);
         token.postValue("");
         error.postValue("");
-        client.createCreditCardPaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        client.createCreditCardPaymentMethod(info).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 

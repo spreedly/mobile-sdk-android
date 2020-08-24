@@ -76,14 +76,17 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable SecureTextField bankAccountNumberField;
     @Nullable TextInputLayout routingNumberInput;
 
-    @Nullable TextInputLayout bankAccountTypeInput;
-    @Nullable Spinner bankAccountTypeSpinner;
-    @Nullable RadioGroup bankAccountTypeRadio;
+    @Nullable TextInputLayout accountTypeInput;
+    @Nullable Spinner accountTypeSpinner;
+    @Nullable RadioGroup accountTypeRadio;
     @Nullable TextInputLayout accountHolderTypeInput;
     @Nullable Spinner accountHolderTypeSpinner;
     @Nullable RadioGroup accountHolderTypeRadio;
 
     @Nullable TextView errorView;
+    @Nullable PaymentMethodInfo defaultPaymentMethodInfo;
+    @Nullable CreditCardInfo defaultCreditCardInfo;
+    @Nullable BankAccountInfo defaultBankAccountInfo;
 
     CheckBox sameAddress;
 
@@ -140,15 +143,8 @@ public class SecureFormLayout extends LinearLayout {
                 }
             };
         }
-        CreditCardInfo info;
-        if (fullNameInput != null) {
-            info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), cvvField.getText(), expirationField.getYear(), expirationField.getMonth());
-        } else {
-            info = new CreditCardInfo(getString(firstNameInput), getString(lastNameInput), creditCardNumberField.getText(), cvvField.getText(), expirationField.getYear(), expirationField.getMonth());
-        }
-        addAddress(info);
-        addShippingAddress(info);
-        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, getString(emailInput), null);
+        CreditCardInfo info = createCreditCardInfo();
+        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
                 handleErrors(transaction.errors);
@@ -194,181 +190,14 @@ public class SecureFormLayout extends LinearLayout {
                 }
             };
         }
-        BankAccountInfo info;
-        String accountType;
-        if (bankAccountTypeSpinner != null) {
-            accountType = bankAccountTypeSpinner.getSelectedItem().toString();
-        } else if (bankAccountTypeRadio != null) {
-            accountType = (accountTypeHelper.getBankAccountType(((RadioButton) findViewById(bankAccountTypeRadio.getCheckedRadioButtonId())).getText().toString())).toString();
-        } else {
-            accountType = bankAccountTypeInput.getEditText().getText().toString();
-        }
-        if (fullNameInput != null) {
-            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), AccountType.valueOf(accountType));
-        } else {
-            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), AccountType.valueOf(accountType));
-        }
-        if (accountHolderTypeSpinner != null) {
-            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
-        } else if (accountHolderTypeRadio != null) {
-            info.bankAccountHolderType = AccountHolderType.valueOf(accountTypeHelper.getBankAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString());
-        } else if (accountHolderTypeInput != null) {
-            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeInput.getEditText().getText().toString());
-        }
-        addAddress(info);
-        addShippingAddress(info);
-        if (accountHolderTypeSpinner != null) {
-            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
-        }
-        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info, getString(emailInput), null);
+        BankAccountInfo info = createBankAccountInfo();
+        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
                 handleErrors(transaction.errors);
             }
             return transaction;
         });
-    }
-
-    @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@Nullable Address billingAddress, @Nullable Address shippingAddress) {
-        Log.i("Spreedly", "createCreditCardPaymentMethod firing");
-        resetCardErrors();
-        resetGenericErrors();
-        boolean hasError = validateNames();
-        hasError = validateAddress(hasError);
-        if (creditCardNumberField == null || creditCardNumberField.getText().detectCardType() == CardBrand.error) {
-            creditCardNumberField.setError(getContext().getString(R.string.error_bad_card_number));
-            hasError = true;
-        }
-        if (expirationField != null && (expirationField.getYear() == 0 || expirationField.getMonth() == 0)) {
-            expirationField.setError(getContext().getString(R.string.error_bad_date));
-            hasError = true;
-        }
-        if (hasError) {
-            return new Single<TransactionResult<PaymentMethodResult>>() {
-                @Override
-                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
-
-                }
-            };
-        }
-        CreditCardInfo info;
-        if (fullNameInput != null) {
-            info = new CreditCardInfo(getString(fullNameInput), creditCardNumberField.getText(), cvvField.getText(), expirationField.getYear(), expirationField.getMonth());
-        } else {
-            info = new CreditCardInfo(getString(firstNameInput), getString(lastNameInput), creditCardNumberField.getText(), cvvField.getText(), expirationField.getYear(), expirationField.getMonth());
-        }
-        info.shippingAddress = shippingAddress;
-        info.address = billingAddress;
-        if (billingAddress == null) {
-            addAddress(info);
-        }
-        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info, getString(emailInput), null);
-        return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
-            if (!transaction.succeeded) {
-                handleErrors(transaction.errors);
-            }
-            return transaction;
-        });
-    }
-
-    @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod(@Nullable Address billingAddress, @Nullable Address shippingAddress) {
-        Log.i("Spreedly", "createCreditCardPaymentMethod firing");
-        resetBankErrors();
-        resetGenericErrors();
-        boolean hasError = validateNames();
-        hasError = validateAddress(hasError);
-        if (bankAccountNumberField != null) {
-            if (bankAccountNumberField.getText().length == 0) {
-                hasError = true;
-                bankAccountNumberField.setError(getContext().getString(R.string.error_blank_account_number));
-            } else if (!bankAccountNumberField.getText().isNumber()) {
-                hasError = true;
-                bankAccountNumberField.setError(getContext().getString(R.string.error_bad_account_number));
-            }
-        }
-        if (routingNumberInput != null) {
-            if (getString(routingNumberInput).length() == 0) {
-                hasError = true;
-                routingNumberInput.setError(getContext().getString(R.string.error_blank_routing_number));
-            } else {
-                try {
-                    Double.parseDouble(getString(routingNumberInput));
-                } catch (Exception e) {
-                    hasError = true;
-                    routingNumberInput.setError(getContext().getString(R.string.error_bad_routing_number));
-                }
-            }
-        }
-        if (hasError) {
-            return new Single<TransactionResult<PaymentMethodResult>>() {
-                @Override
-                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
-
-                }
-            };
-        }
-        BankAccountInfo info;
-        String accountType;
-        if (bankAccountTypeSpinner != null) {
-            accountType = bankAccountTypeSpinner.getSelectedItem().toString();
-        } else if (bankAccountTypeRadio != null) {
-            accountType = (accountTypeHelper.getBankAccountType(((RadioButton) findViewById(bankAccountTypeRadio.getCheckedRadioButtonId())).getText().toString())).toString();
-        } else {
-            accountType = bankAccountTypeInput.getEditText().getText().toString();
-        }
-        if (fullNameInput != null) {
-            info = new BankAccountInfo(getString(fullNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), AccountType.valueOf(accountType));
-        } else {
-            info = new BankAccountInfo(getString(firstNameInput), getString(lastNameInput), getString(routingNumberInput), bankAccountNumberField.getText(), AccountType.valueOf(accountType));
-        }
-        if (accountHolderTypeSpinner != null) {
-            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
-        } else if (accountHolderTypeRadio != null) {
-            info.bankAccountHolderType = AccountHolderType.valueOf(accountTypeHelper.getBankAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString()).toString());
-        } else if (accountHolderTypeInput != null) {
-            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeInput.getEditText().getText().toString());
-        }
-        info.shippingAddress = shippingAddress;
-        info.address = billingAddress;
-        if (billingAddress == null) {
-            addAddress(info);
-        }
-        if (accountHolderTypeSpinner != null) {
-            info.bankAccountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
-        }
-        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info, getString(emailInput), null);
-        return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
-            if (!transaction.succeeded) {
-                handleErrors(transaction.errors);
-            }
-            return transaction;
-        });
-    }
-
-    private void addAddress(PaymentMethodInfo info) {
-        String address1 = getString(address1Input);
-        String address2 = getString(address2Input);
-        String city = getString(cityInput);
-        String state = getString(stateInput);
-        String zip = getString(zipInput);
-        String phone = getString(phoneInput);
-        info.address = new Address(address1, address2, city, state, zip, "", phone);
-    }
-
-    private void addShippingAddress(PaymentMethodInfo info) {
-        if (getBoolean(sameAddress)) {
-            addAddress(info);
-        } else {
-            String address1 = getString(shippingAddress1Input);
-            String address2 = getString(shippingAddress2Input);
-            String city = getString(shippingCityInput);
-            String state = getString(shippingStateInput);
-            String zip = getString(shippingZipInput);
-            String phone = getString(shippingPhoneInput);
-            info.shippingAddress = new Address(address1, address2, city, state, zip, "", phone);
-        }
     }
 
 
@@ -576,14 +405,14 @@ public class SecureFormLayout extends LinearLayout {
         routingNumberInput = findViewById(R.id.spreedly_ba_routing_number);
 
 
-        View bankAccountTypeView = findViewById(R.id.spreedly_ba_account_type);
-        if (bankAccountTypeView != null) {
-            if (bankAccountTypeView.getClass() == TextInputLayout.class) {
-                bankAccountTypeInput = (TextInputLayout) bankAccountTypeView;
-            } else if (bankAccountTypeView.getClass() == Spinner.class || bankAccountTypeView.getClass() == AppCompatSpinner.class) {
-                bankAccountTypeSpinner = (Spinner) bankAccountTypeView;
+        View accountTypeView = findViewById(R.id.spreedly_ba_account_type);
+        if (accountTypeView != null) {
+            if (accountTypeView.getClass() == TextInputLayout.class) {
+                accountTypeInput = (TextInputLayout) accountTypeView;
+            } else if (accountTypeView.getClass() == Spinner.class || accountTypeView.getClass() == AppCompatSpinner.class) {
+                accountTypeSpinner = (Spinner) accountTypeView;
             } else {
-                bankAccountTypeRadio = (RadioGroup) bankAccountTypeView;
+                accountTypeRadio = (RadioGroup) accountTypeView;
             }
         }
         View accountHolderTypeView = findViewById(R.id.spreedly_ba_account_holder_type);
@@ -598,5 +427,130 @@ public class SecureFormLayout extends LinearLayout {
         }
         errorView = findViewById(R.id.spreedly_generic_error);
 
+    }
+
+    public void setDefaultPaymentMethodInfo(@Nullable PaymentMethodInfo defaultPaymentMethodInfo) {
+        this.defaultPaymentMethodInfo = defaultPaymentMethodInfo;
+    }
+
+    public void setDefaultCreditCardInfo(@Nullable CreditCardInfo defaultCreditCardInfo) {
+        this.defaultCreditCardInfo = defaultCreditCardInfo;
+    }
+
+    public void setDefaultBankInfo(@Nullable BankAccountInfo defaultBankAccountInfo) {
+        this.defaultBankAccountInfo = defaultBankAccountInfo;
+    }
+
+    private CreditCardInfo createCreditCardInfo() {
+        CreditCardInfo info = new CreditCardInfo();
+        if (defaultCreditCardInfo != null) {
+            info = defaultCreditCardInfo;
+        } else if (defaultPaymentMethodInfo != null) {
+            info = (CreditCardInfo) defaultPaymentMethodInfo;
+        }
+        addAddress(info);
+        addShippingAddress(info);
+        addName(info);
+        if (creditCardNumberField != null) {
+            info.number = creditCardNumberField.getText();
+        }
+        if (cvvField != null) {
+            info.verificationValue = cvvField.getText();
+        }
+        if (expirationField != null) {
+            info.year = expirationField.getYear();
+            info.month = expirationField.getMonth();
+        }
+        return info;
+    }
+
+    private BankAccountInfo createBankAccountInfo() {
+        BankAccountInfo info = new BankAccountInfo();
+        if (defaultBankAccountInfo != null) {
+            info = defaultBankAccountInfo;
+        } else if (defaultPaymentMethodInfo != null) {
+            info = (BankAccountInfo) defaultPaymentMethodInfo;
+        }
+        addAddress(info);
+        addShippingAddress(info);
+        addName(info);
+        if (bankAccountNumberField != null) {
+            info.accountNumber = bankAccountNumberField.getText();
+        }
+        if (routingNumberInput != null) {
+            info.routingNumber = getString(routingNumberInput);
+        }
+        if (accountTypeSpinner != null) {
+            info.accountType = AccountType.valueOf(accountTypeSpinner.getSelectedItem().toString());
+        } else if (accountTypeRadio != null) {
+            info.accountType = accountTypeHelper.getAccountType(((RadioButton) findViewById(accountTypeRadio.getCheckedRadioButtonId())).getText().toString());
+        } else if (accountTypeInput != null) {
+            info.accountType = AccountType.valueOf(getString(accountTypeInput));
+        }
+        if (accountHolderTypeSpinner != null) {
+            info.accountHolderType = AccountHolderType.valueOf(accountHolderTypeSpinner.getSelectedItem().toString());
+        } else if (accountHolderTypeRadio != null) {
+            info.accountHolderType = accountTypeHelper.getAccountHolderType(((RadioButton) findViewById(accountHolderTypeRadio.getCheckedRadioButtonId())).getText().toString());
+        } else if (accountHolderTypeInput != null) {
+            info.accountHolderType = AccountHolderType.valueOf(getString(accountHolderTypeInput));
+        }
+        return info;
+    }
+
+    private void addAddress(PaymentMethodInfo info) {
+        Address address = new Address();
+        if (address1Input != null) {
+            address.address1 = getString(address1Input);
+        }
+        if (address2Input != null) {
+            address.address2 = getString(address2Input);
+        }
+        if (cityInput != null) {
+            address.city = getString(cityInput);
+        }
+        if (stateInput != null) {
+            address.state = getString(stateInput);
+        }
+        if (zipInput != null) {
+            address.zip = getString(zipInput);
+        }
+        info.address = address;
+    }
+
+
+    private void addShippingAddress(PaymentMethodInfo info) {
+        if (getBoolean(sameAddress)) {
+            info.shippingAddress = info.address;
+        } else {
+            Address address = new Address();
+            if (shippingAddress1Input != null) {
+                address.address1 = getString(shippingAddress1Input);
+            }
+            if (shippingAddress2Input != null) {
+                address.address2 = getString(shippingAddress2Input);
+            }
+            if (shippingCityInput != null) {
+                address.city = getString(shippingCityInput);
+            }
+            if (shippingStateInput != null) {
+                address.state = getString(shippingStateInput);
+            }
+            if (shippingZipInput != null) {
+                address.zip = getString(shippingZipInput);
+            }
+            info.shippingAddress = address;
+        }
+    }
+
+    private void addName(PaymentMethodInfo info) {
+        if (firstNameInput != null) {
+            info.firstName = getString(firstNameInput);
+        }
+        if (lastNameInput != null) {
+            info.lastName = getString(lastNameInput);
+        }
+        if (fullNameInput != null) {
+            info.fullName = getString(fullNameInput);
+        }
     }
 }

@@ -21,12 +21,12 @@ public class GooglePayInfo extends PaymentMethodInfo {
 
     @Override
     @NonNull
-    public JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata) {
+    public JSONObject toJson() {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject googlePay = new JSONObject();
 
-        addCommonJsonFields(paymentMethod, googlePay, email, metadata);
+        addCommonJsonFields(paymentMethod, googlePay);
         googlePay.put("payment_data", this.paymentData);
         googlePay.put("test_card_number", this.testCardNumber);
 

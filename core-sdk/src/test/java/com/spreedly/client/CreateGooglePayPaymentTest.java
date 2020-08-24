@@ -30,7 +30,7 @@ public class CreateGooglePayPaymentTest {
                 "}", false);
         googlePayInfo.testCardNumber = "4111111111111111";
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createGooglePaymentMethod(googlePayInfo, null, null).subscribe(test);
+        client.createGooglePaymentMethod(googlePayInfo).subscribe(test);
         test.await();
         test.assertComplete();
     }
@@ -48,7 +48,7 @@ public class CreateGooglePayPaymentTest {
                 "}", false);
         googlePayInfo.testCardNumber = "4111111111111111";
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createGooglePaymentMethod(googlePayInfo, null, null).subscribe(test);
+        client.createGooglePaymentMethod(googlePayInfo).subscribe(test);
         test.await();
         test.assertComplete();
 

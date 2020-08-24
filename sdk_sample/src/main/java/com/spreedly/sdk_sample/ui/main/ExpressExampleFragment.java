@@ -78,8 +78,7 @@ public class ExpressExampleFragment extends Fragment {
         options.setButtonText("Pay now");
         options.setPaymentType(PaymentType.ALL);
         options.setStoredCardList(storedCards);
-        options.setMerchantTitle("Lucy's Shop");
-        options.setMerchantIcon(R.drawable.ic_rowing);
+        options.setHeader(R.layout.merchant_header);
         options.setMerchantText("<div style=\"text-align: center;\">\n" +
                 "<h1 style=\"text-align: center;\">$20.12</h1>\n" +
                 "Pass in your customized merchant text.</div>");

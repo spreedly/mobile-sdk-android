@@ -25,6 +25,9 @@ public class CreditCardInfo extends PaymentMethodInfo {
     @Nullable
     public Boolean eligibleForCardUpdate;
 
+    public CreditCardInfo() {
+    }
+
     public CreditCardInfo(@NonNull String fullName, @NonNull SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @NonNull int year, @NonNull int month) {
         this.fullName = fullName;
         this.number = number;
@@ -43,12 +46,12 @@ public class CreditCardInfo extends PaymentMethodInfo {
     }
 
     @NonNull
-    public JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata) {
+    public JSONObject toJson() {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject creditCard = new JSONObject();
 
-        addCommonJsonFields(paymentMethod, creditCard, email, metadata);
+        addCommonJsonFields(paymentMethod, creditCard);
 
         creditCard.put("verification_value", verificationValue._encode());
         creditCard.put("number", number._encode());

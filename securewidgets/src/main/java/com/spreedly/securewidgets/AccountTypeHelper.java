@@ -44,12 +44,12 @@ public class AccountTypeHelper {
     }
 
     @Nullable
-    public AccountType getBankAccountType(@NonNull String string) {
+    public AccountType getAccountType(@NonNull String string) {
         return (AccountType) enumdMap.get(string);
     }
 
     @Nullable
-    public AccountHolderType getBankAccountHolderType(@NonNull String string) {
+    public AccountHolderType getAccountHolderType(@NonNull String string) {
         return (AccountHolderType) enumdMap.get(string);
     }
 

@@ -26,7 +26,7 @@ public class CreateCreditCardPaymentTest {
         cc.retained = true;
 
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
+        client.createCreditCardPaymentMethod(cc).subscribe(test);
         test.await();
         test.assertComplete();
     }
@@ -37,7 +37,7 @@ public class CreateCreditCardPaymentTest {
         cc.retained = true;
 
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
+        client.createCreditCardPaymentMethod(cc).subscribe(test);
         test.await();
         test.assertComplete();
 
@@ -51,7 +51,7 @@ public class CreateCreditCardPaymentTest {
     public void badCreditCardFails() throws InterruptedException {
         CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 2032, 0);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
+        client.createCreditCardPaymentMethod(cc).subscribe(test);
         test.await();
         test.assertComplete();
         TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
@@ -63,7 +63,7 @@ public class CreateCreditCardPaymentTest {
         SpreedlyClient badClient = SpreedlyClient.newInstance("", "", true);
         CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 2030, 12);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        badClient.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
+        badClient.createCreditCardPaymentMethod(cc).subscribe(test);
         test.await();
         test.assertComplete();
         TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);

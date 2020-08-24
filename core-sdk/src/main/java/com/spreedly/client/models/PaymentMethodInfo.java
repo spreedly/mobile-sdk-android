@@ -22,10 +22,16 @@ public abstract class PaymentMethodInfo {
     @Nullable
     public Boolean retained;
 
-    @NonNull
-    abstract JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata);
+    @Nullable
+    public JSONObject metadata;
 
-    protected void addCommonJsonFields(@NonNull JSONObject paymentMethod, @NonNull JSONObject subType, @Nullable String email, @Nullable JSONObject metadata) {
+    @Nullable
+    public String email;
+
+    @NonNull
+    abstract JSONObject toJson();
+
+    protected void addCommonJsonFields(@NonNull JSONObject paymentMethod, @NonNull JSONObject subType) {
         if (this.fullName != null) {
             subType.put("full_name", this.fullName);
         } else {

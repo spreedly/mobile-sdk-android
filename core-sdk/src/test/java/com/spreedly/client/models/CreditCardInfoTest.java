@@ -33,7 +33,7 @@ public class CreditCardInfoTest {
     public void CanEncodeCreditCard() {
         CreditCardInfo creditCard = new CreditCardInfo("Jane Doe", client.createString("sample card number"), client.createString("sample cvv"), 12, 2030);
         String expected = "{\"payment_method\":{\"credit_card\":{\"number\":\"samplecardnumber\",\"full_name\":\"Jane Doe\",\"verification_value\":\"samplecvv\",\"month\":2030,\"year\":12}}}";
-        JSONObject actual = creditCard.toJson(null, null);
+        JSONObject actual = creditCard.toJson();
         assertEquals(expected, actual.toString());
     }
 
@@ -48,8 +48,9 @@ public class CreditCardInfoTest {
         creditCard.allowExpiredDate = false;
         creditCard.allowBlankName = true;
         creditCard.allowBlankDate = true;
+        creditCard.email = "sample@sample.com";
         String expected = "{\"payment_method\":{\"retained\":true,\"credit_card\":{\"zip\":\"98000\",\"country\":\"USA\",\"shipping_state\":\"WA\",\"address2\":\"\",\"city\":\"Anytown\",\"year\":12,\"address1\":\"555 Main St\",\"shipping_city\":\"Anytown\",\"number\":\"samplecardnumber\",\"full_name\":\"Jane Doe\",\"verification_value\":\"samplecvv\",\"month\":2030,\"shipping_zip\":\"98000\",\"shipping_address2\":\"Apt 33\",\"shipping_address1\":\"555 Main St\",\"shipping_phone_number\":\"5555555555\",\"company\":\"Company inc.\",\"phone_number\":\"5555555555\",\"state\":\"WA\",\"shipping_country\":\"USA\"},\"eligible_for_card_updater\":false,\"allow_blank_name\":true,\"allow_expired_date\":false,\"allow_blank_date\":true,\"email\":\"sample@sample.com\"}}";
-        JSONObject actual = creditCard.toJson("sample@sample.com", null);
+        JSONObject actual = creditCard.toJson();
         assertEquals(expected, actual.toString());
     }
 }

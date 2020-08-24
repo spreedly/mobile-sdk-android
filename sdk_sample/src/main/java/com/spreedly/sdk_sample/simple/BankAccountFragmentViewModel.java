@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.BankAccountInfo;
-import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.AccountType;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 
@@ -26,12 +26,12 @@ public class BankAccountFragmentViewModel extends ViewModel {
 
     void create() {
         final SpreedlyClient client = SpreedlyClient.newInstance("", "", true);
-        final BankAccountType bankAccountType = type.getValue() == "savings" ? BankAccountType.savings : BankAccountType.checking;
-        final BankAccountInfo info = new BankAccountInfo(name.getValue(), routing.getValue(), client.createString(account.getValue()), bankAccountType );
+        final AccountType bccountType = type.getValue() == "savings" ? AccountType.savings : AccountType.checking;
+        final BankAccountInfo info = new BankAccountInfo(name.getValue(), routing.getValue(), client.createString(account.getValue()), bccountType);
         inProgress.setValue(true);
         token.postValue("");
         error.postValue("");
-        client.createBankPaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        client.createBankPaymentMethod(info).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 

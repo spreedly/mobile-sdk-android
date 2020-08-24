@@ -20,7 +20,7 @@ public class RecacheTest {
         cc.retained = true;
 
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
+        client.createCreditCardPaymentMethod(cc).subscribe(test);
         test.await();
         TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
         test = new TestObserver<TransactionResult<PaymentMethodResult>>();
@@ -39,7 +39,7 @@ public class RecacheTest {
         cc.retained = true;
 
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
-        client.createCreditCardPaymentMethod(cc, null, null).subscribe(test);
+        client.createCreditCardPaymentMethod(cc).subscribe(test);
         test.await();
         TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
         test = new TestObserver<TransactionResult<PaymentMethodResult>>();
