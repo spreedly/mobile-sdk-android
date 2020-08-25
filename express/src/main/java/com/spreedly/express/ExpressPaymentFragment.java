@@ -92,10 +92,10 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         //            getActivity().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
         dismiss();
     };
-    private Consumer<StoredCard> savedCardCallback = storedCard -> {
+    private Consumer<PaymentMethodItem> savedCardCallback = paymentMethodItem -> {
         Intent data = new Intent();
-        data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN, storedCard.token);
-        data.putExtra(ExpressBuilder.EXTRA_STORED_PAYMENT_METHOD, storedCard);
+        data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN, paymentMethodItem.token);
+        data.putExtra(ExpressBuilder.EXTRA_STORED_PAYMENT_METHOD, paymentMethodItem);
         if (getTargetFragment() != null) {
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
         }
@@ -217,7 +217,7 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     }
 
     private void createSavedCardList() {
-        cardSlider = new CardSlider(getContext(), options.storedCardList, savedCardCallback);
+        cardSlider = new CardSlider(getContext(), options.paymentMethodItemList, savedCardCallback);
         cardSlider.onFinishInflate();
         paymentSelectorLayout.addView(cardSlider);
     }
@@ -336,7 +336,7 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     }
 
     void addZipcode() {
-        if (options.showZipcode && options.billingAddress == null) {
+        if (options.showZipcode) {
             TextInputLayout zipWrapper = new TextInputLayout(getContext());
             TextInputEditText zipContent = new TextInputEditText(getContext());
             zipWrapper.addView(zipContent);

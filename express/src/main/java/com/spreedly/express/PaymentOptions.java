@@ -3,7 +3,6 @@ package com.spreedly.express;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
-import com.spreedly.client.models.Address;
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.PaymentMethodInfo;
@@ -14,17 +13,13 @@ import java.util.List;
 public class PaymentOptions implements Serializable {
     boolean showZipcode;
     @Nullable
-    Address shippingAddress;
-    @Nullable
-    Address billingAddress;
-    @Nullable
     String merchantText;
     @Nullable
     PaymentType paymentType;
     @Nullable
     String buttonText;
     @Nullable
-    List<StoredCard> storedCardList;
+    List<PaymentMethodItem> paymentMethodItemList;
     @Nullable
     @LayoutRes
     Integer header;
@@ -32,11 +27,11 @@ public class PaymentOptions implements Serializable {
     @LayoutRes
     Integer footer;
     @Nullable
-    PaymentMethodInfo defaultPaymentMethodInfo;
+    PaymentMethodInfo paymentMethodDefaults;
     @Nullable
-    CreditCardInfo defaultCreditCardInfo;
+    CreditCardInfo creditCardDefaults;
     @Nullable
-    BankAccountInfo defaultBankAccountInfo;
+    BankAccountInfo bankAccountDefaults;
 
     public void setHeader(@LayoutRes int layout) {
         header = layout;
@@ -50,13 +45,6 @@ public class PaymentOptions implements Serializable {
         this.merchantText = merchantText;
     }
 
-    public void setShippingAddress(@Nullable Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public void setBillingAddress(@Nullable Address billingAddress) {
-        this.billingAddress = billingAddress;
-    }
 
     public void setPaymentType(@Nullable PaymentType paymentType) {
         this.paymentType = paymentType;
@@ -70,19 +58,19 @@ public class PaymentOptions implements Serializable {
         this.showZipcode = showZipcode;
     }
 
-    public void setStoredCardList(@Nullable List<StoredCard> storedCardList) {
-        this.storedCardList = storedCardList;
+    public void setPaymentMethodItemList(@Nullable List<PaymentMethodItem> paymentMethodItemList) {
+        this.paymentMethodItemList = paymentMethodItemList;
     }
 
-    public void setDefaultPaymentMethodInfo(@Nullable PaymentMethodInfo defaultPaymentMethodInfo) {
-        this.defaultPaymentMethodInfo = defaultPaymentMethodInfo;
+    public void setPaymentMethodDefaults(@Nullable PaymentMethodInfo paymentMethodDefaults) {
+        this.paymentMethodDefaults = paymentMethodDefaults;
     }
 
-    public void setDefaultCreditCardInfo(@Nullable CreditCardInfo defaultCreditCardInfo) {
-        this.defaultCreditCardInfo = defaultCreditCardInfo;
+    public void setCreditCardDefaults(@Nullable CreditCardInfo creditCardDefaults) {
+        this.creditCardDefaults = creditCardDefaults;
     }
 
-    public void setDefaultBankInfo(@Nullable BankAccountInfo defaultBankAccountInfo) {
-        this.defaultBankAccountInfo = defaultBankAccountInfo;
+    public void setBankAccountDefaults(@Nullable BankAccountInfo bankAccountDefaults) {
+        this.bankAccountDefaults = bankAccountDefaults;
     }
 }

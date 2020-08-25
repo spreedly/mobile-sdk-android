@@ -1,17 +1,11 @@
 package com.spreedly.express;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.spreedly.client.SpreedlyClient;
-
-import java.io.Serializable;
 
 public class ExpressBuilder {
     public static final String EXTRA_PAYMENT_METHOD_TOKEN = "com.spreedly.express.ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN";
@@ -26,18 +20,6 @@ public class ExpressBuilder {
     public ExpressBuilder(@Nullable SpreedlyClient client, @NonNull PaymentOptions options) {
         this.client = client;
         this.options = options;
-    }
-
-    @NonNull
-    public Intent buildIntent(@NonNull Context context) {
-        Intent intent = new Intent(context, ExpressPaymentActivity.class);
-        intent.putExtra("client", (Serializable) client);
-        intent.putExtra("options", options);
-        return intent;
-    }
-
-    public void show(@NonNull Activity context, @NonNull int resultCode) {
-        context.startActivityForResult(buildIntent(context), resultCode);
     }
 
     public void showDialog(@NonNull FragmentManager fm, @Nullable String tag, @NonNull int requestCode) {

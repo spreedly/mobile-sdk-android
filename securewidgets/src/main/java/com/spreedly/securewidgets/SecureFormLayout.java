@@ -84,9 +84,9 @@ public class SecureFormLayout extends LinearLayout {
     @Nullable RadioGroup accountHolderTypeRadio;
 
     @Nullable TextView errorView;
-    @Nullable PaymentMethodInfo defaultPaymentMethodInfo;
-    @Nullable CreditCardInfo defaultCreditCardInfo;
-    @Nullable BankAccountInfo defaultBankAccountInfo;
+    @Nullable PaymentMethodInfo paymentMethodDefaults;
+    @Nullable CreditCardInfo creditCardDefaults;
+    @Nullable BankAccountInfo bankAccountDefaults;
 
     CheckBox sameAddress;
 
@@ -429,24 +429,24 @@ public class SecureFormLayout extends LinearLayout {
 
     }
 
-    public void setDefaultPaymentMethodInfo(@Nullable PaymentMethodInfo defaultPaymentMethodInfo) {
-        this.defaultPaymentMethodInfo = defaultPaymentMethodInfo;
+    public void setPaymentMethodDefaults(@Nullable PaymentMethodInfo paymentMethodDefaults) {
+        this.paymentMethodDefaults = paymentMethodDefaults;
     }
 
-    public void setDefaultCreditCardInfo(@Nullable CreditCardInfo defaultCreditCardInfo) {
-        this.defaultCreditCardInfo = defaultCreditCardInfo;
+    public void setCreditCardDefaults(@Nullable CreditCardInfo creditCardDefaults) {
+        this.creditCardDefaults = creditCardDefaults;
     }
 
     public void setDefaultBankInfo(@Nullable BankAccountInfo defaultBankAccountInfo) {
-        this.defaultBankAccountInfo = defaultBankAccountInfo;
+        this.bankAccountDefaults = defaultBankAccountInfo;
     }
 
     private CreditCardInfo createCreditCardInfo() {
         CreditCardInfo info = new CreditCardInfo();
-        if (defaultCreditCardInfo != null) {
-            info = defaultCreditCardInfo;
-        } else if (defaultPaymentMethodInfo != null) {
-            info = (CreditCardInfo) defaultPaymentMethodInfo;
+        if (creditCardDefaults != null) {
+            info = creditCardDefaults;
+        } else if (paymentMethodDefaults != null) {
+            info = (CreditCardInfo) paymentMethodDefaults;
         }
         addAddress(info);
         addShippingAddress(info);
@@ -466,10 +466,10 @@ public class SecureFormLayout extends LinearLayout {
 
     private BankAccountInfo createBankAccountInfo() {
         BankAccountInfo info = new BankAccountInfo();
-        if (defaultBankAccountInfo != null) {
-            info = defaultBankAccountInfo;
-        } else if (defaultPaymentMethodInfo != null) {
-            info = (BankAccountInfo) defaultPaymentMethodInfo;
+        if (bankAccountDefaults != null) {
+            info = bankAccountDefaults;
+        } else if (paymentMethodDefaults != null) {
+            info = (BankAccountInfo) paymentMethodDefaults;
         }
         addAddress(info);
         addShippingAddress(info);

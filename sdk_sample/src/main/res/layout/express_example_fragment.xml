@@ -12,10 +12,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pay_now_fragment" />
-    <Button
-        android:id="@+id/pay_now_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pay_now_activity" />
 
 </LinearLayout>

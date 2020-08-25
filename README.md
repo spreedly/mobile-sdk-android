@@ -78,7 +78,7 @@ paymentOptions.setButtonText("Pay now");
 paymentOptions.setPaymentType(PaymentType.ALL);
 
 //pass in a list of StoredCard for previously saved payment methods. Only use with ALL and CARDS_ONLY
-paymentOptions.setStoredCardList(storedCards);
+paymentOptions.setStoredCardList(paymentMethodItems);
 
 //set merchant customizations such as page title, icon, and footer text (html)
 paymentOptions.setMerchantTitle("Lucy's Shop");
