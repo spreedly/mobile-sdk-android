@@ -194,14 +194,20 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     @NonNull
     private Single<JSONObject> sendRequest(@NonNull JSONObject requestBody, @NonNull String url, boolean authenticated) {
         String baseUrl = "https://core.spreedly.com/v1";
+        Call call;
         if (!authenticated) {
-            requestBody.append("environment_key", key);
+            requestBody.put("environment_key", key);
+            call = new OkHttpClient().newCall(new Request.Builder()
+                    .url(baseUrl + url)
+                    .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
+                    .build());
+        } else {
+            call = new OkHttpClient().newCall(new Request.Builder()
+                    .url(baseUrl + url)
+                    .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
+                    .header("Authorization", getCredentials())
+                    .build());
         }
-        final Call call = new OkHttpClient().newCall(new Request.Builder()
-                .url(baseUrl + url)
-                .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
-                .header("Authorization", getCredentials(authenticated))
-                .build());
 
         return Single.create(emitter -> call.enqueue(new Callback() {
             @Override
@@ -249,8 +255,8 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
         return date;
     }
 
-    private String getCredentials(boolean authenticated) {
-        String raw = key + ":" + (authenticated ? secret : "");
+    private String getCredentials() {
+        String raw = key + ":" + secret;
         return "Basic " + safeBase64(raw.getBytes());
     }
 }
