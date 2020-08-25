@@ -39,11 +39,15 @@ import okhttp3.Response;
 
 class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     @NonNull
-    private final String credentials;
     private final boolean test;
+    private final String key;
+    private final String secret;
+    private final String authenticatedURL = "/payment_methods.json";
+    private final String unauthenticatedURL = "/payment_methods/restricted.json";
 
-    SpreedlyClientImpl(@NonNull String user, @NonNull String password, boolean test) {
-        this.credentials = "Basic " + safeBase64((user + ":" + password).getBytes());
+    SpreedlyClientImpl(@NonNull String key, @NonNull String secret, boolean test) {
+        this.key = key;
+        this.secret = secret;
         this.test = test;
     }
 
@@ -74,29 +78,29 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info) {
-        return sendRequest(info.toJson(), "/payment_methods.json").map(this::processCCMap);
+        return sendRequest(info.toJson(), (info.retained ? authenticatedURL : unauthenticatedURL), info.retained).map(this::processCCMap);
     }
 
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info) {
-        return sendRequest(info.toJson(), "/payment_methods.json").map(this::processBAMap);
+        return sendRequest(info.toJson(), (info.retained ? authenticatedURL : unauthenticatedURL), info.retained).map(this::processBAMap);
     }
 
     @Override
     public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info) {
-        return sendRequest(info.toJson(), "/payment_methods.json").map(this::processCCMap);
+        return sendRequest(info.toJson(), (info.retained ? authenticatedURL : unauthenticatedURL), info.retained).map(this::processCCMap);
     }
 
     @Override
     public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info) {
-        return sendRequest(info.toJson(), "/payment_methods.json").map(this::processCCMap);
+        return sendRequest(info.toJson(), (info.retained ? authenticatedURL : unauthenticatedURL), info.retained).map(this::processCCMap);
     }
 
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> recache(@NonNull String token, @NonNull SpreedlySecureOpaqueString cvv) {
-        return sendRequest(new RecacheInfo(cvv).toJson(), "/payment_methods/" + token + "/recache.json").map(this::processCCMap);
+        return sendRequest(new RecacheInfo(cvv).toJson(), "/payment_methods/" + token + "/recache.json", true).map(this::processCCMap);
     }
 
     @NonNull TransactionResult<PaymentMethodResult> processCCMap(@NonNull JSONObject raw) {
@@ -188,12 +192,15 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     }
 
     @NonNull
-    private Single<JSONObject> sendRequest(@NonNull JSONObject requestBody, @NonNull String url) {
+    private Single<JSONObject> sendRequest(@NonNull JSONObject requestBody, @NonNull String url, boolean authenticated) {
         String baseUrl = "https://core.spreedly.com/v1";
+        if (!authenticated) {
+            requestBody.append("environment_key", key);
+        }
         final Call call = new OkHttpClient().newCall(new Request.Builder()
                 .url(baseUrl + url)
                 .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
-                .header("Authorization", credentials)
+                .header("Authorization", getCredentials(authenticated))
                 .build());
 
         return Single.create(emitter -> call.enqueue(new Callback() {
@@ -240,5 +247,10 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
             return null;
         }
         return date;
+    }
+
+    private String getCredentials(boolean authenticated) {
+        String raw = key + ":" + (authenticated ? secret : "");
+        return "Basic " + safeBase64(raw.getBytes());
     }
 }

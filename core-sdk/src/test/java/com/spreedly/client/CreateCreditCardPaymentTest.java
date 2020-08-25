@@ -17,7 +17,7 @@ public class CreateCreditCardPaymentTest {
 
     @Before
     public void initialize() {
-        client = SpreedlyClient.newInstance(TestCredentials.getUser(), TestCredentials.getPassword(), true);
+        client = SpreedlyClient.newInstance(TestCredentials.getUser(), TestCredentials.getPassword(), false);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class CreateCreditCardPaymentTest {
     @Test
     public void CreateCreditCardHasToken() throws InterruptedException {
         CreditCardInfo cc =  new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 2032, 12);
-        cc.retained = true;
+        cc.retained = false;
 
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createCreditCardPaymentMethod(cc).subscribe(test);

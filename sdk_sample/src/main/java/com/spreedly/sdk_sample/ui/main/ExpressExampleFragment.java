@@ -13,10 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.spreedly.client.SpreedlyClient;
-import com.spreedly.client.models.Address;
 import com.spreedly.client.models.enums.CardBrand;
 import com.spreedly.express.ExpressBuilder;
 import com.spreedly.express.PaymentMethodItem;
+import com.spreedly.express.PaymentMethodType;
 import com.spreedly.express.PaymentOptions;
 import com.spreedly.express.PaymentType;
 import com.spreedly.sdk_sample.R;
@@ -60,10 +60,10 @@ public class ExpressExampleFragment extends Fragment {
 
     @NonNull
     private ExpressBuilder getExpressBuilder() {
-        PaymentMethodItem card1 = new PaymentMethodItem("sample_token_1", CardBrand.visa, "Visa XXXX");
-        PaymentMethodItem card2 = new PaymentMethodItem("sample_token_2", CardBrand.mastercard, "Mastercard XXXX");
-        PaymentMethodItem card3 = new PaymentMethodItem("sample_token_3", CardBrand.americanExpress, "Amex XXXX");
-        PaymentMethodItem card4 = new PaymentMethodItem("sample_token_4", CardBrand.dinersClub, "Diners XXXX");
+        PaymentMethodItem card1 = new PaymentMethodItem("sample_token_1", PaymentMethodType.CARD, "Visa XXXX", CardBrand.visa);
+        PaymentMethodItem card2 = new PaymentMethodItem("sample_token_2", PaymentMethodType.CARD, "Mastercard XXXX", CardBrand.mastercard);
+        PaymentMethodItem card3 = new PaymentMethodItem("sample_token_3", PaymentMethodType.BANK, "Account XXXX", null);
+        PaymentMethodItem card4 = new PaymentMethodItem("sample_token_4", PaymentMethodType.THIRD_PARTY, "Third Party", null);
         List<PaymentMethodItem> paymentMethodItems = new ArrayList<>();
         paymentMethodItems.add(card1);
         paymentMethodItems.add(card2);
@@ -78,7 +78,6 @@ public class ExpressExampleFragment extends Fragment {
         options.setMerchantText("<div style=\"text-align: center;\">\n" +
                 "<h1 style=\"text-align: center;\">$20.12</h1>\n" +
                 "Pass in your customized merchant text.</div>");
-        options.setBillingAddress(new Address("555 Main St", "", "Anytown", "WA", "98006", "United States", null));
 
         return new ExpressBuilder(client, options);
     }

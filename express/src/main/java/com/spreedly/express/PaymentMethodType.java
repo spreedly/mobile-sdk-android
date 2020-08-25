@@ -1,5 +1,5 @@
 package com.spreedly.express;
 
-enum PaymentMethodType {
+public enum PaymentMethodType {
     CARD, BANK, THIRD_PARTY,
 }
