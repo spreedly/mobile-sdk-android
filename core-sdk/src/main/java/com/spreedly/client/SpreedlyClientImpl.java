@@ -78,23 +78,55 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info) {
-        return sendRequest(info.toJson(), (info.retained ? authenticatedURL : unauthenticatedURL), info.retained).map(this::processCCMap);
+        String url;
+        boolean authenticated = true;
+        if (info.retained != null && info.retained) {
+            url = authenticatedURL;
+            authenticated = false;
+        } else {
+            url = unauthenticatedURL;
+        }
+        return sendRequest(info.toJson(), url, authenticated).map(this::processCCMap);
     }
 
     @Override
     @NonNull
     public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info) {
-        return sendRequest(info.toJson(), (info.retained ? authenticatedURL : unauthenticatedURL), info.retained).map(this::processBAMap);
+        String url;
+        boolean authenticated = true;
+        if (info.retained != null && info.retained) {
+            url = authenticatedURL;
+            authenticated = false;
+        } else {
+            url = unauthenticatedURL;
+        }
+        return sendRequest(info.toJson(), url, authenticated).map(this::processBAMap);
     }
 
     @Override
     public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info) {
-        return sendRequest(info.toJson(), (info.retained ? authenticatedURL : unauthenticatedURL), info.retained).map(this::processCCMap);
+        String url;
+        boolean authenticated = true;
+        if (info.retained != null && info.retained) {
+            url = authenticatedURL;
+            authenticated = false;
+        } else {
+            url = unauthenticatedURL;
+        }
+        return sendRequest(info.toJson(), url, authenticated).map(this::processCCMap);
     }
 
     @Override
     public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info) {
-        return sendRequest(info.toJson(), (info.retained ? authenticatedURL : unauthenticatedURL), info.retained).map(this::processCCMap);
+        String url;
+        boolean authenticated = true;
+        if (info.retained != null && info.retained) {
+            url = authenticatedURL;
+            authenticated = false;
+        } else {
+            url = unauthenticatedURL;
+        }
+        return sendRequest(info.toJson(), url, authenticated).map(this::processCCMap);
     }
 
     @Override
