@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class BankAccountInfoTest {
@@ -43,6 +44,34 @@ public class BankAccountInfoTest {
         bankAccount.company = "Company inc.";
         bankAccount.email = "sample@sample.com";
         String expected = "{\"payment_method\":{\"retained\":true,\"email\":\"sample@sample.com\",\"bank_account\":{\"zip\":\"98000\",\"country\":\"USA\",\"bank_account_number\":\"0000000\",\"shipping_state\":\"WA\",\"address2\":\"\",\"city\":\"Anytown\",\"address1\":\"555 Main St\",\"shipping_city\":\"Anytown\",\"bank_routing_number\":\"1234567\",\"full_name\":\"Jane Doe\",\"shipping_zip\":\"98000\",\"shipping_address2\":\"Apt 33\",\"shipping_address1\":\"555 Main St\",\"shipping_phone_number\":\"5555555555\",\"company\":\"Company inc.\",\"phone_number\":\"5555555555\",\"state\":\"WA\",\"bank_account_type\":\"checking\",\"bank_account_holder_type\":\"personal\",\"shipping_country\":\"USA\"}}}";
+        JSONObject actual = bankAccount.toJson();
+        assertEquals(expected, actual.toString());
+    }
+
+    @Test
+    public void CanCreateBankAccountFromCopy() {
+        BankAccountInfo copy = new BankAccountInfo("Jane Doe", null, null, "1234567", client.createString("0000000"), AccountType.checking);
+        BankAccountInfo bankAccount = new BankAccountInfo(copy);
+        assertTrue(bankAccount.fullName == "Jane Doe" && bankAccount.routingNumber == null && bankAccount.accountNumber == null && bankAccount.accountType == AccountType.checking);
+    }
+
+    @Test
+    public void CanCreateBankAccountFromCardCopy() {
+        CreditCardInfo copy = new CreditCardInfo("Jane Doe", null, null, client.createString("sample card number"), client.createString("sample cvv"), 12, 2030);
+        BankAccountInfo bankAccount = new BankAccountInfo(copy);
+        assertTrue(bankAccount.fullName == "Jane Doe" && bankAccount.routingNumber == null && bankAccount.accountNumber == null);
+    }
+
+    @Test
+    public void CanCreateEmptyBankAccount() {
+        BankAccountInfo bankAccountInfo = new BankAccountInfo();
+        assertNotNull(bankAccountInfo);
+    }
+
+    @Test
+    public void nullAccountTypeSetsEmptyString() {
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", null, null, "1234567", client.createString("0000000"), null);
+        String expected = "{\"payment_method\":{\"bank_account\":{\"bank_account_number\":\"0000000\",\"full_name\":\"Jane Doe\",\"bank_routing_number\":\"1234567\",\"bank_account_type\":\"\"}}}";
         JSONObject actual = bankAccount.toJson();
         assertEquals(expected, actual.toString());
     }

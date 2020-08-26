@@ -91,10 +91,10 @@ class CardSlider extends HorizontalScrollView {
                 result = R.drawable.ic_spr_generic;
                 break;
             case BANK:
-                result = R.drawable.ic_spr_generic;
+                result = R.drawable.ic_spr_bank;
                 break;
             case THIRD_PARTY:
-                result = R.drawable.ic_spr_generic;
+                result = R.drawable.ic_spr_third_party;
                 break;
         }
         return result;

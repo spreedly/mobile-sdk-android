@@ -5,7 +5,9 @@ import com.spreedly.client.models.enums.CardBrand;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class SpreedlySecureOpaqueStringTest {
 
@@ -227,6 +229,29 @@ public class SpreedlySecureOpaqueStringTest {
         assertEquals(CardBrand.vr, string.detectCardType());
     }
 
+    @Test
+    public void canIdentifyNumber() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString("12345");
+        assertTrue(string.isNumber());
+    }
 
+    @Test
+    public void canIdentifyBadNumber() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString("1234-5");
+        assertFalse(string.isNumber());
+    }
+
+    @Test
+    public void inRangeReturnsFalseIfLengthIsGreaterThanNumberLength() {
+        Range[] ranges = CardBrand.maestro.range;
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString();
+        assertFalse(string.inRanges(ranges, "123456", 8));
+    }
+
+    @Test
+    public void shortCardNumberReturnsUnknown() {
+        SpreedlySecureOpaqueString string = new SpreedlySecureOpaqueString("79927398713");
+        assertEquals(CardBrand.unknown, string.detectCardType());
+    }
 
 }

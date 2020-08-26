@@ -1,12 +1,14 @@
 package com.spreedly.client.models;
 
 import com.spreedly.client.SpreedlyClient;
+import com.spreedly.client.models.enums.AccountType;
 
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class CreditCardInfoTest {
@@ -52,5 +54,25 @@ public class CreditCardInfoTest {
         String expected = "{\"payment_method\":{\"retained\":true,\"credit_card\":{\"zip\":\"98000\",\"country\":\"USA\",\"shipping_state\":\"WA\",\"address2\":\"\",\"city\":\"Anytown\",\"year\":12,\"address1\":\"555 Main St\",\"shipping_city\":\"Anytown\",\"number\":\"samplecardnumber\",\"full_name\":\"Jane Doe\",\"verification_value\":\"samplecvv\",\"month\":2030,\"shipping_zip\":\"98000\",\"shipping_address2\":\"Apt 33\",\"shipping_address1\":\"555 Main St\",\"shipping_phone_number\":\"5555555555\",\"company\":\"Company inc.\",\"phone_number\":\"5555555555\",\"state\":\"WA\",\"shipping_country\":\"USA\"},\"eligible_for_card_updater\":false,\"allow_blank_name\":true,\"allow_expired_date\":false,\"allow_blank_date\":true,\"email\":\"sample@sample.com\"}}";
         JSONObject actual = creditCard.toJson();
         assertEquals(expected, actual.toString());
+    }
+
+    @Test
+    public void CanCreateCreditCardFromCopy() {
+        CreditCardInfo copy = new CreditCardInfo("Jane Doe", null, null, client.createString("sample card number"), client.createString("sample cvv"), 12, 2030);
+        CreditCardInfo creditCard = new CreditCardInfo(copy);
+        assertTrue(creditCard.fullName == "Jane Doe" && creditCard.number == null && creditCard.verificationValue == null && creditCard.year == 12 && creditCard.month == 2030);
+    }
+
+    @Test
+    public void CanCreateCreditCardFromBankAccountCopy() {
+        BankAccountInfo copy = new BankAccountInfo("Jane Doe", null, null, "1234567", client.createString("0000000"), AccountType.checking);
+        CreditCardInfo creditCard = new CreditCardInfo(copy);
+        assertTrue(creditCard.fullName == "Jane Doe" && creditCard.number == null && creditCard.verificationValue == null);
+    }
+
+    @Test
+    public void CanCreateEmptyCard() {
+        CreditCardInfo creditCardInfo = new CreditCardInfo();
+        assertNotNull(creditCardInfo);
     }
 }

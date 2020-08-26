@@ -46,6 +46,21 @@ public class CreateCreditCardPaymentTest {
         assertNotNull(trans.result.token);
     }
 
+    @Test
+    public void RetainedCreateCreditCardHasToken() throws InterruptedException {
+        CreditCardInfo cc = new CreditCardInfo("Joe Jones", null, null, client.createString("5555555555554444"), client.createString("432"), 2032, 12);
+        cc.retained = true;
+
+        TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
+        client.createCreditCardPaymentMethod(cc).subscribe(test);
+        test.await();
+        test.assertComplete();
+
+        TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
+
+        assertNotNull(trans.result.token);
+    }
+
 
     @Test
     public void badCreditCardFails() throws InterruptedException {

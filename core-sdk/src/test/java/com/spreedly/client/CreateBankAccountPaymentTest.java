@@ -46,6 +46,7 @@ public class CreateBankAccountPaymentTest {
     @Test
     public void BadInfoReturnsErrors() throws InterruptedException {
         BankAccountInfo bankAccountInfo = new BankAccountInfo("", null, null, "021000021", client.createString("9876543210"), AccountType.checking);
+        bankAccountInfo.retained = false;
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createBankPaymentMethod(bankAccountInfo).subscribe(test);
         test.await();
@@ -54,5 +55,19 @@ public class CreateBankAccountPaymentTest {
         TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
 
         assertEquals("Full name can't be blank", trans.errors.get(0).message);
+    }
+
+    @Test
+    public void RetainedCreateBankAccountGetsToken() throws InterruptedException {
+        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", null, null, "021000021", client.createString("9876543210"), AccountType.checking);
+        bankAccountInfo.retained = true;
+        TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
+        client.createBankPaymentMethod(bankAccountInfo).subscribe(test);
+        test.await();
+        test.assertComplete();
+
+        TransactionResult<PaymentMethodResult> trans = (TransactionResult<PaymentMethodResult>) test.values().get(0);
+
+        assertNotNull(trans.result.token);
     }
 }
