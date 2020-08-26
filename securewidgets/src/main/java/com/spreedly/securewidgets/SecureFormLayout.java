@@ -442,11 +442,13 @@ public class SecureFormLayout extends LinearLayout {
     }
 
     private CreditCardInfo createCreditCardInfo() {
-        CreditCardInfo info = new CreditCardInfo();
+        CreditCardInfo info;
         if (creditCardDefaults != null) {
-            info = creditCardDefaults;
+            info = new CreditCardInfo(creditCardDefaults);
         } else if (paymentMethodDefaults != null) {
-            info = (CreditCardInfo) paymentMethodDefaults;
+            info = new CreditCardInfo(paymentMethodDefaults);
+        } else {
+            info = new CreditCardInfo();
         }
         addAddress(info);
         addShippingAddress(info);
@@ -465,11 +467,13 @@ public class SecureFormLayout extends LinearLayout {
     }
 
     private BankAccountInfo createBankAccountInfo() {
-        BankAccountInfo info = new BankAccountInfo();
+        BankAccountInfo info;
         if (bankAccountDefaults != null) {
-            info = bankAccountDefaults;
+            info = new BankAccountInfo(bankAccountDefaults);
         } else if (paymentMethodDefaults != null) {
-            info = (BankAccountInfo) paymentMethodDefaults;
+            info = new BankAccountInfo(paymentMethodDefaults);
+        } else {
+            info = new BankAccountInfo();
         }
         addAddress(info);
         addShippingAddress(info);

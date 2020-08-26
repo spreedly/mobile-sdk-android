@@ -20,19 +20,22 @@ public class BankAccountInfo extends PaymentMethodInfo {
     @Nullable
     public AccountHolderType accountHolderType;
 
+    public BankAccountInfo(PaymentMethodInfo copy) {
+        super(copy);
+        if (copy.getClass() == BankAccountInfo.class) {
+            BankAccountInfo baCopy = (BankAccountInfo) copy;
+            this.accountType = baCopy.accountType;
+            this.accountHolderType = baCopy.accountHolderType;
+        }
+    }
+
     public BankAccountInfo() {
     }
 
-    public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull AccountType accountType) {
+    public BankAccountInfo(@Nullable String fullName, @Nullable String firstName, @Nullable String lastName, @Nullable String routingNumber, @Nullable SpreedlySecureOpaqueString accountNumber, @Nullable AccountType accountType) {
+        this.fullName = fullName;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.routingNumber = routingNumber;
-        this.accountNumber = accountNumber;
-        this.accountType = accountType;
-    }
-
-    public BankAccountInfo(@NonNull String fullName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull AccountType accountType) {
-        this.fullName = fullName;
         this.routingNumber = routingNumber;
         this.accountNumber = accountNumber;
         this.accountType = accountType;

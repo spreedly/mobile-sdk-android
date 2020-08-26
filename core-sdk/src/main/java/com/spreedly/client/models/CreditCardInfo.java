@@ -25,24 +25,30 @@ public class CreditCardInfo extends PaymentMethodInfo {
     @Nullable
     public Boolean eligibleForCardUpdate;
 
-    public CreditCardInfo() {
+    public CreditCardInfo(PaymentMethodInfo copy) {
+        super(copy);
+        if (copy.getClass() == CreditCardInfo.class) {
+            CreditCardInfo ccCopy = (CreditCardInfo) copy;
+            this.allowBlankName = ccCopy.allowBlankName;
+            this.allowBlankDate = ccCopy.allowBlankDate;
+            this.allowExpiredDate = ccCopy.allowExpiredDate;
+            this.eligibleForCardUpdate = ccCopy.eligibleForCardUpdate;
+            this.month = ccCopy.month;
+            this.year = ccCopy.year;
+        }
     }
 
-    public CreditCardInfo(@NonNull String fullName, @NonNull SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @NonNull int year, @NonNull int month) {
+    public CreditCardInfo(@Nullable String fullName, @Nullable String firstName, @Nullable String lastName, @Nullable SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @Nullable int year, @Nullable int month) {
         this.fullName = fullName;
-        this.number = number;
-        this.verificationValue = verificationValue;
-        this.month = month;
-        this.year = year;
-    }
-
-    public CreditCardInfo(@NonNull String firstName, @NonNull String lastName, @NonNull SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @NonNull int year, @NonNull int month) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.number = number;
         this.verificationValue = verificationValue;
         this.month = month;
         this.year = year;
+    }
+
+    public CreditCardInfo() {
     }
 
     @NonNull

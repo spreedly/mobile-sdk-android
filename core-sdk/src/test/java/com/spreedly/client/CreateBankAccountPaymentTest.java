@@ -23,7 +23,7 @@ public class CreateBankAccountPaymentTest {
 
     @Test
     public void CreateBankAccountSucceeds() throws InterruptedException {
-        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", "021000021", client.createString("9876543210"), AccountType.checking);
+        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", null, null, "021000021", client.createString("9876543210"), AccountType.checking);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createBankPaymentMethod(bankAccountInfo).subscribe(test);
         test.await();
@@ -32,7 +32,7 @@ public class CreateBankAccountPaymentTest {
 
     @Test
     public void CreateBankAccountGetsToken() throws InterruptedException {
-        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", "021000021", client.createString("9876543210"), AccountType.checking);
+        BankAccountInfo bankAccountInfo = new BankAccountInfo("John Doe", null, null, "021000021", client.createString("9876543210"), AccountType.checking);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createBankPaymentMethod(bankAccountInfo).subscribe(test);
         test.await();
@@ -45,7 +45,7 @@ public class CreateBankAccountPaymentTest {
 
     @Test
     public void BadInfoReturnsErrors() throws InterruptedException {
-        BankAccountInfo bankAccountInfo = new BankAccountInfo("", "021000021", client.createString("9876543210"), AccountType.checking);
+        BankAccountInfo bankAccountInfo = new BankAccountInfo("", null, null, "021000021", client.createString("9876543210"), AccountType.checking);
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
         client.createBankPaymentMethod(bankAccountInfo).subscribe(test);
         test.await();
