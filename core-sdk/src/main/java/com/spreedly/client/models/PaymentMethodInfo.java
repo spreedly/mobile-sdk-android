@@ -31,7 +31,7 @@ public abstract class PaymentMethodInfo {
     @NonNull
     abstract JSONObject toJson();
 
-    protected PaymentMethodInfo(PaymentMethodInfo copy) {
+    protected PaymentMethodInfo(@NonNull PaymentMethodInfo copy) {
         this.company = copy.company;
         this.firstName = copy.firstName;
         this.lastName = copy.lastName;

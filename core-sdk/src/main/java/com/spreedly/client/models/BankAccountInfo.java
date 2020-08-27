@@ -20,7 +20,7 @@ public class BankAccountInfo extends PaymentMethodInfo {
     @Nullable
     public AccountHolderType accountHolderType;
 
-    public BankAccountInfo(PaymentMethodInfo copy) {
+    public BankAccountInfo(@NonNull PaymentMethodInfo copy) {
         super(copy);
         if (copy.getClass() == BankAccountInfo.class) {
             BankAccountInfo baCopy = (BankAccountInfo) copy;

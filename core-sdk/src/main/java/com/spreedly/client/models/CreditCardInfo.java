@@ -25,7 +25,7 @@ public class CreditCardInfo extends PaymentMethodInfo {
     @Nullable
     public Boolean eligibleForCardUpdate;
 
-    public CreditCardInfo(PaymentMethodInfo copy) {
+    public CreditCardInfo(@NonNull PaymentMethodInfo copy) {
         super(copy);
         if (copy.getClass() == CreditCardInfo.class) {
             CreditCardInfo ccCopy = (CreditCardInfo) copy;
