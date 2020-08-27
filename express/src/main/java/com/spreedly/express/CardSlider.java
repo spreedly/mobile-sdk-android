@@ -86,7 +86,6 @@ class CardSlider extends HorizontalScrollView {
     private int imageHelper(PaymentMethodType type) {
         int result = 0;
         switch (type) {
-            //TODO: get icons
             case CARD:
                 result = R.drawable.ic_spr_generic;
                 break;
