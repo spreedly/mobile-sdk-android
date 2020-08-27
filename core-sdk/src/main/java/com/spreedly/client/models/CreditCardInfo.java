@@ -5,15 +5,15 @@ import org.json.JSONObject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class CreditCardInfo extends PaymentMethodMeta {
+public class CreditCardInfo extends PaymentMethodInfo {
 
     @Nullable
     public SpreedlySecureOpaqueString number;
-    @NonNull
+    @Nullable
     public SpreedlySecureOpaqueString verificationValue;
-    @NonNull
+    @Nullable
     public int month;
-    @NonNull
+    @Nullable
     public int year;
 
     @Nullable
@@ -25,15 +25,21 @@ public class CreditCardInfo extends PaymentMethodMeta {
     @Nullable
     public Boolean eligibleForCardUpdate;
 
-    public CreditCardInfo(@NonNull String fullName, @NonNull SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @NonNull int year, @NonNull int month) {
-        this.fullName = fullName;
-        this.number = number;
-        this.verificationValue = verificationValue;
-        this.month = month;
-        this.year = year;
+    public CreditCardInfo(@NonNull PaymentMethodInfo copy) {
+        super(copy);
+        if (copy.getClass() == CreditCardInfo.class) {
+            CreditCardInfo ccCopy = (CreditCardInfo) copy;
+            this.allowBlankName = ccCopy.allowBlankName;
+            this.allowBlankDate = ccCopy.allowBlankDate;
+            this.allowExpiredDate = ccCopy.allowExpiredDate;
+            this.eligibleForCardUpdate = ccCopy.eligibleForCardUpdate;
+            this.month = ccCopy.month;
+            this.year = ccCopy.year;
+        }
     }
 
-    public CreditCardInfo(@NonNull String firstName, @NonNull String lastName, @NonNull SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @NonNull int year, @NonNull int month) {
+    public CreditCardInfo(@Nullable String fullName, @Nullable String firstName, @Nullable String lastName, @Nullable SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @Nullable int year, @Nullable int month) {
+        this.fullName = fullName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.number = number;
@@ -42,13 +48,16 @@ public class CreditCardInfo extends PaymentMethodMeta {
         this.year = year;
     }
 
+    public CreditCardInfo() {
+    }
+
     @NonNull
-    public JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata) {
+    public JSONObject toJson() {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject creditCard = new JSONObject();
 
-        addCommonJsonFields(paymentMethod, creditCard, email, metadata);
+        addCommonJsonFields(paymentMethod, creditCard);
 
         creditCard.put("verification_value", verificationValue._encode());
         creditCard.put("number", number._encode());

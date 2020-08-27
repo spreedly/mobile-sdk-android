@@ -1,6 +1,7 @@
 package com.spreedly.client.models;
 
-import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.AccountHolderType;
+import com.spreedly.client.models.enums.AccountType;
 
 import org.json.JSONObject;
 
@@ -9,17 +10,30 @@ import java.util.Locale;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public class BankAccountInfo extends PaymentMethodMeta {
-    @NonNull
+public class BankAccountInfo extends PaymentMethodInfo {
+    @Nullable
     public String routingNumber;
-    @NonNull
+    @Nullable
     public SpreedlySecureOpaqueString accountNumber;
-    @NonNull
-    public BankAccountType accountType;
-    @NonNull
-    public String bankAccountHolderType;
+    @Nullable
+    public AccountType accountType;
+    @Nullable
+    public AccountHolderType accountHolderType;
 
-    public BankAccountInfo(@NonNull String firstName, @NonNull String lastName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull BankAccountType accountType) {
+    public BankAccountInfo(@NonNull PaymentMethodInfo copy) {
+        super(copy);
+        if (copy.getClass() == BankAccountInfo.class) {
+            BankAccountInfo baCopy = (BankAccountInfo) copy;
+            this.accountType = baCopy.accountType;
+            this.accountHolderType = baCopy.accountHolderType;
+        }
+    }
+
+    public BankAccountInfo() {
+    }
+
+    public BankAccountInfo(@Nullable String fullName, @Nullable String firstName, @Nullable String lastName, @Nullable String routingNumber, @Nullable SpreedlySecureOpaqueString accountNumber, @Nullable AccountType accountType) {
+        this.fullName = fullName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.routingNumber = routingNumber;
@@ -27,21 +41,14 @@ public class BankAccountInfo extends PaymentMethodMeta {
         this.accountType = accountType;
     }
 
-    public BankAccountInfo(@NonNull String fullName, @NonNull String routingNumber, @NonNull SpreedlySecureOpaqueString accountNumber, @NonNull BankAccountType accountType) {
-        this.fullName = fullName;
-        this.routingNumber = routingNumber;
-        this.accountNumber = accountNumber;
-        this.accountType = accountType;
-    }
-
     @Override
     @NonNull
-    public JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata) {
+    public JSONObject toJson() {
         JSONObject wrapper = new JSONObject();
         JSONObject paymentMethod = new JSONObject();
         JSONObject bankAccount = new JSONObject();
 
-        addCommonJsonFields(paymentMethod, bankAccount, email, metadata);
+        addCommonJsonFields(paymentMethod, bankAccount);
 
         bankAccount.put("bank_routing_number", this.routingNumber);
         bankAccount.put("bank_account_number", this.accountNumber._encode());
@@ -51,7 +58,7 @@ public class BankAccountInfo extends PaymentMethodMeta {
             bankAccount.put("bank_account_type", "");
         }
         try {
-            bankAccount.put("bank_account_holder_type", this.bankAccountHolderType.toLowerCase(Locale.US));
+            bankAccount.put("bank_account_holder_type", this.accountHolderType.toString().toLowerCase(Locale.US));
         } catch (NullPointerException e) {
         }
         paymentMethod.put("bank_account", bankAccount);

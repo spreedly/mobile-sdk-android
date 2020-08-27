@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.spreedly.express">
+<manifest package="com.spreedly.express">
 
-    <application>
-        <activity android:name=".ExpressPaymentActivity" android:theme="@style/ExpressTransparent">
-
-        </activity>
-    </application>
+    <application></application>
 
 </manifest>

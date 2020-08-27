@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
 
-public abstract class PaymentMethodMeta {
+public abstract class PaymentMethodInfo {
     @Nullable
     public String company;
     @Nullable
@@ -22,10 +22,31 @@ public abstract class PaymentMethodMeta {
     @Nullable
     public Boolean retained;
 
-    @NonNull
-    abstract JSONObject toJson(@Nullable String email, @Nullable JSONObject metadata);
+    @Nullable
+    public JSONObject metadata;
 
-    protected void addCommonJsonFields(@NonNull JSONObject paymentMethod, @NonNull JSONObject subType, @Nullable String email, @Nullable JSONObject metadata) {
+    @Nullable
+    public String email;
+
+    @NonNull
+    abstract JSONObject toJson();
+
+    protected PaymentMethodInfo(@NonNull PaymentMethodInfo copy) {
+        this.company = copy.company;
+        this.firstName = copy.firstName;
+        this.lastName = copy.lastName;
+        this.fullName = copy.fullName;
+        this.address = copy.address;
+        this.shippingAddress = copy.shippingAddress;
+        this.retained = copy.retained;
+        this.metadata = copy.metadata;
+        this.email = copy.email;
+    }
+
+    protected PaymentMethodInfo() {
+    }
+
+    protected void addCommonJsonFields(@NonNull JSONObject paymentMethod, @NonNull JSONObject subType) {
         if (this.fullName != null) {
             subType.put("full_name", this.fullName);
         } else {

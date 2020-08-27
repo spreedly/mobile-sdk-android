@@ -22,7 +22,7 @@ public class ApplePayInfoTests {
         ApplePayInfo applePay = new ApplePayInfo("Jane", "Doe", "sample data");
         applePay.testCardNumber = "111111111111111";
         String expected = "{\"payment_method\":{\"apple_pay\":{\"test_card_number\":\"111111111111111\",\"last_name\":\"Doe\",\"payment_data\":\"sample data\",\"first_name\":\"Jane\"}}}";
-        JSONObject actual = applePay.toJson(null, null);
+        JSONObject actual = applePay.toJson();
         assertEquals(expected, actual.toString());
     }
 }

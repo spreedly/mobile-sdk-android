@@ -6,13 +6,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,8 +28,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.spreedly.client.SpreedlyClient;
-import com.spreedly.client.models.enums.BankAccountHolderType;
-import com.spreedly.client.models.enums.BankAccountType;
+import com.spreedly.client.models.enums.AccountHolderType;
+import com.spreedly.client.models.enums.AccountType;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.securewidgets.SecureCreditCardField;
@@ -94,10 +92,10 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         //            getActivity().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
         dismiss();
     };
-    private Consumer<StoredCard> savedCardCallback = storedCard -> {
+    private Consumer<PaymentMethodItem> savedCardCallback = paymentMethodItem -> {
         Intent data = new Intent();
-        data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN, storedCard.token);
-        data.putExtra(ExpressBuilder.EXTRA_STORED_PAYMENT_METHOD, storedCard);
+        data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN, paymentMethodItem.token);
+        data.putExtra(ExpressBuilder.EXTRA_STORED_PAYMENT_METHOD, paymentMethodItem);
         if (getTargetFragment() != null) {
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
         }
@@ -219,7 +217,7 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     }
 
     private void createSavedCardList() {
-        cardSlider = new CardSlider(getContext(), options.storedCardList, savedCardCallback);
+        cardSlider = new CardSlider(getContext(), options.paymentMethodItemList, savedCardCallback);
         cardSlider.onFinishInflate();
         paymentSelectorLayout.addView(cardSlider);
     }
@@ -291,12 +289,12 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
 
 
     private void submitNewCard() {
-        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createCreditCardPaymentMethod(options.billingAddress, options.shippingAddress);
+        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createCreditCardPaymentMethod();
         result.subscribe(submitCallback);
     }
 
     private void submitBank() {
-        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createBankAccountPaymentMethod(options.billingAddress, options.shippingAddress);
+        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createBankAccountPaymentMethod();
         result.subscribe(submitCallback);
     }
 
@@ -321,31 +319,24 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     }
 
     void setMerchantLogo() {
-        LinearLayout wrapper = new LinearLayout(getContext());
-        wrapper.setGravity(Gravity.CENTER);
-        MaterialTextView textView = new MaterialTextView(getContext());
-        if (options.merchantIcon != 0) {
-            ImageView img = new ImageView(getContext());
-            img.setImageResource(options.merchantIcon);
-            wrapper.addView(img);
+        if (options.header != null) {
+            layout.addView(LayoutInflater.from(getContext()).inflate(options.header, layout, false));
         }
-        if (options.merchantTitle != null) {
-            textView.setText(options.merchantTitle);
-            textView.setTextAppearance(getContext(), R.style.TextAppearance_AppCompat_Large);
-            textView.setGravity(Gravity.CENTER);
-            wrapper.addView(textView);
-        }
-        layout.addView(wrapper, 0);
     }
 
     void setMerchantText() {
-        MaterialTextView textView = new MaterialTextView(getContext());
-        textView.setText(Html.fromHtml(options.merchantText));
-        layout.addView(textView);
+        if (options.merchantText != null) {
+            MaterialTextView textView = new MaterialTextView(getContext());
+            textView.setText(Html.fromHtml(options.merchantText));
+            layout.addView(textView);
+        }
+        if (options.footer != null) {
+            layout.addView(LayoutInflater.from(getContext()).inflate(options.footer, layout, false));
+        }
     }
 
     void addZipcode() {
-        if (options.showZipcode && options.billingAddress == null) {
+        if (options.showZipcode) {
             TextInputLayout zipWrapper = new TextInputLayout(getContext());
             TextInputEditText zipContent = new TextInputEditText(getContext());
             zipWrapper.addView(zipContent);
@@ -366,14 +357,14 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
         RadioGroup radioGroup = v.findViewById(android.R.id.content);
         radioGroup.setId(id);
         if (holderType) {
-            option1.setText(secureFormLayout.accountTypeHelper.getString(BankAccountHolderType.personal));
-            option2.setText(secureFormLayout.accountTypeHelper.getString(BankAccountHolderType.business));
+            option1.setText(secureFormLayout.accountTypeHelper.getString(AccountHolderType.personal));
+            option2.setText(secureFormLayout.accountTypeHelper.getString(AccountHolderType.business));
             option1.setId(R.id.spreedly_holder_button_personal);
             option2.setId(R.id.spreedly_holder_button_business);
             radioGroup.check(R.id.spreedly_holder_button_personal);
         } else {
-            option1.setText(secureFormLayout.accountTypeHelper.getString(BankAccountType.checking));
-            option2.setText(secureFormLayout.accountTypeHelper.getString(BankAccountType.savings));
+            option1.setText(secureFormLayout.accountTypeHelper.getString(AccountType.checking));
+            option2.setText(secureFormLayout.accountTypeHelper.getString(AccountType.savings));
             option1.setId(R.id.spreedly_account_button_checking);
             option2.setId(R.id.spreedly_account_button_saving);
             radioGroup.check(R.id.spreedly_account_button_checking);

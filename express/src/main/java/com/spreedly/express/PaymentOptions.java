@@ -1,25 +1,17 @@
 package com.spreedly.express;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
-import com.spreedly.client.models.Address;
-import com.spreedly.client.models.results.PaymentMethodResult;
-import com.spreedly.client.models.results.TransactionResult;
+import com.spreedly.client.models.BankAccountInfo;
+import com.spreedly.client.models.CreditCardInfo;
+import com.spreedly.client.models.PaymentMethodInfo;
 
 import java.io.Serializable;
 import java.util.List;
 
-import io.reactivex.rxjava3.core.SingleObserver;
-
 public class PaymentOptions implements Serializable {
     boolean showZipcode;
-    @Nullable
-    Address shippingAddress;
-    @Nullable
-    Address billingAddress;
-    @Nullable
-    String merchantTitle;
     @Nullable
     String merchantText;
     @Nullable
@@ -27,25 +19,32 @@ public class PaymentOptions implements Serializable {
     @Nullable
     String buttonText;
     @Nullable
-    List<StoredCard> storedCardList;
+    List<PaymentMethodItem> paymentMethodItemList;
     @Nullable
-    int merchantIcon;
+    @LayoutRes
+    Integer header;
+    @Nullable
+    @LayoutRes
+    Integer footer;
+    @Nullable
+    PaymentMethodInfo paymentMethodDefaults;
+    @Nullable
+    CreditCardInfo creditCardDefaults;
+    @Nullable
+    BankAccountInfo bankAccountDefaults;
 
-    public void setMerchantTitle(@Nullable String merchantTitle) {
-        this.merchantTitle = merchantTitle;
+    public void setHeader(@LayoutRes int layout) {
+        header = layout;
+    }
+
+    public void setFooter(@LayoutRes int layout) {
+        footer = layout;
     }
 
     public void setMerchantText(@Nullable String merchantText) {
         this.merchantText = merchantText;
     }
 
-    public void setShippingAddress(@Nullable Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public void setBillingAddress(@Nullable Address billingAddress) {
-        this.billingAddress = billingAddress;
-    }
 
     public void setPaymentType(@Nullable PaymentType paymentType) {
         this.paymentType = paymentType;
@@ -59,11 +58,19 @@ public class PaymentOptions implements Serializable {
         this.showZipcode = showZipcode;
     }
 
-    public void setStoredCardList(@Nullable List<StoredCard> storedCardList) {
-        this.storedCardList = storedCardList;
+    public void setPaymentMethodItemList(@Nullable List<PaymentMethodItem> paymentMethodItemList) {
+        this.paymentMethodItemList = paymentMethodItemList;
     }
 
-    public void setMerchantIcon(@Nullable int merchantIcon) {
-        this.merchantIcon = merchantIcon;
+    public void setPaymentMethodDefaults(@Nullable PaymentMethodInfo paymentMethodDefaults) {
+        this.paymentMethodDefaults = paymentMethodDefaults;
+    }
+
+    public void setCreditCardDefaults(@Nullable CreditCardInfo creditCardDefaults) {
+        this.creditCardDefaults = creditCardDefaults;
+    }
+
+    public void setBankAccountDefaults(@Nullable BankAccountInfo bankAccountDefaults) {
+        this.bankAccountDefaults = bankAccountDefaults;
     }
 }

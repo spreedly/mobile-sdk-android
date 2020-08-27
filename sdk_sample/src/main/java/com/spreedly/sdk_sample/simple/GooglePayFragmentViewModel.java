@@ -38,7 +38,7 @@ public class GooglePayFragmentViewModel extends ViewModel {
         inProgress.setValue(true);
         token.postValue("");
         error.postValue("");
-        client.createGooglePaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        client.createGooglePaymentMethod(info).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 

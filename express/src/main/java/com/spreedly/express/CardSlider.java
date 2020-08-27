@@ -16,17 +16,17 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.Consumer;
 
 class CardSlider extends HorizontalScrollView {
-    Consumer<StoredCard> storedCardCallback;
-    List<StoredCard> cards;
+    Consumer<PaymentMethodItem> paymentItemCallback;
+    List<PaymentMethodItem> cards;
     LinearLayout wrapper;
     final float pixelDensity;
     CardBrandHelper cardBrandHelper;
 
-    public CardSlider(@NonNull Context context, List<StoredCard> storedCards, Consumer<StoredCard> storedCardCallback) {
+    public CardSlider(@NonNull Context context, List<PaymentMethodItem> paymentMethodItems, Consumer<PaymentMethodItem> paymentItemCallback) {
         super(context);
-        this.cards = storedCards;
+        this.cards = paymentMethodItems;
         this.pixelDensity = getResources().getDisplayMetrics().density;
-        this.storedCardCallback = storedCardCallback;
+        this.paymentItemCallback = paymentItemCallback;
     }
 
     public CardSlider(@NonNull Context context) {
@@ -49,19 +49,23 @@ class CardSlider extends HorizontalScrollView {
     }
 
 
-    public void update(List<StoredCard> storedCards) {
+    public void update(List<PaymentMethodItem> paymentMethodItems) {
         wrapper.removeAllViews();
-        cards = storedCards;
+        cards = paymentMethodItems;
         int hpadding = (int) (10 * pixelDensity);
         int vpadding = (int) (20 * pixelDensity);
         int width = (int) (108 * pixelDensity);
         int height = (int) (80 * pixelDensity);
         float textSize = (4 * pixelDensity);
         for (int i = 0; i < cards.size(); i++) {
-            StoredCard card = cards.get(i);
+            PaymentMethodItem card = cards.get(i);
             Button button = new Button(wrapper.getContext());
             button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            button.setCompoundDrawablesWithIntrinsicBounds(0, cardBrandHelper.getIcon(card.type), 0, 0);
+            if (card.brandType != null) {
+                button.setCompoundDrawablesWithIntrinsicBounds(0, cardBrandHelper.getIcon(card.brandType), 0, 0);
+            } else {
+                button.setCompoundDrawablesWithIntrinsicBounds(0, imageHelper(card.type), 0, 0);
+            }
             button.setText(card.description);
             button.setMinWidth(width);
             button.setPadding(hpadding, vpadding, hpadding, vpadding);
@@ -71,11 +75,27 @@ class CardSlider extends HorizontalScrollView {
         }
     }
 
-    private void submit(StoredCard card) {
-        Single<StoredCard> result = Single.create(emitter -> {
+    private void submit(PaymentMethodItem card) {
+        Single<PaymentMethodItem> result = Single.create(emitter -> {
             emitter.onSuccess(card);
         });
-        result.subscribe(storedCardCallback);
+        result.subscribe(paymentItemCallback);
 
+    }
+
+    private int imageHelper(PaymentMethodType type) {
+        int result = 0;
+        switch (type) {
+            case CARD:
+                result = R.drawable.ic_spr_generic;
+                break;
+            case BANK:
+                result = R.drawable.ic_spr_bank;
+                break;
+            case THIRD_PARTY:
+                result = R.drawable.ic_spr_third_party;
+                break;
+        }
+        return result;
     }
 }
