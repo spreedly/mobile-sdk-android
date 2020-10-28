@@ -20,6 +20,7 @@ public class SecureFormBankAccountViewModel extends ViewModel {
     @NonNull
     public TextView token;
     @NonNull Spinner spinner;
+
     @NonNull SecureFormLayout layout;
     @NonNull TextView error;
 
