@@ -2,16 +2,12 @@ package com.spreedly.threedssecure;
 
 import androidx.annotation.NonNull;
 
-public class SpreedlyThreeDSTransactionRequestListener {
-    void success(@NonNull String status) {
-    }
+public interface SpreedlyThreeDSTransactionRequestListener {
+    void success(@NonNull String status);
 
-    void cancelled() {
-    }
+    void cancelled();
 
-    void timeout() {
-    }
+    void timeout();
 
-    void error(@NonNull SpreedlyThreeDSError error) {
-    }
+    void error(@NonNull SpreedlyThreeDSError error);
 }

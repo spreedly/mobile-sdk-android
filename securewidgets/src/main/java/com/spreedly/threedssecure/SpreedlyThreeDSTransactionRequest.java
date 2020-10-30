@@ -2,10 +2,6 @@ package com.spreedly.threedssecure;
 
 import android.app.Activity;
 import android.util.Base64;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.seglan.threeds.sdk.AuthenticationRequestParameters;
 import com.seglan.threeds.sdk.ChallengeParameters;
@@ -19,9 +15,11 @@ import com.seglan.threeds.sdk.event.RuntimeErrorEvent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class SpreedlyThreeDSTransactionRequest {
 
