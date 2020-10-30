@@ -9,6 +9,7 @@ import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
 
 /**
@@ -33,5 +34,5 @@ public interface SpreedlyClient {
 
     @NonNull Single<TransactionResult<PaymentMethodResult>> recache(@NonNull String token, @NonNull SpreedlySecureOpaqueString cvv);
 
-    String getCredentials();
+    @Nullable String getCredentials();
 }

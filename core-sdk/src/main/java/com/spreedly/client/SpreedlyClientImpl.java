@@ -287,6 +287,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
         return date;
     }
 
+    @Nullable
     public String getCredentials() {
         String raw = key + ":" + secret;
         return "Basic " + safeBase64(raw.getBytes());
