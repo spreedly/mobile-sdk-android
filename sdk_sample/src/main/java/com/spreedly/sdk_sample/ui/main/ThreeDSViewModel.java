@@ -84,7 +84,7 @@ public class ThreeDSViewModel extends ViewModel {
                         errorView.setText(error.message);
                     }
                 };
-                JSONObject serialized = threeDSTransactionRequest.serialize();
+                String serialized = threeDSTransactionRequest.serialize();
                 serversidePurchase(client, serialized, tokenized.result.token, "M8k0FisOKdAmDgcQeIKlHE7R1Nf", new SuccessOrFailure() {
                     @Override
                     public void onSuccess(JSONObject result) {
@@ -128,15 +128,15 @@ public class ThreeDSViewModel extends ViewModel {
         return client.createCreditCardPaymentMethod(info);
     }
 
-    public @NonNull Single<Object> serversidePurchase(SpreedlyClient client, JSONObject deviceInfo, String token, String scaProviderKey, SuccessOrFailure successOrFailure) {
+    public @NonNull Single<Object> serversidePurchase(SpreedlyClient client, String deviceInfo, String token, String scaProviderKey, SuccessOrFailure successOrFailure) {
         String baseUrl = "https://core.spreedly.com/v1";
         String gateway = "BkXcmxRDv8gtMUwu5Buzb4ZbqGe";
         String completeUrl = baseUrl + "/gateways/" + gateway + "/purchase.json";
         JSONObject requestBody = new JSONObject();
         JSONObject transactionBody = new JSONObject();
-        double centAmount;
+        int centAmount;
         try {
-            centAmount = Double.parseDouble(amount.getEditText().getText().toString()) * 100;
+            centAmount = (int)(Double.parseDouble(amount.getEditText().getText().toString()) * 100);
         } catch (Exception e) {
             Log.e("Spreedly", "Cent amount error" + e.getMessage());
             centAmount = 4;
@@ -147,8 +147,7 @@ public class ThreeDSViewModel extends ViewModel {
             transactionBody.put("amount", centAmount);
             transactionBody.put("redirect_url", "http://test.com/");
             transactionBody.put("callback_url", "http://test.com/");
-            transactionBody.put("three_ds_version", "2");
-            transactionBody.put("device_info", deviceInfo.toString());
+            transactionBody.put("device_info", deviceInfo);
             transactionBody.put("channel", "app");
             transactionBody.put("sca_provider_key", scaProviderKey);
             transactionBody.put("currency_code", "EUR");

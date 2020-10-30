@@ -1,6 +1,8 @@
 package com.spreedly.threedssecure;
 
 import android.app.Activity;
+import android.util.Base64;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,8 @@ import com.seglan.threeds.sdk.event.RuntimeErrorEvent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class SpreedlyThreeDSTransactionRequest implements ChallengeStatusReceiver {
@@ -37,7 +41,7 @@ public class SpreedlyThreeDSTransactionRequest implements ChallengeStatusReceive
     }
 
     @Nullable
-    public JSONObject serialize() {
+    public String serialize() {
         AuthenticationRequestParameters request = transaction.getAuthenticationRequestParameters();
         try {
             JSONObject wrapper = new JSONObject();
@@ -47,14 +51,14 @@ public class SpreedlyThreeDSTransactionRequest implements ChallengeStatusReceive
             String ephemKeyString = request.getSDKEphemeralPublicKey();
             JSONObject ephemJSON = new JSONObject(ephemKeyString);
             wrapper.putOpt("sdk_ephem_pub_key", ephemJSON);
-            wrapper.putOpt("sdk_mac_timeout", "15");
+            wrapper.putOpt("sdk_max_timeout", "15");
             wrapper.putOpt("sdk_reference_number", request.getSDKReferenceNumber());
             wrapper.put("sdk_trans_id", request.getSDKTransactionID());
             JSONObject deviceRenderOptions = new JSONObject();
             deviceRenderOptions.put("sdk_interface", "03");
             deviceRenderOptions.put("sdk_ui_type", "01");
             wrapper.put("device_render_options", deviceRenderOptions);
-            return wrapper;
+            return Base64.encodeToString(wrapper.toString().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
 
         } catch (JSONException exception) {
             return null;
