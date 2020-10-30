@@ -1,9 +1,11 @@
 package com.spreedly.sdk_sample.ui.main;
 
 
-import android.annotation.SuppressLint;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
@@ -17,14 +19,12 @@ import com.spreedly.threedssecure.SpreedlyThreeDSError;
 import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequest;
 import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequestListener;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Objects;
 
-import androidx.lifecycle.ViewModel;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -37,39 +37,38 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ThreeDSViewModel extends ViewModel {
-    @SuppressLint("StaticFieldLeak")
     @NonNull
     public TextView token;
-    @NonNull SpreedlyThreeDS spreedlyThreeDS;
+    @NonNull
+    SpreedlyThreeDS spreedlyThreeDS;
     @NonNull SpreedlyClient client;
-    @SuppressLint("StaticFieldLeak")
     @NonNull TextView errorView;
-    @SuppressLint("StaticFieldLeak")
     @NonNull TextInputLayout amount;
-    @SuppressLint("StaticFieldLeak")
     @NonNull SecureCreditCardField secureCreditCardField;
     CreditCardInfo info;
     SpreedlyThreeDSTransactionRequest threeDSTransactionRequest;
 
     SpreedlyThreeDSTransactionRequestListener listener = new SpreedlyThreeDSTransactionRequestListener() {
         public void success(@androidx.annotation.NonNull String status) {
-            errorView.setText("success: " + status);
+            String message = "success: " + status;
+            errorView.setText(message);
             Log.i("Spreedly", status);
         }
 
         public void cancelled() {
-            errorView.setText("cancelled");
+            errorView.setText(R.string.threeds_cancelled);
             Log.i("Spreedly", "Cancelled");
         }
 
         public void timeout() {
-            errorView.setText("timeout");
+            errorView.setText(R.string.threeds_timeout);
             Log.i("Spreedly", "Timeout");
         }
 
-        public void error(@androidx.annotation.NonNull SpreedlyThreeDSError error) {
+        public void error(@NonNull SpreedlyThreeDSError error) {
             Log.i("Spreedly", error.message);
-            errorView.setText("error: " + error.message);
+            String message = "Error: " + error.message;
+            errorView.setText(message);
         }
     };
 
@@ -84,6 +83,9 @@ public class ThreeDSViewModel extends ViewModel {
             public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> tokenized) {
                 threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest();
                 String serialized = threeDSTransactionRequest.serialize();
+                if (tokenized.result == null) {
+                    errorView.setText(R.string.generic_error);
+                }
                 serversidePurchase(client, serialized, tokenized.result.token, "M8k0FisOKdAmDgcQeIKlHE7R1Nf", new SuccessOrFailure() {
                     @Override
                     public void onSuccess(JSONObject result) {
@@ -122,12 +124,14 @@ public class ThreeDSViewModel extends ViewModel {
     }
 
 
+    @NonNull
     public Single<TransactionResult<PaymentMethodResult>> tokenize() {
         info = new CreditCardInfo("Dolly Dog", null, null, secureCreditCardField.getText(), client.createString("919"), 2029, 1);
         return client.createCreditCardPaymentMethod(info);
     }
 
-    public @NonNull Single<Object> serversidePurchase(SpreedlyClient client, String deviceInfo, String token, String scaProviderKey, SuccessOrFailure successOrFailure) {
+    public @NonNull
+    Single<Object> serversidePurchase(@NonNull SpreedlyClient client, @NonNull String deviceInfo, @NonNull String token, @NonNull String scaProviderKey, @NonNull SuccessOrFailure successOrFailure) {
         String baseUrl = "https://core.spreedly.com/v1";
         String gateway = "BkXcmxRDv8gtMUwu5Buzb4ZbqGe";
         String completeUrl = baseUrl + "/gateways/" + gateway + "/purchase.json";
@@ -135,7 +139,7 @@ public class ThreeDSViewModel extends ViewModel {
         JSONObject transactionBody = new JSONObject();
         int centAmount;
         try {
-            centAmount = (int)(Double.parseDouble(amount.getEditText().getText().toString()) * 100);
+            centAmount = (int) (Double.parseDouble(Objects.requireNonNull(amount.getEditText()).getText().toString()) * 100);
         } catch (Exception e) {
             Log.e("Spreedly", "Cent amount error" + e.getMessage());
             centAmount = 4;
@@ -163,19 +167,19 @@ public class ThreeDSViewModel extends ViewModel {
 
         return Single.create(emitter -> call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 successOrFailure.onFailure(e.getMessage());
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 try {
-                    String responseString = response.body().string();
+                    String responseString = Objects.requireNonNull(response.body()).string();
                     JSONObject responseObject = new JSONObject(responseString);
                     JSONObject transactionObject = responseObject.getJSONObject("transaction");
                     String successObject = transactionObject.getString("state");
                     if (successObject.equals("succeeded")) {
-                        errorView.setText("frictionless success");
+                        errorView.setText(R.string.threeds_frictionless_success);
                         return;
                     }
                     JSONObject scaAuthentication = transactionObject.getJSONObject("sca_authentication");

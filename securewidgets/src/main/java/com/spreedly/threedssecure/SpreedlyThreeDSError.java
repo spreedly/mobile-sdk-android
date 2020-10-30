@@ -1,6 +1,9 @@
 package com.spreedly.threedssecure;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Class for handling errors from the SpreedlyThreeDS flow
  */
@@ -9,12 +12,14 @@ public class SpreedlyThreeDSError {
     /**
      * The error message
      */
+    @Nullable
     public String message;
     /**
      * The error type
      *
      * @see SpreedlyThreeDSErrorType
      */
+    @Nullable
     public SpreedlyThreeDSErrorType type;
 
     /**
@@ -40,7 +45,7 @@ public class SpreedlyThreeDSError {
      * @param type  the SpreedlyThreeDSErrorType that most closely describes the type of error
      * @param error an Error produced by the SpreedlyThreeDS flow
      */
-    SpreedlyThreeDSError(SpreedlyThreeDSErrorType type, Error error) {
+    SpreedlyThreeDSError(@NonNull SpreedlyThreeDSErrorType type, @NonNull Error error) {
         this.message = error.getMessage();
         this.type = type;
     }
@@ -51,7 +56,7 @@ public class SpreedlyThreeDSError {
      * @param type the SpreedlyThreeDSErrorType that most closely describes the type of error
      * @param e    an Exception thrown by the SpreedlyThreeDS flow
      */
-    public SpreedlyThreeDSError(SpreedlyThreeDSErrorType type, Exception e) {
+    public SpreedlyThreeDSError(@NonNull SpreedlyThreeDSErrorType type, @NonNull Exception e) {
         this.type = type;
         this.message = e.getMessage();
     }

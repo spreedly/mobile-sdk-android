@@ -36,7 +36,7 @@ public class SpreedlyThreeDS {
      * @param context  the context of the activity using SpreedlyThreeDS
      * @param activity the activity initializing SpreedlyThreeDS
      */
-    public SpreedlyThreeDS(Context context, Activity activity) {
+    public SpreedlyThreeDS(@NonNull Context context, @NonNull Activity activity) {
         this.activity = activity;
         threeDS2Service.initialize(context, new ConfigParameters(), "en_US", null);
     }
@@ -61,7 +61,7 @@ public class SpreedlyThreeDS {
      * @param data a Bundle holding previously stored threeDS2Service state data
      * @see #saveState()
      */
-    public void loadState(Bundle data) {
+    public void loadState(@Nullable Bundle data) {
         if (data != null) {
             threeDS2Service.a = data.getBoolean("a");
             threeDS2Service.c = data.getString("c");
@@ -92,6 +92,7 @@ public class SpreedlyThreeDS {
      * @return a new SpreedlyThreeDSTransactionRequest
      * @see SpreedlyThreeDSTransactionRequest
      */
+    @NonNull
     public SpreedlyThreeDSTransactionRequest createTransactionRequest() {
         return new SpreedlyThreeDSTransactionRequest(threeDS2Service, threeDS2Service.createTransaction("F000000000", "2.1.0"), activity);
     }
