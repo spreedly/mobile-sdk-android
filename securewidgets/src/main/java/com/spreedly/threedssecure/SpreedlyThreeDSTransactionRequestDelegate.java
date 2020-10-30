@@ -1,11 +1,13 @@
 package com.spreedly.threedssecure;
 
+import androidx.annotation.NonNull;
+
 public interface SpreedlyThreeDSTransactionRequestDelegate {
-    void success(String status);
+    void success(@NonNull String status);
 
     void cancelled();
 
     void timeout();
 
-    void error(SpreedlyThreeDSError error);
+    void error(@NonNull SpreedlyThreeDSError error);
 }

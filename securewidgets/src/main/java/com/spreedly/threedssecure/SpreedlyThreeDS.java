@@ -14,7 +14,7 @@ public class SpreedlyThreeDS {
     private final SeglanThreeDS2Service threeDS2Service = new SeglanThreeDS2Service();
     Activity activity;
 
-    public SpreedlyThreeDS(@NonNull Context context, @NonNull Activity activity) {
+    public SpreedlyThreeDS(Context context, Activity activity) {
         this.activity = activity;
         threeDS2Service.initialize(context, new ConfigParameters(), "en_US", null);
     }

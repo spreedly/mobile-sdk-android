@@ -39,6 +39,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
         if (position == 1)
             return WidgetExampleFragment.newInstance();
+        if (position == 2) {
+            return ThreeDSFragment.newInstance();
+        }
         if (position == 3)
             return ExpressExampleFragment.newInstance();
         return PlaceholderFragment.newInstance();

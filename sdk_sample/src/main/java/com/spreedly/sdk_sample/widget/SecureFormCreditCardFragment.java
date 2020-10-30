@@ -33,7 +33,6 @@ public class SecureFormCreditCardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(SecureFormCreditCardViewModel.class);
-        // TODO: Use the ViewModel
         mViewModel.layout = getView().findViewById(R.id.credit_card_form);
         mViewModel.error = getView().findViewById(R.id.error);
         mViewModel.token = getView().findViewById(R.id.token);

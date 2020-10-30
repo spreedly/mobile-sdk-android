@@ -1,0 +1,185 @@
+package com.spreedly.sdk_sample.ui.main;
+
+
+import android.annotation.SuppressLint;
+import android.util.Log;
+import android.widget.TextView;
+
+import androidx.lifecycle.ViewModel;
+
+import com.google.android.material.textfield.TextInputLayout;
+import com.spreedly.client.SpreedlyClient;
+import com.spreedly.client.models.CreditCardInfo;
+import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.TransactionResult;
+import com.spreedly.sdk_sample.R;
+import com.spreedly.securewidgets.SecureCreditCardField;
+import com.spreedly.securewidgets.SecureExpirationDate;
+import com.spreedly.securewidgets.SecureTextField;
+import com.spreedly.threedssecure.SpreedlyThreeDS;
+import com.spreedly.threedssecure.SpreedlyThreeDSError;
+import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequest;
+import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequestDelegate;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class ThreeDSViewModel extends ViewModel {
+    @SuppressLint("StaticFieldLeak")
+    @NonNull
+    public TextView token;
+    @NonNull SpreedlyThreeDS spreedlyThreeDS;
+    @NonNull SpreedlyClient client;
+    @SuppressLint("StaticFieldLeak")
+    @NonNull TextView error;
+    @SuppressLint("StaticFieldLeak")
+    @NonNull TextInputLayout nameWrapper;
+    @SuppressLint("StaticFieldLeak")
+    @NonNull SecureCreditCardField secureCreditCardField;
+    @SuppressLint("StaticFieldLeak")
+    @NonNull SecureTextField cvv;
+    @SuppressLint("StaticFieldLeak")
+    @NonNull SecureExpirationDate secureExpirationDate;
+    CreditCardInfo info;
+
+    public void submitCreditCard() {
+        tokenize().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> tokenized) {
+                SpreedlyThreeDSTransactionRequest threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest();
+                threeDSTransactionRequest.delegate = new SpreedlyThreeDSTransactionRequestDelegate() {
+                    @Override
+                    public void success(@androidx.annotation.NonNull String status) {
+                        Log.i("Spreedly", status);
+                    }
+
+                    @Override
+                    public void cancelled() {
+                        Log.i("Spreedly", "Cancelled");
+                    }
+
+                    @Override
+                    public void timeout() {
+                        Log.i("Spreedly", "Timeout");
+                    }
+
+                    @Override
+                    public void error(@androidx.annotation.NonNull SpreedlyThreeDSError error) {
+                        Log.i("Spreedly", error.message);
+                    }
+                };
+                JSONObject serialized = threeDSTransactionRequest.serialize();
+                serversidePurchase(client, serialized, tokenized.result.token, "M8k0FisOKdAmDgcQeIKlHE7R1Nf", new SuccessOrFailure() {
+                    @Override
+                    public void onSuccess(String string) {
+                        threeDSTransactionRequest.doChallenge(string);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        error.setText(e.getMessage());
+                    }
+                }).subscribe(new SingleObserver<Object>() {
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Object o) {
+                        Log.i("Spreedly", o.toString());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.i("Spreedly", "Something");
+                    }
+                });
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                error.setText(R.string.generic_error);
+            }
+        });
+    }
+
+
+    public Single<TransactionResult<PaymentMethodResult>> tokenize() {
+        info = new CreditCardInfo(nameWrapper.getEditText().getText().toString(), null, null, secureCreditCardField.getText(), cvv.getText(), secureExpirationDate.getYear(), secureExpirationDate.getMonth());
+        return client.createCreditCardPaymentMethod(info);
+    }
+
+    public @NonNull Single<Object> serversidePurchase(SpreedlyClient client, JSONObject deviceInfo, String token, String scaProviderKey, SuccessOrFailure successOrFailure) {
+        String baseUrl = "https://core.spreedly.com/v1";
+        String gateway = "BkXcmxRDv8gtMUwu5Buzb4ZbqGe";
+        String completeUrl = baseUrl + "/gateways/" + gateway + "/purchase.json";
+        JSONObject requestBody = new JSONObject();
+        JSONObject transactionBody = new JSONObject();
+        try {
+            transactionBody.put("payment_method_token", token);
+            transactionBody.put("amount", 04);
+            transactionBody.put("redirect_url", "http://test.com/");
+            transactionBody.put("callback_url", "http://test.com/");
+            transactionBody.put("three_ds_version", "2");
+            transactionBody.put("device_info", deviceInfo.toString());
+            transactionBody.put("channel", "app");
+            transactionBody.put("sca_provider_key", scaProviderKey);
+            transactionBody.put("currency_code", "USD");
+            requestBody.put("transaction", transactionBody);
+        } catch (Exception e) {
+            //Do something with error
+        }
+        Call call;
+        call = new OkHttpClient().newCall(new Request.Builder()
+                .url(completeUrl)
+                .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
+                .header("Authorization", client.getCredentials())
+                .build());
+
+        return Single.create(emitter -> call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                successOrFailure.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try {
+                    Log.i("Spreedly", "Response: " + response.body().string());
+                    String responseString = response.body().string();
+                    successOrFailure.onSuccess(responseString);
+                } catch (NullPointerException npe) {
+                    successOrFailure.onFailure(npe);
+                }
+            }
+        }));
+    }
+
+    interface SuccessOrFailure {
+        void onSuccess(String string);
+
+        void onFailure(Exception e);
+    }
+}

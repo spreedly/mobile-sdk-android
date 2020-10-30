@@ -3,7 +3,7 @@ package com.spreedly.threedssecure;
 public class SpreedlyThreeDSError {
 
     Exception exception;
-    String message;
+    public String message;
     Error error;
     SpreedlyThreeDSErrorType type;
 
