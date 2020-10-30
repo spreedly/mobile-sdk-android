@@ -72,7 +72,7 @@ public class SpreedlyThreeDSTest {
     @Test
     public void canDoChallenge() {
         SpreedlyThreeDSTransactionRequest request = spreedlyThreeDS.createTransactionRequest();
-        request.delegate = new SpreedlyThreeDSTransactionRequestDelegate() {
+        request.delegate = new SpreedlyThreeDSTransactionRequestListener() {
             @Override
             public void success(@NonNull String status) {
 

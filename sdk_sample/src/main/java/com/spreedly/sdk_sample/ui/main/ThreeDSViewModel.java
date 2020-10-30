@@ -17,7 +17,7 @@ import com.spreedly.securewidgets.SecureCreditCardField;
 import com.spreedly.threedssecure.SpreedlyThreeDS;
 import com.spreedly.threedssecure.SpreedlyThreeDSError;
 import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequest;
-import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequestDelegate;
+import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequestListener;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -62,33 +62,32 @@ public class ThreeDSViewModel extends ViewModel {
             @Override
             public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> tokenized) {
                 threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest();
-                threeDSTransactionRequest.delegate = new SpreedlyThreeDSTransactionRequestDelegate() {
-                    @Override
+                final SpreedlyThreeDSTransactionRequestListener listener = new SpreedlyThreeDSTransactionRequestListener() {
                     public void success(@androidx.annotation.NonNull String status) {
+                        errorView.setText("success: " + status);
                         Log.i("Spreedly", status);
                     }
 
-                    @Override
                     public void cancelled() {
+                        errorView.setText("cancelled");
                         Log.i("Spreedly", "Cancelled");
                     }
 
-                    @Override
                     public void timeout() {
+                        errorView.setText("timeout");
                         Log.i("Spreedly", "Timeout");
                     }
 
-                    @Override
                     public void error(@androidx.annotation.NonNull SpreedlyThreeDSError error) {
                         Log.i("Spreedly", error.message);
-                        errorView.setText(error.message);
+                        errorView.setText("error: " + error.message);
                     }
                 };
                 String serialized = threeDSTransactionRequest.serialize();
                 serversidePurchase(client, serialized, tokenized.result.token, "M8k0FisOKdAmDgcQeIKlHE7R1Nf", new SuccessOrFailure() {
                     @Override
                     public void onSuccess(JSONObject result) {
-                        threeDSTransactionRequest.doChallenge(result);
+                        threeDSTransactionRequest.doChallenge(result, listener);
                     }
 
                     @Override
@@ -172,12 +171,11 @@ public class ThreeDSViewModel extends ViewModel {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try {
                     String responseString = response.body().string();
-                    Log.i("Spreedly", "Response: " + responseString);
                     JSONObject responseObject = new JSONObject(responseString);
                     JSONObject transactionObject = responseObject.getJSONObject("transaction");
                     String successObject = transactionObject.getString("state");
                     if (successObject.equals("succeeded")) {
-                        threeDSTransactionRequest.delegate.success("frictionless success");
+                        errorView.setText("frictionless success");
                         return;
                     }
                     JSONObject scaAuthentication = transactionObject.getJSONObject("sca_authentication");

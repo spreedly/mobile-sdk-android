@@ -23,10 +23,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-public class SpreedlyThreeDSTransactionRequest implements ChallengeStatusReceiver {
-    @Nullable
-    public
-    SpreedlyThreeDSTransactionRequestDelegate delegate;
+public class SpreedlyThreeDSTransactionRequest {
+
     @NonNull
     ThreeDS2Service service;
     @NonNull
@@ -65,7 +63,7 @@ public class SpreedlyThreeDSTransactionRequest implements ChallengeStatusReceive
         }
     }
 
-    public void doChallenge(@NonNull JSONObject scaAccess) {
+    public void doChallenge(@NonNull JSONObject scaAccess, @NonNull SpreedlyThreeDSTransactionRequestListener listener) {
         ChallengeParameters parameters = new ChallengeParameters();
         try {
             parameters.set3DSServerTransactionID(scaAccess.getString("xid"));
@@ -73,72 +71,63 @@ public class SpreedlyThreeDSTransactionRequest implements ChallengeStatusReceive
             parameters.setAcsRefNumber(scaAccess.getString("acs_reference_number"));
             parameters.setAcsSignedContent(scaAccess.getString("acs_signed_content"));
         } catch (Exception e) {
-            delegate.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.INVALID_INPUT, "Bad sca_authentication JSON"));
+            listener.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.INVALID_INPUT, "Bad sca_authentication JSON"));
         }
         try {
-            transaction.doChallenge(activity, parameters, this, 15);
+            transaction.doChallenge(activity, parameters, new ListenerToChallengeStatusReceiver(listener), 15);
         } catch (Exception e) {
-            if (delegate != null) {
-                this.delegate.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.UNKNOWN_ERROR, e));
-            }
+            listener.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.UNKNOWN_ERROR, e));
         }
     }
 
-    public void doChallenge(@NonNull String scaAccess) {
+    public void doChallenge(@NonNull String scaAccess, @NonNull SpreedlyThreeDSTransactionRequestListener listener) {
         try {
-            doChallenge(new JSONObject(Objects.requireNonNull(scaAccess)));
+            doChallenge(new JSONObject(Objects.requireNonNull(scaAccess)), listener);
         } catch (JSONException exception) {
-            this.delegate.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.UNKNOWN_ERROR, "Bad sca_authentication JSON"));
+            listener.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.UNKNOWN_ERROR, "Bad sca_authentication JSON"));
         }
     }
 
-    public void doChallenge(@NonNull String threeDSServerTransactionID, @NonNull String acsTransactionId, @NonNull String acsRefNumber, @NonNull String acsSignedContent) {
-        ChallengeParameters parameters = new ChallengeParameters();
-        parameters.set3DSServerTransactionID(threeDSServerTransactionID);
-        parameters.setAcsTransactionID(acsTransactionId);
-        parameters.setAcsRefNumber(acsRefNumber);
-        parameters.setAcsSignedContent(acsSignedContent);
-        try {
-            transaction.doChallenge(activity, parameters, this, 15);
-        } catch (Exception e) {
-            if (delegate != null) {
-                this.delegate.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.UNKNOWN_ERROR, e));
+    class ListenerToChallengeStatusReceiver implements  ChallengeStatusReceiver {
+        private final SpreedlyThreeDSTransactionRequestListener listener;
+
+        public ListenerToChallengeStatusReceiver(SpreedlyThreeDSTransactionRequestListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public void completed(@NonNull CompletionEvent completionEvent) {
+            if (listener != null) {
+                listener.success(completionEvent.getTransactionStatus());
             }
         }
-    }
 
-    @Override
-    public void completed(@NonNull CompletionEvent completionEvent) {
-        if (delegate != null) {
-            delegate.success(completionEvent.getTransactionStatus());
+        @Override
+        public void cancelled() {
+            if (listener != null) {
+                listener.cancelled();
+            }
         }
-    }
 
-    @Override
-    public void cancelled() {
-        if (delegate != null) {
-            delegate.cancelled();
+        @Override
+        public void timedout() {
+            if (listener != null) {
+                listener.timeout();
+            }
         }
-    }
 
-    @Override
-    public void timedout() {
-        if (delegate != null) {
-            delegate.timeout();
+        @Override
+        public void protocolError(@NonNull ProtocolErrorEvent protocolErrorEvent) {
+            if (listener != null) {
+                listener.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.PROTOCOL_ERROR, protocolErrorEvent.getErrorMessage().getErrorDescription()));
+            }
         }
-    }
 
-    @Override
-    public void protocolError(@NonNull ProtocolErrorEvent protocolErrorEvent) {
-        if (delegate != null) {
-            delegate.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.PROTOCOL_ERROR, protocolErrorEvent.getErrorMessage().getErrorDescription()));
-        }
-    }
-
-    @Override
-    public void runtimeError(@NonNull RuntimeErrorEvent runtimeErrorEvent) {
-        if (delegate != null) {
-            delegate.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.RUNTIME_ERROR, runtimeErrorEvent.getErrorMessage()));
+        @Override
+        public void runtimeError(@NonNull RuntimeErrorEvent runtimeErrorEvent) {
+            if (listener != null) {
+                listener.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.RUNTIME_ERROR, runtimeErrorEvent.getErrorMessage()));
+            }
         }
     }
 }
