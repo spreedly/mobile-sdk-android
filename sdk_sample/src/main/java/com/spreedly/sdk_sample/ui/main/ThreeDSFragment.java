@@ -44,12 +44,10 @@ public class ThreeDSFragment extends Fragment {
         } catch (Exception e) {
             Log.i("Spreedly", e.getMessage());
         }
-        mViewModel.error = getView().findViewById(R.id.error);
+        mViewModel.errorView = getView().findViewById(R.id.error);
         mViewModel.token = getView().findViewById(R.id.token);
-        mViewModel.nameWrapper = getView().findViewById(R.id.spreedly_full_name);
+        mViewModel.amount = getView().findViewById(R.id.spreedly_3ds_amount);
         mViewModel.secureCreditCardField = getView().findViewById(R.id.spreedly_credit_card_number);
-        mViewModel.secureExpirationDate = getView().findViewById(R.id.spreedly_cc_expiration_date);
-        mViewModel.cvv = getView().findViewById(R.id.spreedly_cvv);
         getView().<Button>findViewById(R.id.spreedly_cc_submit).setOnClickListener(b -> mViewModel.submitCreditCard());
     }
 }

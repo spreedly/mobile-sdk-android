@@ -8,8 +8,14 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+
+    <com.spreedly.securewidgets.SecureCreditCardField
+        android:id="@id/spreedly_credit_card_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@id/spreedly_full_name"
+        android:id="@id/spreedly_3ds_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,31 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="name"
-            android:hint="@string/name_hint"
+            android:hint="@string/amount_hint"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.spreedly.securewidgets.SecureCreditCardField
-        android:id="@id/spreedly_credit_card_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.spreedly.securewidgets.SecureTextField
-        android:id="@id/spreedly_cvv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.spreedly.securewidgets.SecureExpirationDate
-        android:id="@id/spreedly_cc_expiration_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/token"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textIsSelectable="true" />
 
     <TextView
         android:id="@+id/error"

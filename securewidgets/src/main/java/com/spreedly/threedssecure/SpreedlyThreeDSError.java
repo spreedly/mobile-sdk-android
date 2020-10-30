@@ -2,9 +2,7 @@ package com.spreedly.threedssecure;
 
 public class SpreedlyThreeDSError {
 
-    Exception exception;
     public String message;
-    Error error;
     SpreedlyThreeDSErrorType type;
 
     SpreedlyThreeDSError(SpreedlyThreeDSErrorType type, String message) {
@@ -16,13 +14,13 @@ public class SpreedlyThreeDSError {
     }
 
     SpreedlyThreeDSError(SpreedlyThreeDSErrorType type, Error error) {
-        this.error = error;
+        this.message = error.getMessage();
         this.type = type;
     }
 
     public SpreedlyThreeDSError(SpreedlyThreeDSErrorType type, Exception e) {
         this.type = type;
-        this.exception = e;
+        this.message = e.getMessage();
     }
 
     public enum SpreedlyThreeDSErrorType {

@@ -14,15 +14,12 @@ import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.sdk_sample.R;
 import com.spreedly.securewidgets.SecureCreditCardField;
-import com.spreedly.securewidgets.SecureExpirationDate;
-import com.spreedly.securewidgets.SecureTextField;
 import com.spreedly.threedssecure.SpreedlyThreeDS;
 import com.spreedly.threedssecure.SpreedlyThreeDSError;
 import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequest;
 import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequestDelegate;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -47,15 +44,11 @@ public class ThreeDSViewModel extends ViewModel {
     @NonNull SpreedlyThreeDS spreedlyThreeDS;
     @NonNull SpreedlyClient client;
     @SuppressLint("StaticFieldLeak")
-    @NonNull TextView error;
+    @NonNull TextView errorView;
     @SuppressLint("StaticFieldLeak")
-    @NonNull TextInputLayout nameWrapper;
+    @NonNull TextInputLayout amount;
     @SuppressLint("StaticFieldLeak")
     @NonNull SecureCreditCardField secureCreditCardField;
-    @SuppressLint("StaticFieldLeak")
-    @NonNull SecureTextField cvv;
-    @SuppressLint("StaticFieldLeak")
-    @NonNull SecureExpirationDate secureExpirationDate;
     CreditCardInfo info;
     SpreedlyThreeDSTransactionRequest threeDSTransactionRequest;
 
@@ -88,6 +81,7 @@ public class ThreeDSViewModel extends ViewModel {
                     @Override
                     public void error(@androidx.annotation.NonNull SpreedlyThreeDSError error) {
                         Log.i("Spreedly", error.message);
+                        errorView.setText(error.message);
                     }
                 };
                 JSONObject serialized = threeDSTransactionRequest.serialize();
@@ -100,7 +94,7 @@ public class ThreeDSViewModel extends ViewModel {
                     @Override
                     public void onFailure(String message) {
                         Log.i("Spreedly", "Message: " + message);
-                        error.setText(message);
+                        errorView.setText(message);
                     }
                 }).subscribe(new SingleObserver<Object>() {
 
@@ -123,14 +117,14 @@ public class ThreeDSViewModel extends ViewModel {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                error.setText(R.string.generic_error);
+                errorView.setText(R.string.generic_error);
             }
         });
     }
 
 
     public Single<TransactionResult<PaymentMethodResult>> tokenize() {
-        info = new CreditCardInfo(nameWrapper.getEditText().getText().toString(), null, null, secureCreditCardField.getText(), cvv.getText(), secureExpirationDate.getYear(), secureExpirationDate.getMonth());
+        info = new CreditCardInfo("Dolly Dog", null, null, secureCreditCardField.getText(), client.createString("919"), 2029, 1);
         return client.createCreditCardPaymentMethod(info);
     }
 
@@ -140,16 +134,24 @@ public class ThreeDSViewModel extends ViewModel {
         String completeUrl = baseUrl + "/gateways/" + gateway + "/purchase.json";
         JSONObject requestBody = new JSONObject();
         JSONObject transactionBody = new JSONObject();
+        double centAmount;
+        try {
+            centAmount = Double.parseDouble(amount.getEditText().getText().toString()) * 100;
+        } catch (Exception e) {
+            Log.e("Spreedly", "Cent amount error" + e.getMessage());
+            centAmount = 4;
+        }
+        Log.i("Spreedly", "cent amount" + centAmount);
         try {
             transactionBody.put("payment_method_token", token);
-            transactionBody.put("amount", 04);
+            transactionBody.put("amount", centAmount);
             transactionBody.put("redirect_url", "http://test.com/");
             transactionBody.put("callback_url", "http://test.com/");
             transactionBody.put("three_ds_version", "2");
             transactionBody.put("device_info", deviceInfo.toString());
             transactionBody.put("channel", "app");
             transactionBody.put("sca_provider_key", scaProviderKey);
-            transactionBody.put("currency_code", "USD");
+            transactionBody.put("currency_code", "EUR");
             requestBody.put("transaction", transactionBody);
         } catch (Exception e) {
             //Do something with error
@@ -186,8 +188,8 @@ public class ThreeDSViewModel extends ViewModel {
                     }
                     successOrFailure.onFailure("Bad Result");
 
-                } catch (NullPointerException | JSONException npe) {
-                    successOrFailure.onFailure(npe.getMessage());
+                } catch (Exception e) {
+                    successOrFailure.onFailure(e.getMessage());
                 }
             }
         }));
