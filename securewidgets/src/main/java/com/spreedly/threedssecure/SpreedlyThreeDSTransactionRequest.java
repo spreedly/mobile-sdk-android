@@ -3,9 +3,6 @@ package com.spreedly.threedssecure;
 import android.app.Activity;
 import android.util.Base64;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.seglan.threeds.sdk.AuthenticationRequestParameters;
 import com.seglan.threeds.sdk.ChallengeParameters;
 import com.seglan.threeds.sdk.ChallengeStatusReceiver;
@@ -18,8 +15,12 @@ import com.seglan.threeds.sdk.event.RuntimeErrorEvent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Class to manage serialization, challenges, and transaction responses
@@ -128,7 +129,7 @@ public class SpreedlyThreeDSTransactionRequest {
         }
     }
 
-    class ListenerToChallengeStatusReceiver implements ChallengeStatusReceiver {
+    class ListenerToChallengeStatusReceiver implements  ChallengeStatusReceiver {
         private final SpreedlyThreeDSTransactionRequestListener listener;
 
         public ListenerToChallengeStatusReceiver(SpreedlyThreeDSTransactionRequestListener listener) {

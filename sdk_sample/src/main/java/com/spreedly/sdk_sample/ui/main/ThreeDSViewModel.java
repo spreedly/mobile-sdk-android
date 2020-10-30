@@ -5,8 +5,6 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import android.widget.TextView;
 
-import androidx.lifecycle.ViewModel;
-
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.CreditCardInfo;
@@ -24,6 +22,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import androidx.lifecycle.ViewModel;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Single;
@@ -52,6 +51,28 @@ public class ThreeDSViewModel extends ViewModel {
     CreditCardInfo info;
     SpreedlyThreeDSTransactionRequest threeDSTransactionRequest;
 
+    SpreedlyThreeDSTransactionRequestListener listener = new SpreedlyThreeDSTransactionRequestListener() {
+        public void success(@androidx.annotation.NonNull String status) {
+            errorView.setText("success: " + status);
+            Log.i("Spreedly", status);
+        }
+
+        public void cancelled() {
+            errorView.setText("cancelled");
+            Log.i("Spreedly", "Cancelled");
+        }
+
+        public void timeout() {
+            errorView.setText("timeout");
+            Log.i("Spreedly", "Timeout");
+        }
+
+        public void error(@androidx.annotation.NonNull SpreedlyThreeDSError error) {
+            Log.i("Spreedly", error.message);
+            errorView.setText("error: " + error.message);
+        }
+    };
+
     public void submitCreditCard() {
         tokenize().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
             @Override
@@ -62,27 +83,6 @@ public class ThreeDSViewModel extends ViewModel {
             @Override
             public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> tokenized) {
                 threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest();
-                final SpreedlyThreeDSTransactionRequestListener listener = new SpreedlyThreeDSTransactionRequestListener() {
-                    public void success(@androidx.annotation.NonNull String status) {
-                        errorView.setText("success: " + status);
-                        Log.i("Spreedly", status);
-                    }
-
-                    public void cancelled() {
-                        errorView.setText("cancelled");
-                        Log.i("Spreedly", "Cancelled");
-                    }
-
-                    public void timeout() {
-                        errorView.setText("timeout");
-                        Log.i("Spreedly", "Timeout");
-                    }
-
-                    public void error(@androidx.annotation.NonNull SpreedlyThreeDSError error) {
-                        Log.i("Spreedly", error.message);
-                        errorView.setText("error: " + error.message);
-                    }
-                };
                 String serialized = threeDSTransactionRequest.serialize();
                 serversidePurchase(client, serialized, tokenized.result.token, "M8k0FisOKdAmDgcQeIKlHE7R1Nf", new SuccessOrFailure() {
                     @Override
