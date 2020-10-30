@@ -22,6 +22,7 @@ import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequest;
 import com.spreedly.threedssecure.SpreedlyThreeDSTransactionRequestDelegate;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -56,6 +57,7 @@ public class ThreeDSViewModel extends ViewModel {
     @SuppressLint("StaticFieldLeak")
     @NonNull SecureExpirationDate secureExpirationDate;
     CreditCardInfo info;
+    SpreedlyThreeDSTransactionRequest threeDSTransactionRequest;
 
     public void submitCreditCard() {
         tokenize().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
@@ -66,7 +68,7 @@ public class ThreeDSViewModel extends ViewModel {
 
             @Override
             public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> tokenized) {
-                SpreedlyThreeDSTransactionRequest threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest();
+                threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest();
                 threeDSTransactionRequest.delegate = new SpreedlyThreeDSTransactionRequestDelegate() {
                     @Override
                     public void success(@androidx.annotation.NonNull String status) {
@@ -91,13 +93,14 @@ public class ThreeDSViewModel extends ViewModel {
                 JSONObject serialized = threeDSTransactionRequest.serialize();
                 serversidePurchase(client, serialized, tokenized.result.token, "M8k0FisOKdAmDgcQeIKlHE7R1Nf", new SuccessOrFailure() {
                     @Override
-                    public void onSuccess(String string) {
-                        threeDSTransactionRequest.doChallenge(string);
+                    public void onSuccess(JSONObject result) {
+                        threeDSTransactionRequest.doChallenge(result);
                     }
 
                     @Override
-                    public void onFailure(Exception e) {
-                        error.setText(e.getMessage());
+                    public void onFailure(String message) {
+                        Log.i("Spreedly", "Message: " + message);
+                        error.setText(message);
                     }
                 }).subscribe(new SingleObserver<Object>() {
 
@@ -161,25 +164,38 @@ public class ThreeDSViewModel extends ViewModel {
         return Single.create(emitter -> call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                successOrFailure.onFailure(e);
+                successOrFailure.onFailure(e.getMessage());
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try {
-                    Log.i("Spreedly", "Response: " + response.body().string());
                     String responseString = response.body().string();
-                    successOrFailure.onSuccess(responseString);
-                } catch (NullPointerException npe) {
-                    successOrFailure.onFailure(npe);
+                    Log.i("Spreedly", "Response: " + responseString);
+                    JSONObject responseObject = new JSONObject(responseString);
+                    JSONObject transactionObject = responseObject.getJSONObject("transaction");
+                    String successObject = transactionObject.getString("state");
+                    if (successObject.equals("succeeded")) {
+                        threeDSTransactionRequest.delegate.success("frictionless success");
+                        return;
+                    }
+                    JSONObject scaAuthentication = transactionObject.getJSONObject("sca_authentication");
+                    if (scaAuthentication != null) {
+                        successOrFailure.onSuccess(scaAuthentication);
+                        return;
+                    }
+                    successOrFailure.onFailure("Bad Result");
+
+                } catch (NullPointerException | JSONException npe) {
+                    successOrFailure.onFailure(npe.getMessage());
                 }
             }
         }));
     }
 
     interface SuccessOrFailure {
-        void onSuccess(String string);
+        void onSuccess(JSONObject result);
 
-        void onFailure(Exception e);
+        void onFailure(String message);
     }
 }
