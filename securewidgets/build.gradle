@@ -52,7 +52,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':core-sdk')
     implementation project(':sdk-seglan-release')
-    //'compileOnly files('libs/sdk-seglan-release.aar')
+    compileOnly files('libs/sdk-seglan-release.aar')
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     api "com.squareup.retrofit2:converter-gson:2.9.0"

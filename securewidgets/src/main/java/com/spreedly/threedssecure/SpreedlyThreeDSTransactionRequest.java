@@ -58,7 +58,7 @@ public class SpreedlyThreeDSTransactionRequest implements ChallengeStatusReceive
             deviceRenderOptions.put("sdk_interface", "03");
             deviceRenderOptions.put("sdk_ui_type", "01");
             wrapper.put("device_render_options", deviceRenderOptions);
-            return Base64.encodeToString(wrapper.toString().getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
+            return Base64.encodeToString(wrapper.toString().getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP);
 
         } catch (JSONException exception) {
             return null;
