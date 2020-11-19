@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
 
     defaultConfig {
         applicationId "com.spreedly.sdk_sample"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
@@ -57,14 +57,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':core-sdk')
-    implementation project(':sdk-seglan-release')
-    //compileOnly files('libs/sdk-seglan-release.aar')
+    implementation project(':spreedly3ds2')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation project(path: ':securewidgets')
     implementation project(path: ':express')
