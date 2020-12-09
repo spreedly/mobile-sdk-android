@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.CreditCardInfo;
-import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.CreditCardResult;
 import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.sdk_sample.R;
 import com.spreedly.securewidgets.SecureCreditCardField;
@@ -82,15 +82,15 @@ public class ThreeDSViewModel extends ViewModel {
     };
 
     public void submitCreditCard() {
-        tokenize().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        tokenize().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<CreditCardResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 
             }
 
             @Override
-            public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> tokenized) {
-                threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest();
+            public void onSuccess(@NonNull TransactionResult<CreditCardResult> tokenized) {
+                threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest(tokenized.result.cardType);
                 String serialized = threeDSTransactionRequest.serialize();
                 serversidePurchase(client, serialized, tokenized.result.token, "M8k0FisOKdAmDgcQeIKlHE7R1Nf", new SuccessOrFailure() {
                     @Override
@@ -130,7 +130,7 @@ public class ThreeDSViewModel extends ViewModel {
     }
 
 
-    public Single<TransactionResult<PaymentMethodResult>> tokenize() {
+    public Single<TransactionResult<CreditCardResult>> tokenize() {
         info = new CreditCardInfo("Dolly Dog", null, null, secureCreditCardField.getText(), client.createString("919"), 2029, challengeType.getSelectedItemPosition() + 1);
         return client.createCreditCardPaymentMethod(info);
     }

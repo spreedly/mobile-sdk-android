@@ -17,11 +17,6 @@ import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
@@ -30,6 +25,8 @@ import com.google.android.material.textview.MaterialTextView;
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.enums.AccountHolderType;
 import com.spreedly.client.models.enums.AccountType;
+import com.spreedly.client.models.results.BankAccountResult;
+import com.spreedly.client.models.results.CreditCardResult;
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.securewidgets.SecureCreditCardField;
@@ -39,6 +36,10 @@ import com.spreedly.securewidgets.SecureTextField;
 
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -77,7 +78,7 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
     private int dp8;
     private int dp16;
 
-    private Consumer<TransactionResult<PaymentMethodResult>> submitCallback = result -> {
+    private Consumer<TransactionResult<? extends PaymentMethodResult>> submitCallback = result -> {
         Intent data = new Intent();
         try {
             data.putExtra(ExpressBuilder.EXTRA_PAYMENT_METHOD_TOKEN, result.result.token);
@@ -289,12 +290,12 @@ public class ExpressPaymentFragment extends BottomSheetDialogFragment {
 
 
     private void submitNewCard() {
-        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createCreditCardPaymentMethod();
+        Single<TransactionResult<CreditCardResult>> result = secureFormLayout.createCreditCardPaymentMethod();
         result.subscribe(submitCallback);
     }
 
     private void submitBank() {
-        Single<TransactionResult<PaymentMethodResult>> result = secureFormLayout.createBankAccountPaymentMethod();
+        Single<TransactionResult<BankAccountResult>> result = secureFormLayout.createBankAccountPaymentMethod();
         result.subscribe(submitCallback);
     }
 

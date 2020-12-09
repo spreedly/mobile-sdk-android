@@ -49,7 +49,7 @@ public class ThreeDSFragment extends Fragment {
 
         try {
             mViewModel.client = SpreedlyClient.newInstance("A54wvT9knP8Sc6ati68epUcq72l", "0f0Cpq17bb5mAAUxtx0QmY2mXyHnEk26uYTrPttn4PIMKZC4zdTJVJSk4YHbe1Ij", true);
-            mViewModel.spreedlyThreeDS = new SpreedlyThreeDS(Objects.requireNonNull(getContext()), Objects.requireNonNull(getActivity()), true);
+            mViewModel.spreedlyThreeDS = new SpreedlyThreeDS(Objects.requireNonNull(getContext()), Objects.requireNonNull(getActivity()), null, true);
         } catch (Exception e) {
             Log.e("Spreedly", "error init", e);
             mViewModel.errorView.setText(e.getMessage());

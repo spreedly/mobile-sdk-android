@@ -77,7 +77,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
 
     @Override
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info) {
+    public Single<TransactionResult<CreditCardResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info) {
         String url;
         boolean authenticated = true;
         if (info.retained != null && info.retained) {
@@ -91,7 +91,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
 
     @Override
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createBankPaymentMethod(@NonNull BankAccountInfo info) {
+    public Single<TransactionResult<BankAccountResult>> createBankPaymentMethod(@NonNull BankAccountInfo info) {
         String url;
         boolean authenticated = true;
         if (info.retained != null && info.retained) {
@@ -135,8 +135,8 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
         return sendRequest(new RecacheInfo(cvv).toJson(), "/payment_methods/" + token + "/recache.json", true).map(this::processCCMap);
     }
 
-    @NonNull TransactionResult<PaymentMethodResult> processCCMap(@NonNull JSONObject raw) {
-        TransactionResult<PaymentMethodResult> transactionResult;
+    @NonNull <T extends PaymentMethodResult> TransactionResult<T> processCCMap(@NonNull JSONObject raw) {
+        TransactionResult<T> transactionResult;
         JSONObject rawTransaction = raw.optJSONObject("transaction");
         if (rawTransaction == null) {
             rawTransaction = new JSONObject();
@@ -156,12 +156,13 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
                     rawResult.optString("last_four_digits"),
                     rawResult.optString("first_six_digits"),
                     rawResult.optString("verification_value"),
+                    rawResult.optString("cardType"),
                     rawResult.optString("number"),
                     rawResult.optString("month"),
                     rawResult.optString("year")
             );
         }
-        transactionResult = new TransactionResult<>(
+        transactionResult = new TransactionResult<T>(
                 rawTransaction.optString("token"),
                 parseDate(rawTransaction.optString("created_at")),
                 parseDate(rawTransaction.optString("updated_at")),
@@ -172,13 +173,13 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
                 rawTransaction.optString("messageKey"),
                 rawTransaction.optString("message"),
                 processErrors(raw.optJSONArray("errors")),
-                result
+                (T) result
         );
         return transactionResult;
     }
 
-    @NonNull TransactionResult<PaymentMethodResult> processBAMap(@NonNull JSONObject raw) {
-        TransactionResult<PaymentMethodResult> transactionResult;
+    @NonNull TransactionResult<BankAccountResult> processBAMap(@NonNull JSONObject raw) {
+        TransactionResult<BankAccountResult> transactionResult;
         JSONObject rawTransaction = raw.optJSONObject("transaction");
         if (rawTransaction == null) {
             rawTransaction = new JSONObject();
