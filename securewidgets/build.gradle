@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
 
+
+project.ext.set('pubName', 'securewidgets')
+
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"

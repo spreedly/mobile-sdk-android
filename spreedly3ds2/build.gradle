@@ -2,6 +2,9 @@ plugins {
     id 'com.android.library'
 }
 
+project.ext.set('pubSources', false)
+project.ext.set('pubName', 'threedssecure')
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
