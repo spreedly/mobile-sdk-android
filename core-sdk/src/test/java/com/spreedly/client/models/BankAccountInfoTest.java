@@ -16,19 +16,19 @@ public class BankAccountInfoTest {
 
     @Test
     public void CanCreateBankAccountWithFullName() {
-        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", null, null, "1234567", client.createString("0000000"), AccountType.checking);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), AccountType.checking);
         assertTrue(bankAccount.fullName == "Jane Doe" && bankAccount.routingNumber == "1234567" && bankAccount.accountNumber.length == 7 && bankAccount.accountType == AccountType.checking);
     }
 
     @Test
     public void CanCreateBankAccountWithFirstAndLast() {
-        BankAccountInfo bankAccount = new BankAccountInfo(null, "Jane", "Doe", "1234567", client.createString("0000000"), AccountType.checking);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane", "Doe", "1234567", client.createString("0000000"), AccountType.checking);
         assertTrue(bankAccount.firstName == "Jane" && bankAccount.lastName == "Doe" && bankAccount.routingNumber == "1234567" && bankAccount.accountNumber.length == 7 && bankAccount.accountType == AccountType.checking);
     }
 
     @Test
     public void CanEncodeBankAccount() {
-        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", null, null, "1234567", client.createString("0000000"), AccountType.checking);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), AccountType.checking);
         String expected = "{\"payment_method\":{\"bank_account\":{\"bank_account_number\":\"0000000\",\"full_name\":\"Jane Doe\",\"bank_routing_number\":\"1234567\",\"bank_account_type\":\"checking\"}}}";
         JSONObject actual = bankAccount.toJson();
         assertEquals(expected, actual.toString());
@@ -36,7 +36,7 @@ public class BankAccountInfoTest {
 
     @Test
     public void CanEncodeFullBankAccount() {
-        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", null, null, "1234567", client.createString("0000000"), AccountType.checking);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), AccountType.checking);
         bankAccount.retained = true;
         bankAccount.shippingAddress = new Address("555 Main St", "Apt 33", "Anytown", "WA", "98000", "USA", "5555555555");
         bankAccount.address = new Address("555 Main St", "", "Anytown", "WA", "98000", "USA", "5555555555");
@@ -50,14 +50,14 @@ public class BankAccountInfoTest {
 
     @Test
     public void CanCreateBankAccountFromCopy() {
-        BankAccountInfo copy = new BankAccountInfo("Jane Doe", null, null, "1234567", client.createString("0000000"), AccountType.checking);
+        BankAccountInfo copy = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), AccountType.checking);
         BankAccountInfo bankAccount = new BankAccountInfo(copy);
         assertTrue(bankAccount.fullName == "Jane Doe" && bankAccount.routingNumber == null && bankAccount.accountNumber == null && bankAccount.accountType == AccountType.checking);
     }
 
     @Test
     public void CanCreateBankAccountFromCardCopy() {
-        CreditCardInfo copy = new CreditCardInfo("Jane Doe", null, null, client.createString("sample card number"), client.createString("sample cvv"), 12, 2030);
+        CreditCardInfo copy = new CreditCardInfo("Jane Doe", client.createString("sample card number"), client.createString("sample cvv"), 12, 2030);
         BankAccountInfo bankAccount = new BankAccountInfo(copy);
         assertTrue(bankAccount.fullName == "Jane Doe" && bankAccount.routingNumber == null && bankAccount.accountNumber == null);
     }
@@ -70,7 +70,7 @@ public class BankAccountInfoTest {
 
     @Test
     public void nullAccountTypeSetsEmptyString() {
-        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", null, null, "1234567", client.createString("0000000"), null);
+        BankAccountInfo bankAccount = new BankAccountInfo("Jane Doe", "1234567", client.createString("0000000"), null);
         String expected = "{\"payment_method\":{\"bank_account\":{\"bank_account_number\":\"0000000\",\"full_name\":\"Jane Doe\",\"bank_routing_number\":\"1234567\",\"bank_account_type\":\"\"}}}";
         JSONObject actual = bankAccount.toJson();
         assertEquals(expected, actual.toString());

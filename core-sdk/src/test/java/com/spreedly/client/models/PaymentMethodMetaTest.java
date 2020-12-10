@@ -12,7 +12,7 @@ public class PaymentMethodMetaTest {
 
     @Test
     public void addCommonJsonFields() {
-        CreditCardInfo cc = new CreditCardInfo("Joe Jones", null, null, client.createString("5555555555554444"), client.createString("432"), 3, 2032);
+        CreditCardInfo cc = new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 3, 2032);
         cc.address = new Address("555 Sample Rd", "Unit 2", "Anytown", "WA", "55555", "USA", "444-444-4444");
         JSONObject wrapper = new JSONObject();
         JSONObject subType = new JSONObject();

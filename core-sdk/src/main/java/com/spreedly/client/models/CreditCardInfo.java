@@ -38,8 +38,15 @@ public class CreditCardInfo extends PaymentMethodInfo {
         }
     }
 
-    public CreditCardInfo(@Nullable String fullName, @Nullable String firstName, @Nullable String lastName, @Nullable SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @Nullable int year, @Nullable int month) {
+    public CreditCardInfo(@Nullable String fullName, @Nullable SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @Nullable int year, @Nullable int month) {
         this.fullName = fullName;
+        this.number = number;
+        this.verificationValue = verificationValue;
+        this.month = month;
+        this.year = year;
+    }
+
+    public CreditCardInfo(@Nullable String firstName, @Nullable String lastName, @Nullable SpreedlySecureOpaqueString number, @Nullable SpreedlySecureOpaqueString verificationValue, @Nullable int year, @Nullable int month) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.number = number;

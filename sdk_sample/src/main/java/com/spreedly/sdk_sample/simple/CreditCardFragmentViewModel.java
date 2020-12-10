@@ -25,7 +25,12 @@ public class CreditCardFragmentViewModel extends ViewModel {
 
     void create() {
         final SpreedlyClient client = SpreedlyClient.newInstance("", "", true);
-        final CreditCardInfo info = new CreditCardInfo(name.getValue(), null, null, client.createString(cc.getValue()), client.createString(cvv.getValue()), year.getValue() == null ? 0 : year.getValue(), month.getValue() == null ? 0 : month.getValue());
+        final CreditCardInfo info = new CreditCardInfo(
+                name.getValue(),
+                client.createString(cc.getValue()),
+                client.createString(cvv.getValue()),
+                year.getValue() == null ? 0 : year.getValue(),
+                month.getValue() == null ? 0 : month.getValue());
         inProgress.setValue(true);
         token.postValue("");
         error.postValue("");

@@ -6,7 +6,6 @@ import android.content.Context;
 import com.seglan.threeds.sdk.ConfigParameters;
 import com.seglan.threeds.sdk.SeglanThreeDS2Service;
 import com.seglan.threeds.sdk.customization.UiCustomization;
-import com.spreedly.client.models.enums.CardBrand;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,22 +24,22 @@ public class SpreedlyThreeDS {
     }
 
     @SuppressWarnings("DuplicateBranchesInSwitch")
-    static String cardTypeToDirectoryServerId(CardBrand cardType) {
+    static String cardTypeToDirectoryServerId(String cardType) {
         switch (cardType) {
-            case visa:
+            case "visa":
                 return "A000000003";
-            case mastercard:
+            case "master":
                 return "A000000004";
-            case maestro:
+            case "maestro":
                 return "A000000005";
-            case americanExpress:
+            case "american_express":
                 return "A000000025";
             default:
                 return "A000000004";
         }
     }
 
-    public SpreedlyThreeDSTransactionRequest createTransactionRequest(CardBrand cardType) {
+    public SpreedlyThreeDSTransactionRequest createTransactionRequest(String cardType) {
         return new SpreedlyThreeDSTransactionRequest(threeDS2Service, threeDS2Service.createTransaction(cardTypeToDirectoryServerId(cardType), "2.1.0"), activity);
     }
 }

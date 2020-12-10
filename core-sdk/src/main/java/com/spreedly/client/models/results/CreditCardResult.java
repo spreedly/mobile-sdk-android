@@ -1,7 +1,5 @@
 package com.spreedly.client.models.results;
 
-import com.spreedly.client.models.enums.CardBrand;
-
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +10,7 @@ public class CreditCardResult extends PaymentMethodResult {
     public final @Nullable String lastFourDigits;
     public final @Nullable String firstSixDigits;
     public final @Nullable String cvv;
-    public final @Nullable CardBrand cardType;
+    public final @Nullable String cardType;
     public final @Nullable String number;
     public final @Nullable String month;
     public final @Nullable String year;
@@ -38,7 +36,7 @@ public class CreditCardResult extends PaymentMethodResult {
         this.lastFourDigits = lastFourDigits;
         this.firstSixDigits = firstSixDigits;
         this.cvv = cvv;
-        this.cardType = CardBrand.valueOf(cardType);
+        this.cardType = cardType;
         this.number = number;
         this.month = month;
         this.year = year;

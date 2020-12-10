@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -101,7 +101,11 @@ public class SecureFormLayout extends LinearLayout {
         accountTypeHelper = new AccountTypeHelper(context);
     }
 
-    public void setSpreedlyClient(@NonNull String envKey, @NonNull String envSecret, boolean test) {
+    public void setSpreedlyClient(@NonNull String envKey, boolean test) {
+        spreedlyClient = SpreedlyClient.newInstance(envKey, test);
+    }
+
+    public void setSpreedlyClient(@NonNull String envKey, @Nullable String envSecret, boolean test) {
         spreedlyClient = SpreedlyClient.newInstance(envKey, envSecret, test);
     }
 

@@ -4,6 +4,7 @@ import com.spreedly.client.models.ApplePayInfo;
 import com.spreedly.client.models.BankAccountInfo;
 import com.spreedly.client.models.CreditCardInfo;
 import com.spreedly.client.models.GooglePayInfo;
+import com.spreedly.client.models.PaymentMethodInfo;
 import com.spreedly.client.models.RecacheInfo;
 import com.spreedly.client.models.SpreedlySecureOpaqueString;
 import com.spreedly.client.models.results.BankAccountResult;
@@ -40,12 +41,14 @@ import okhttp3.Response;
 class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     @NonNull
     private final boolean test;
+    @NonNull
     private final String key;
+    @Nullable
     private final String secret;
     private final String authenticatedURL = "/payment_methods.json";
     private final String unauthenticatedURL = "/payment_methods/restricted.json";
 
-    SpreedlyClientImpl(@NonNull String key, @NonNull String secret, boolean test) {
+    SpreedlyClientImpl(@NonNull String key, @Nullable String secret, boolean test) {
         this.key = key;
         this.secret = secret;
         this.test = test;
@@ -78,54 +81,34 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     @Override
     @NonNull
     public Single<TransactionResult<CreditCardResult>> createCreditCardPaymentMethod(@NonNull CreditCardInfo info) {
-        String url;
-        boolean authenticated = true;
-        if (info.retained != null && info.retained) {
-            url = authenticatedURL;
-            authenticated = false;
-        } else {
-            url = unauthenticatedURL;
-        }
+        boolean authenticated = shouldDoAuthenticatedRequest(info);
+        String url = authenticated ? authenticatedURL : unauthenticatedURL;
         return sendRequest(info.toJson(), url, authenticated).map(this::processCCMap);
+    }
+
+    private boolean shouldDoAuthenticatedRequest(@NonNull PaymentMethodInfo info) {
+        return info.retained != null && info.retained && secret != null;
     }
 
     @Override
     @NonNull
     public Single<TransactionResult<BankAccountResult>> createBankPaymentMethod(@NonNull BankAccountInfo info) {
-        String url;
-        boolean authenticated = true;
-        if (info.retained != null && info.retained) {
-            url = authenticatedURL;
-            authenticated = false;
-        } else {
-            url = unauthenticatedURL;
-        }
+        boolean authenticated = shouldDoAuthenticatedRequest(info);
+        String url = authenticated ? authenticatedURL : unauthenticatedURL;
         return sendRequest(info.toJson(), url, authenticated).map(this::processBAMap);
     }
 
     @Override
     public @NonNull Single<TransactionResult<PaymentMethodResult>> createGooglePaymentMethod(@NonNull GooglePayInfo info) {
-        String url;
-        boolean authenticated = true;
-        if (info.retained != null && info.retained) {
-            url = authenticatedURL;
-            authenticated = false;
-        } else {
-            url = unauthenticatedURL;
-        }
+        boolean authenticated = shouldDoAuthenticatedRequest(info);
+        String url = authenticated ? authenticatedURL : unauthenticatedURL;
         return sendRequest(info.toJson(), url, authenticated).map(this::processCCMap);
     }
 
     @Override
     public @NonNull Single<TransactionResult<PaymentMethodResult>> createApplePaymentMethod(@NonNull ApplePayInfo info) {
-        String url;
-        boolean authenticated = true;
-        if (info.retained != null && info.retained) {
-            url = authenticatedURL;
-            authenticated = false;
-        } else {
-            url = unauthenticatedURL;
-        }
+        boolean authenticated = shouldDoAuthenticatedRequest(info);
+        String url = authenticated ? authenticatedURL : unauthenticatedURL;
         return sendRequest(info.toJson(), url, authenticated).map(this::processCCMap);
     }
 
@@ -156,7 +139,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
                     rawResult.optString("last_four_digits"),
                     rawResult.optString("first_six_digits"),
                     rawResult.optString("verification_value"),
-                    rawResult.optString("cardType"),
+                    rawResult.optString("card_type"),
                     rawResult.optString("number"),
                     rawResult.optString("month"),
                     rawResult.optString("year")
@@ -227,20 +210,15 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     @NonNull
     private Single<JSONObject> sendRequest(@NonNull JSONObject requestBody, @NonNull String url, boolean authenticated) {
         String baseUrl = "https://core.spreedly.com/v1";
-        Call call;
+        Request.Builder builder = new Request.Builder().url(baseUrl + url);
         if (!authenticated) {
             requestBody.put("environment_key", key);
-            call = new OkHttpClient().newCall(new Request.Builder()
-                    .url(baseUrl + url)
-                    .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
-                    .build());
         } else {
-            call = new OkHttpClient().newCall(new Request.Builder()
-                    .url(baseUrl + url)
-                    .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
-                    .header("Authorization", getCredentials())
-                    .build());
+            builder.header("Authorization", getCredentials());
         }
+        Call call = new OkHttpClient().newCall(builder
+                .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
+                .build());
 
         return Single.create(emitter -> call.enqueue(new Callback() {
             @Override
@@ -274,7 +252,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
 
 
     @Nullable Date parseDate(@Nullable String dateString) {
-        if (dateString == null){
+        if (dateString == null) {
             return null;
         }
         dateString = dateString.replace('T', ' ');

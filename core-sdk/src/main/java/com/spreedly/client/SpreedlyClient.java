@@ -15,11 +15,17 @@ import io.reactivex.rxjava3.core.Single;
 
 /**
  * SpreedlyClient
- *
+ * <p>
  * This class handles all the client side API communication.
  */
 public interface SpreedlyClient {
-    @NonNull static SpreedlyClient newInstance(@NonNull String envKey, @NonNull String envSecret,@NonNull boolean test) {
+    @NonNull
+    static SpreedlyClient newInstance(@NonNull String envKey, @NonNull boolean test) {
+        return new SpreedlyClientImpl(envKey, null, test);
+    }
+
+    @NonNull
+    static SpreedlyClient newInstance(@NonNull String envKey, @NonNull String envSecret, @NonNull boolean test) {
         return new SpreedlyClientImpl(envKey, envSecret, test);
     }
 

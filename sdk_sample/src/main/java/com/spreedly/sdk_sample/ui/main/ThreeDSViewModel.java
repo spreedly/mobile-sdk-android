@@ -131,7 +131,7 @@ public class ThreeDSViewModel extends ViewModel {
 
 
     public Single<TransactionResult<CreditCardResult>> tokenize() {
-        info = new CreditCardInfo("Dolly Dog", null, null, secureCreditCardField.getText(), client.createString("919"), 2029, challengeType.getSelectedItemPosition() + 1);
+        info = new CreditCardInfo("Dolly Dog", secureCreditCardField.getText(), client.createString("919"), 2029, challengeType.getSelectedItemPosition() + 1);
         return client.createCreditCardPaymentMethod(info);
     }
 
