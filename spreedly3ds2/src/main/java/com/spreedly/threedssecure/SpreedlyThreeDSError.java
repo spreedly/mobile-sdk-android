@@ -1,5 +1,8 @@
 package com.spreedly.threedssecure;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class SpreedlyThreeDSError {
 
     public String message;
@@ -10,6 +13,11 @@ public class SpreedlyThreeDSError {
      */
     @Nullable
     public SpreedlyThreeDSErrorType type;
+    /**
+     * The source or root of the error.
+     */
+    @Nullable
+    public Throwable error;
 
     /**
      * Constructor that creates a new SpreedlyThreeDSError from a given type, and string message
@@ -37,6 +45,7 @@ public class SpreedlyThreeDSError {
     SpreedlyThreeDSError(@NonNull SpreedlyThreeDSErrorType type, @NonNull Error error) {
         this.message = error.getMessage();
         this.type = type;
+        this.error = error;
     }
 
     /**
@@ -48,6 +57,7 @@ public class SpreedlyThreeDSError {
     public SpreedlyThreeDSError(@NonNull SpreedlyThreeDSErrorType type, @NonNull Exception e) {
         this.type = type;
         this.message = e.getMessage();
+        this.error = error;
     }
 
     /**

@@ -26,7 +26,7 @@ public class BankAccountFragmentViewModel extends ViewModel {
     void create() {
         final SpreedlyClient client = SpreedlyClient.newInstance("", "", true);
         final AccountType bccountType = type.getValue() == "savings" ? AccountType.savings : AccountType.checking;
-        final BankAccountInfo info = new BankAccountInfo(name.getValue(), null, null, routing.getValue(), client.createString(account.getValue()), bccountType);
+        final BankAccountInfo info = new BankAccountInfo(name.getValue(), routing.getValue(), client.createString(account.getValue()), bccountType);
         inProgress.setValue(true);
         token.postValue("");
         error.postValue("");

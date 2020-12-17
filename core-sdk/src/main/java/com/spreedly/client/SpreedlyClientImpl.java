@@ -130,7 +130,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
             result = new CreditCardResult(
                     rawResult.optString("token"),
                     rawResult.optString("storage_state"),
-                    rawResult.optBoolean("test", true),
+                    rawResult.optBoolean("test", test),
                     rawResult.optString("payment_method_type"),
                     processErrors(rawResult.optJSONArray("errors")),
                     parseDate(rawTransaction.optString("created_at")),

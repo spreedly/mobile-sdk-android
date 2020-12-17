@@ -1,3 +1,3 @@
 configurations.maybeCreate("default")
 
-artifacts.add("default", file('sdk-3ds-seglan-v2.1.9.aar'))
+artifacts.add("default", file('sdk-seglan-release.aar'))

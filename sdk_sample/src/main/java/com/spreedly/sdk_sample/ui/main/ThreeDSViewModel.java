@@ -3,12 +3,13 @@ package com.spreedly.sdk_sample.ui.main;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.CreditCardInfo;
-import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.CreditCardResult;
 import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.sdk_sample.R;
 import com.spreedly.securewidgets.SecureCreditCardField;
@@ -22,9 +23,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -40,19 +41,26 @@ public class ThreeDSViewModel extends ViewModel {
     @SuppressLint("StaticFieldLeak")
     @NonNull
     public TextView token;
-    @NonNull SpreedlyThreeDS spreedlyThreeDS;
-    @NonNull SpreedlyClient client;
+    @NonNull
+    SpreedlyThreeDS spreedlyThreeDS;
+    @NonNull
+    SpreedlyClient client;
     @SuppressLint("StaticFieldLeak")
-    @NonNull TextView errorView;
+    @NonNull
+    TextView errorView;
     @SuppressLint("StaticFieldLeak")
-    @NonNull TextInputLayout amount;
+    @NonNull
+    TextInputLayout amount;
     @SuppressLint("StaticFieldLeak")
-    @NonNull SecureCreditCardField secureCreditCardField;
+    @NonNull
+    SecureCreditCardField secureCreditCardField;
+    @NonNull
+    Spinner challengeType;
     CreditCardInfo info;
     SpreedlyThreeDSTransactionRequest threeDSTransactionRequest;
 
     SpreedlyThreeDSTransactionRequestListener listener = new SpreedlyThreeDSTransactionRequestListener() {
-        public void success(@androidx.annotation.NonNull String status) {
+        public void success(@NonNull String status) {
             errorView.setText("success: " + status);
             Log.i("Spreedly", status);
         }
@@ -68,21 +76,21 @@ public class ThreeDSViewModel extends ViewModel {
         }
 
         public void error(@androidx.annotation.NonNull SpreedlyThreeDSError error) {
-            Log.i("Spreedly", error.message);
-            errorView.setText("error: " + error.message);
+            Log.e("Spreedly", error.type + " " + error.message, error.error);
+            errorView.setText("error: " + error.type + " " + error.message);
         }
     };
 
     public void submitCreditCard() {
-        tokenize().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        tokenize().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<CreditCardResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 
             }
 
             @Override
-            public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> tokenized) {
-                threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest();
+            public void onSuccess(@NonNull TransactionResult<CreditCardResult> tokenized) {
+                threeDSTransactionRequest = spreedlyThreeDS.createTransactionRequest(tokenized.result.cardType);
                 String serialized = threeDSTransactionRequest.serialize();
                 serversidePurchase(client, serialized, tokenized.result.token, "M8k0FisOKdAmDgcQeIKlHE7R1Nf", new SuccessOrFailure() {
                     @Override
@@ -122,12 +130,13 @@ public class ThreeDSViewModel extends ViewModel {
     }
 
 
-    public Single<TransactionResult<PaymentMethodResult>> tokenize() {
-        info = new CreditCardInfo("Dolly Dog", null, null, secureCreditCardField.getText(), client.createString("919"), 2029, 1);
+    public Single<TransactionResult<CreditCardResult>> tokenize() {
+        info = new CreditCardInfo("Dolly Dog", secureCreditCardField.getText(), client.createString("919"), 2029, challengeType.getSelectedItemPosition() + 1);
         return client.createCreditCardPaymentMethod(info);
     }
 
-    public @NonNull Single<Object> serversidePurchase(SpreedlyClient client, String deviceInfo, String token, String scaProviderKey, SuccessOrFailure successOrFailure) {
+    public @NonNull
+    Single<Object> serversidePurchase(SpreedlyClient client, String deviceInfo, String token, String scaProviderKey, SuccessOrFailure successOrFailure) {
         String baseUrl = "https://core.spreedly.com/v1";
         String gateway = "BkXcmxRDv8gtMUwu5Buzb4ZbqGe";
         String completeUrl = baseUrl + "/gateways/" + gateway + "/purchase.json";
@@ -135,7 +144,7 @@ public class ThreeDSViewModel extends ViewModel {
         JSONObject transactionBody = new JSONObject();
         int centAmount;
         try {
-            centAmount = (int)(Double.parseDouble(amount.getEditText().getText().toString()) * 100);
+            centAmount = (int) (Double.parseDouble(amount.getEditText().getText().toString()) * 100);
         } catch (Exception e) {
             Log.e("Spreedly", "Cent amount error" + e.getMessage());
             centAmount = 4;

@@ -34,7 +34,7 @@ android {
 dependencies {
     implementation project(':core-sdk')
     implementation project(':sdk-seglan-release')
-    compileOnly files('../sdk-seglan-release/sdk-3ds-seglan-v2.1.9.aar')
+    compileOnly files('../sdk-seglan-release/sdk-seglan-release.aar')
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'

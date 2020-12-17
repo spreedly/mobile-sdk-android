@@ -17,7 +17,7 @@ public class CreateCreditCardPaymentTest {
 
     @Before
     public void initialize() {
-        client = SpreedlyClient.newInstance(TestCredentials.getUser(), TestCredentials.getPassword(), false);
+        client = SpreedlyClient.newInstance(TestCredentials.getUser(), TestCredentials.getPassword(), true);
     }
 
     @Test
