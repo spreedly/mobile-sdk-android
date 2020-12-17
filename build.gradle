@@ -51,7 +51,6 @@ gradle.projectsEvaluated {
     }
 
     subprojects {
-        print('fart')
         if (project.pubName) {
             print("adding pub info ${project.pubName}")
             if (project.plugins.hasPlugin('android') && project.pubSources) {
