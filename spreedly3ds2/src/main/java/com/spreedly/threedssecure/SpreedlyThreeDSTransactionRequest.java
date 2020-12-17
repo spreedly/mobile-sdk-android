@@ -2,11 +2,11 @@ package com.spreedly.threedssecure;
 
 import android.app.Activity;
 import android.util.Base64;
+import android.util.Log;
 
 import com.seglan.threeds.sdk.AuthenticationRequestParameters;
 import com.seglan.threeds.sdk.ChallengeParameters;
 import com.seglan.threeds.sdk.ChallengeStatusReceiver;
-import com.seglan.threeds.sdk.ThreeDS2Service;
 import com.seglan.threeds.sdk.Transaction;
 import com.seglan.threeds.sdk.event.CompletionEvent;
 import com.seglan.threeds.sdk.event.ProtocolErrorEvent;
@@ -15,7 +15,6 @@ import com.seglan.threeds.sdk.event.RuntimeErrorEvent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -35,7 +34,7 @@ public class SpreedlyThreeDSTransactionRequest {
      * The Seglan 3ds2 Service
      */
     @NonNull
-    ThreeDS2Service service;
+    SpreedlyThreeDS service;
     /**
      * The Seglan 3ds2 transaction service
      */
@@ -49,11 +48,12 @@ public class SpreedlyThreeDSTransactionRequest {
 
     /**
      * Constructor for SpreedlyThreeDSTransactionRequest
-     * @param service the ThreeDS2Service
+     *
+     * @param service     the ThreeDS2Service
      * @param transaction the ThreeDS2Service transaction
-     * @param activity the activity that intitalized the SpreedlyThreeDS flow
+     * @param activity    the activity that intitalized the SpreedlyThreeDS flow
      */
-    public SpreedlyThreeDSTransactionRequest(@NonNull ThreeDS2Service service, @NonNull Transaction transaction, @NonNull Activity activity) {
+    public SpreedlyThreeDSTransactionRequest(@NonNull SpreedlyThreeDS service, @NonNull Transaction transaction, @NonNull Activity activity) {
         this.service = service;
         this.transaction = transaction;
         this.activity = activity;
@@ -61,6 +61,7 @@ public class SpreedlyThreeDSTransactionRequest {
 
     /**
      * Sets and serializes request parameters, and returns an encoded string
+     *
      * @return An encoded string containing request parameters
      */
     @Nullable
@@ -81,6 +82,9 @@ public class SpreedlyThreeDSTransactionRequest {
             deviceRenderOptions.put("sdk_interface", "03");
             deviceRenderOptions.put("sdk_ui_type", "01");
             wrapper.put("device_render_options", deviceRenderOptions);
+            if (service.test) {
+                Log.i("serialize()", wrapper.toString(2));
+            }
             return Base64.encodeToString(wrapper.toString().getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP);
 
         } catch (JSONException exception) {
@@ -98,6 +102,13 @@ public class SpreedlyThreeDSTransactionRequest {
      * @see com.seglan.threeds.sdk.Transaction#doChallenge(Activity, ChallengeParameters, ChallengeStatusReceiver, int)
      */
     public void doChallenge(@NonNull JSONObject scaAccess, @NonNull SpreedlyThreeDSTransactionRequestListener listener) {
+        if (service.test) {
+            try {
+                Log.i("doChallenge()", scaAccess.toString(2));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         ChallengeParameters parameters = new ChallengeParameters();
         try {
             parameters.set3DSServerTransactionID(scaAccess.getString("xid"));
@@ -129,7 +140,7 @@ public class SpreedlyThreeDSTransactionRequest {
         }
     }
 
-    class ListenerToChallengeStatusReceiver implements  ChallengeStatusReceiver {
+    class ListenerToChallengeStatusReceiver implements ChallengeStatusReceiver {
         private final SpreedlyThreeDSTransactionRequestListener listener;
 
         public ListenerToChallengeStatusReceiver(SpreedlyThreeDSTransactionRequestListener listener) {
@@ -138,6 +149,9 @@ public class SpreedlyThreeDSTransactionRequest {
 
         @Override
         public void completed(@NonNull CompletionEvent completionEvent) {
+            if (service.test) {
+                Log.i("ChallengeStatusReceiver", "success: " + completionEvent.getSDKTransactionID() + " " + completionEvent.getTransactionStatus());
+            }
             if (listener != null) {
                 listener.success(completionEvent.getTransactionStatus());
             }
@@ -145,6 +159,9 @@ public class SpreedlyThreeDSTransactionRequest {
 
         @Override
         public void cancelled() {
+            if (service.test) {
+                Log.i("ChallengeStatusReceiver", "cancelled");
+            }
             if (listener != null) {
                 listener.cancelled();
             }
@@ -152,6 +169,9 @@ public class SpreedlyThreeDSTransactionRequest {
 
         @Override
         public void timedout() {
+            if (service.test) {
+                Log.i("ChallengeStatusReceiver", "timeout");
+            }
             if (listener != null) {
                 listener.timeout();
             }
@@ -159,6 +179,12 @@ public class SpreedlyThreeDSTransactionRequest {
 
         @Override
         public void protocolError(@NonNull ProtocolErrorEvent protocolErrorEvent) {
+            if (service.test) {
+                Log.i("ChallengeStatusReceiver", "protocolError: " + protocolErrorEvent.getSDKTransactionID() + " " + protocolErrorEvent.getErrorMessage().getErrorCode()
+                        + " " + protocolErrorEvent.getErrorMessage().getErrorDescription()
+                        + " " + protocolErrorEvent.getErrorMessage().getErrorDetails()
+                        + " " + protocolErrorEvent.getErrorMessage().getTransactionID());
+            }
             if (listener != null) {
                 listener.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.PROTOCOL_ERROR, protocolErrorEvent.getErrorMessage().getErrorDescription()));
             }
@@ -166,6 +192,9 @@ public class SpreedlyThreeDSTransactionRequest {
 
         @Override
         public void runtimeError(@NonNull RuntimeErrorEvent runtimeErrorEvent) {
+            if (service.test) {
+                Log.i("ChallengeStatusReceiver", "runtimeErrorEvent: " + runtimeErrorEvent.getErrorCode() + " " + runtimeErrorEvent.getErrorMessage());
+            }
             if (listener != null) {
                 listener.error(new SpreedlyThreeDSError(SpreedlyThreeDSError.SpreedlyThreeDSErrorType.RUNTIME_ERROR, runtimeErrorEvent.getErrorMessage()));
             }

@@ -40,6 +40,6 @@ public class SpreedlyThreeDS {
     }
 
     public SpreedlyThreeDSTransactionRequest createTransactionRequest(String cardType) {
-        return new SpreedlyThreeDSTransactionRequest(threeDS2Service, threeDS2Service.createTransaction(cardTypeToDirectoryServerId(cardType), "2.1.0"), activity);
+        return new SpreedlyThreeDSTransactionRequest(this, threeDS2Service.createTransaction(cardTypeToDirectoryServerId(cardType), "2.1.0"), activity);
     }
 }
