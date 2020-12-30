@@ -1,6 +1,8 @@
 package com.spreedly.sdk_sample.ui.main;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,7 @@ public class ThreeDSFragment extends Fragment {
         mViewModel.challengeType.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, new String[]{
                 "Standard", "Single", "Multi", "OOB", "HTML"
         }));
+        mViewModel.handler = new Handler(Looper.getMainLooper());
 
         try {
             mViewModel.client = SpreedlyClient.newInstance("A54wvT9knP8Sc6ati68epUcq72l", "0f0Cpq17bb5mAAUxtx0QmY2mXyHnEk26uYTrPttn4PIMKZC4zdTJVJSk4YHbe1Ij", true);

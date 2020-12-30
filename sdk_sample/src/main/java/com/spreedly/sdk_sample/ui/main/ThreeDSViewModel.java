@@ -2,6 +2,7 @@ package com.spreedly.sdk_sample.ui.main;
 
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ public class ThreeDSViewModel extends ViewModel {
     Spinner challengeType;
     CreditCardInfo info;
     SpreedlyThreeDSTransactionRequest threeDSTransactionRequest;
+    Handler handler;
 
     SpreedlyThreeDSTransactionRequestListener listener = new SpreedlyThreeDSTransactionRequestListener() {
         public void success(@NonNull String status) {
@@ -173,7 +175,12 @@ public class ThreeDSViewModel extends ViewModel {
         return Single.create(emitter -> call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                successOrFailure.onFailure(e.getMessage());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        successOrFailure.onFailure(e.getMessage());
+                    }
+                });
             }
 
             @Override
@@ -184,18 +191,38 @@ public class ThreeDSViewModel extends ViewModel {
                     JSONObject transactionObject = responseObject.getJSONObject("transaction");
                     String successObject = transactionObject.getString("state");
                     if (successObject.equals("succeeded")) {
-                        errorView.setText("frictionless success");
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                errorView.setText("frictionless success");
+                            }
+                        });
                         return;
                     }
                     JSONObject scaAuthentication = transactionObject.getJSONObject("sca_authentication");
                     if (scaAuthentication != null) {
-                        successOrFailure.onSuccess(scaAuthentication);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                successOrFailure.onSuccess(scaAuthentication);
+                            }
+                        });
                         return;
                     }
-                    successOrFailure.onFailure("Bad Result");
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            successOrFailure.onFailure("Bad Result");
+                        }
+                    });
 
                 } catch (Exception e) {
-                    successOrFailure.onFailure(e.getMessage());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            successOrFailure.onFailure(e.getMessage());
+                        }
+                    });
                 }
             }
         }));

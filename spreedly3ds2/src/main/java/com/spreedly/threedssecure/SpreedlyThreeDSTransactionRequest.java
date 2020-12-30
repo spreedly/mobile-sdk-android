@@ -83,13 +83,19 @@ public class SpreedlyThreeDSTransactionRequest {
             deviceRenderOptions.put("sdk_ui_type", "01");
             wrapper.put("device_render_options", deviceRenderOptions);
             if (service.test) {
-                Log.i("serialize()", wrapper.toString(2));
+                for (final String line : wrapper.toString(2).split("\n")) {
+                    Log.i("serialize()", line);
+                }
             }
-            return Base64.encodeToString(wrapper.toString().getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP);
+            return base64(wrapper);
 
         } catch (JSONException exception) {
             return null;
         }
+    }
+
+    private String base64(JSONObject wrapper) {
+        return Base64.encodeToString(wrapper.toString().getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP);
     }
 
     /**
@@ -104,7 +110,9 @@ public class SpreedlyThreeDSTransactionRequest {
     public void doChallenge(@NonNull JSONObject scaAccess, @NonNull SpreedlyThreeDSTransactionRequestListener listener) {
         if (service.test) {
             try {
-                Log.i("doChallenge()", scaAccess.toString(2));
+                for (final String line : scaAccess.toString(2).split("\n")) {
+                    Log.i("doChallenge()", line);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
