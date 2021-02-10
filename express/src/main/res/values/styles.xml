@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ExpressTransparent" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name ="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorForeground">#fff</item>
+    </style>
+    <style name="TextView.ExpressInputLabel" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">?android:textColorHint</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight" />
+</resources>

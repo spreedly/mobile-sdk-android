@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="InputError" parent="TextAppearance.Design.Error" />
+
+    <style name="TextView.SpreedlyInputLabel" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">?android:textColorHint</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+    </style>
+</resources>

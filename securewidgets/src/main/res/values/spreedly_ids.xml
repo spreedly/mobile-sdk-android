@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="spreedly_full_name" type="id" />
+    <item name="spreedly_first_name" type="id" />
+    <item name="spreedly_last_name" type="id" />
+    <item name="spreedly_email" type="id" />
+    <item name="spreedly_company" type="id" />
+    <item name="spreedly_address1" type="id" />
+    <item name="spreedly_address2" type="id" />
+    <item name="spreedly_city" type="id" />
+    <item name="spreedly_state" type="id" />
+    <item name="spreedly_zip" type="id" />
+    <item name="spreedly_country" type="id" />
+    <item name="spreedly_phone_number" type="id" />
+    <item name="spreedly_credit_card_number" type="id" />
+    <item name="spreedly_shipping_address1" type="id" />
+    <item name="spreedly_shipping_address2" type="id" />
+    <item name="spreedly_shipping_city" type="id" />
+    <item name="spreedly_shipping_state" type="id" />
+    <item name="spreedly_shipping_zip" type="id" />
+    <item name="spreedly_shipping_country" type="id" />
+    <item name="spreedly_shipping_phone_number" type="id" />
+    <item name="spreedly_cvv" type="id" />
+    <item name="spreedly_cc_month" type="id" />
+    <item name="spreedly_cc_year" type="id" />
+    <item name="spreedly_cc_expiration_date" type="id" />
+    <item name="spreedly_ba_account_number" type="id" />
+    <item name="spreedly_ba_routing_number" type="id" />
+    <item name="spreedly_ba_account_type" type="id" />
+    <item name="spreedly_ba_account_holder_type" type="id" />
+    <item name="spreedly_cc_submit" type="id" />
+    <item name="spreedly_generic_error" type="id" />
+    <item name="spreedly_holder_button_personal" type="id" />
+    <item name="spreedly_holder_button_business" type="id" />
+    <item name="spreedly_account_button_checking" type="id" />
+    <item name="spreedly_account_button_saving" type="id" />
+</resources>

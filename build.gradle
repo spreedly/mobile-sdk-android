@@ -1,0 +1,39 @@
+buildscript {
+    ext.kotlin_version = '1.3.31'
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.3'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+rootProject.buildDir = 'build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+gradle.projectsEvaluated {
+    def exportedProjects = [
+            ":core-sdk",
+    ]
+    task alljavadoc(type: Javadoc) {
+        source exportedProjects.collect { project(it).sourceSets.main.allJava }
+        classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
+        destinationDir = file("docs")
+    }
+}
+

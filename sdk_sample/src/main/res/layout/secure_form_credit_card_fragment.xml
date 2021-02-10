@@ -1,0 +1,58 @@
+<com.spreedly.securewidgets.SecureFormLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:padding="16dp"
+    android:gravity="center"
+    android:id="@+id/credit_card_form"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@id/spreedly_full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="name"
+            android:hint="@string/name_hint"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.spreedly.securewidgets.SecureCreditCardField
+        android:id="@id/spreedly_credit_card_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <com.spreedly.securewidgets.SecureTextField
+        android:id="@id/spreedly_cvv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.spreedly.securewidgets.SecureExpirationDate
+        android:id="@id/spreedly_cc_expiration_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/token"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textIsSelectable="true" />
+
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:textIsSelectable="true" />
+
+    <Button
+        android:id="@id/spreedly_cc_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/submit" />
+
+</com.spreedly.securewidgets.SecureFormLayout>
