@@ -4,13 +4,12 @@ import android.util.Log;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.lifecycle.ViewModel;
-
 import com.spreedly.client.models.results.PaymentMethodResult;
 import com.spreedly.client.models.results.TransactionResult;
 import com.spreedly.sdk_sample.R;
 import com.spreedly.securewidgets.SecureFormLayout;
 
+import androidx.lifecycle.ViewModel;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
@@ -20,6 +19,7 @@ public class SecureFormBankAccountViewModel extends ViewModel {
     @NonNull
     public TextView token;
     @NonNull Spinner spinner;
+
     @NonNull SecureFormLayout layout;
     @NonNull TextView error;
 
@@ -27,14 +27,14 @@ public class SecureFormBankAccountViewModel extends ViewModel {
     public void submitBankAccount() {
         token.setText("");
         error.setText("");
-        layout.createBankAccountPaymentMethod().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
+        layout.createBankAccountPaymentMethod().subscribeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<TransactionResult<? extends PaymentMethodResult>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 
             }
 
             @Override
-            public void onSuccess(@NonNull TransactionResult<PaymentMethodResult> paymentMethodResultTransactionResult) {
+            public void onSuccess(@NonNull TransactionResult<? extends PaymentMethodResult> paymentMethodResultTransactionResult) {
                 Log.i("Spreedly", "Created Credit Card");
                 String result = "Token: " + paymentMethodResultTransactionResult.result.token;
                 try {

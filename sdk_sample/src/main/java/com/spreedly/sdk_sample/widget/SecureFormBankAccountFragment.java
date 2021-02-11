@@ -35,7 +35,6 @@ public class SecureFormBankAccountFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(SecureFormBankAccountViewModel.class);
-        // TODO: Use the ViewModel
         mViewModel.layout = getView().findViewById(R.id.bank_account_form);
         mViewModel.spinner = getView().findViewById(R.id.spreedly_ba_account_type);
         mViewModel.error = getView().findViewById(R.id.error);

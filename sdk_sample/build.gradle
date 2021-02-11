@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
 
     defaultConfig {
         applicationId "com.spreedly.sdk_sample"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
@@ -44,7 +45,9 @@ android {
         disable.addAll([
                 'GoogleAppIndexingWarning',
                 'OldTargetApi',
-                'NewerVersionAvailable'
+                'NewerVersionAvailable',
+                'StaticFieldLeak',
+                'LogConditional'
         ])
     }
     compileOptions {
@@ -57,14 +60,15 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':core-sdk')
-
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation project(path: ':securewidgets')
     implementation project(path: ':express')
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha02'
+    androidTestImplementation 'androidx.test:rules:1.3.1-alpha02'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 }

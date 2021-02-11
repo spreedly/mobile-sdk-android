@@ -10,6 +10,7 @@ public class CreditCardResult extends PaymentMethodResult {
     public final @Nullable String lastFourDigits;
     public final @Nullable String firstSixDigits;
     public final @Nullable String cvv;
+    public final @Nullable String cardType;
     public final @Nullable String number;
     public final @Nullable String month;
     public final @Nullable String year;
@@ -26,6 +27,7 @@ public class CreditCardResult extends PaymentMethodResult {
             @Nullable String lastFourDigits,
             @Nullable String firstSixDigits,
             @Nullable String cvv,
+            @Nullable String cardType,
             @Nullable String number,
             @Nullable String month,
             @Nullable String year
@@ -34,6 +36,7 @@ public class CreditCardResult extends PaymentMethodResult {
         this.lastFourDigits = lastFourDigits;
         this.firstSixDigits = firstSixDigits;
         this.cvv = cvv;
+        this.cardType = cardType;
         this.number = number;
         this.month = month;
         this.year = year;

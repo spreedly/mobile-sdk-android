@@ -8,10 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.enums.CardBrand;
 import com.spreedly.express.ExpressBuilder;
@@ -21,8 +17,11 @@ import com.spreedly.express.PaymentOptions;
 import com.spreedly.express.PaymentType;
 import com.spreedly.sdk_sample.R;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 public class ExpressExampleFragment extends Fragment {
     @NonNull
@@ -54,31 +53,32 @@ public class ExpressExampleFragment extends Fragment {
 
         getView().findViewById(R.id.pay_now_fragment).setOnClickListener(v -> {
             ExpressBuilder builder = getExpressBuilder();
-            builder.showDialog(getParentFragmentManager(), null, this, 1000);
+            builder.showDialog(getParentFragmentManager(), this, 1000);
         });
     }
 
     @NonNull
     private ExpressBuilder getExpressBuilder() {
-        PaymentMethodItem card1 = new PaymentMethodItem("sample_token_1", PaymentMethodType.CARD, "Visa XXXX", CardBrand.visa);
-        PaymentMethodItem card2 = new PaymentMethodItem("sample_token_2", PaymentMethodType.CARD, "Mastercard XXXX", CardBrand.mastercard);
-        PaymentMethodItem card3 = new PaymentMethodItem("sample_token_3", PaymentMethodType.BANK, "Account XXXX", null);
-        PaymentMethodItem card4 = new PaymentMethodItem("sample_token_4", PaymentMethodType.THIRD_PARTY, "Third Party", null);
-        List<PaymentMethodItem> paymentMethodItems = new ArrayList<>();
-        paymentMethodItems.add(card1);
-        paymentMethodItems.add(card2);
-        paymentMethodItems.add(card3);
-        paymentMethodItems.add(card4);
-        SpreedlyClient client = SpreedlyClient.newInstance("XsQXqPtrgCOnpexSwyhzN9ngr2c", "ghEGueczUT4BhJv54K24G6B4Oy9yWaM5R4dR2yt5gRsx3xnwbZE0OZ0mRg2zyI5g", true);
         PaymentOptions options = new PaymentOptions();
         options.setButtonText("Pay now");
         options.setPaymentType(PaymentType.ALL);
-        options.setPaymentMethodItemList(paymentMethodItems);
         options.setHeader(R.layout.merchant_header);
+
+        // simple html to display payment info see Html.fromHtml()
         options.setMerchantText("<div style=\"text-align: center;\">\n" +
                 "<h1 style=\"text-align: center;\">$20.12</h1>\n" +
                 "Pass in your customized merchant text.</div>");
 
+        // if the user has pre-saved card numbers add them
+        List<PaymentMethodItem> paymentMethodItems = List.of(new PaymentMethodItem[]{
+                new PaymentMethodItem("sample_token_1", PaymentMethodType.CARD, "Visa XXXX", CardBrand.visa),
+                new PaymentMethodItem("sample_token_2", PaymentMethodType.CARD, "Mastercard XXXX", CardBrand.mastercard),
+                new PaymentMethodItem("sample_token_3", PaymentMethodType.BANK, "Account XXXX", null),
+                new PaymentMethodItem("sample_token_4", PaymentMethodType.THIRD_PARTY, "Third Party", null)
+        });
+        options.setPaymentMethodItemList(paymentMethodItems);
+
+        SpreedlyClient client = SpreedlyClient.newInstance("XsQXqPtrgCOnpexSwyhzN9ngr2c", true);
         return new ExpressBuilder(client, options);
     }
 }

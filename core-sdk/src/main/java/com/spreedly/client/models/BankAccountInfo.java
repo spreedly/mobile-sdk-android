@@ -32,8 +32,14 @@ public class BankAccountInfo extends PaymentMethodInfo {
     public BankAccountInfo() {
     }
 
-    public BankAccountInfo(@Nullable String fullName, @Nullable String firstName, @Nullable String lastName, @Nullable String routingNumber, @Nullable SpreedlySecureOpaqueString accountNumber, @Nullable AccountType accountType) {
+    public BankAccountInfo(@Nullable String fullName, @Nullable String routingNumber, @Nullable SpreedlySecureOpaqueString accountNumber, @Nullable AccountType accountType) {
         this.fullName = fullName;
+        this.routingNumber = routingNumber;
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+    }
+
+    public BankAccountInfo(@Nullable String firstName, @Nullable String lastName, @Nullable String routingNumber, @Nullable SpreedlySecureOpaqueString accountNumber, @Nullable AccountType accountType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.routingNumber = routingNumber;

@@ -16,7 +16,7 @@ public class RecacheTest {
     @Test
     public void CanRecache() throws InterruptedException {
         SpreedlyClient client = SpreedlyClient.newInstance(TestCredentials.getUser(), TestCredentials.getPassword(), true);
-        CreditCardInfo cc = new CreditCardInfo("Joe Jones", null, null, client.createString("5555555555554444"), client.createString("432"), 3, 2032);
+        CreditCardInfo cc = new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 3, 2032);
         cc.retained = true;
 
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();
@@ -35,7 +35,7 @@ public class RecacheTest {
     @Test
     public void RecacheReturnsToken() throws InterruptedException {
         SpreedlyClient client = SpreedlyClient.newInstance(TestCredentials.getUser(), TestCredentials.getPassword(), true);
-        CreditCardInfo cc = new CreditCardInfo("Joe Jones", null, null, client.createString("5555555555554444"), client.createString("432"), 3, 2032);
+        CreditCardInfo cc = new CreditCardInfo("Joe Jones", client.createString("5555555555554444"), client.createString("432"), 3, 2032);
         cc.retained = true;
 
         TestObserver test = new TestObserver<TransactionResult<PaymentMethodResult>>();

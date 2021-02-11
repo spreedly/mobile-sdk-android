@@ -11,9 +11,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatSpinner;
-
 import com.google.android.material.textfield.TextInputLayout;
 import com.spreedly.client.SpreedlyClient;
 import com.spreedly.client.models.Address;
@@ -23,15 +20,18 @@ import com.spreedly.client.models.PaymentMethodInfo;
 import com.spreedly.client.models.enums.AccountHolderType;
 import com.spreedly.client.models.enums.AccountType;
 import com.spreedly.client.models.enums.CardBrand;
-import com.spreedly.client.models.results.PaymentMethodResult;
+import com.spreedly.client.models.results.BankAccountResult;
+import com.spreedly.client.models.results.CreditCardResult;
 import com.spreedly.client.models.results.SpreedlyError;
 import com.spreedly.client.models.results.TransactionResult;
 
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -101,7 +101,11 @@ public class SecureFormLayout extends LinearLayout {
         accountTypeHelper = new AccountTypeHelper(context);
     }
 
-    public void setSpreedlyClient(@NonNull String envKey, @NonNull String envSecret, boolean test) {
+    public void setSpreedlyClient(@NonNull String envKey, boolean test) {
+        spreedlyClient = SpreedlyClient.newInstance(envKey, test);
+    }
+
+    public void setSpreedlyClient(@NonNull String envKey, @Nullable String envSecret, boolean test) {
         spreedlyClient = SpreedlyClient.newInstance(envKey, envSecret, test);
     }
 
@@ -121,7 +125,7 @@ public class SecureFormLayout extends LinearLayout {
     }
 
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod() {
+    public Single<TransactionResult<CreditCardResult>> createCreditCardPaymentMethod() {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         resetCardErrors();
         resetGenericErrors();
@@ -136,15 +140,15 @@ public class SecureFormLayout extends LinearLayout {
             hasError = true;
         }
         if (hasError) {
-            return new Single<TransactionResult<PaymentMethodResult>>() {
+            return new Single<TransactionResult<CreditCardResult>>() {
                 @Override
-                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
+                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<CreditCardResult>> observer) {
 
                 }
             };
         }
         CreditCardInfo info = createCreditCardInfo();
-        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createCreditCardPaymentMethod(info);
+        Single<TransactionResult<CreditCardResult>> result = spreedlyClient.createCreditCardPaymentMethod(info);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
                 handleErrors(transaction.errors);
@@ -154,7 +158,7 @@ public class SecureFormLayout extends LinearLayout {
     }
 
     @NonNull
-    public Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod() {
+    public Single<TransactionResult<BankAccountResult>> createBankAccountPaymentMethod() {
         Log.i("Spreedly", "createCreditCardPaymentMethod firing");
         resetBankErrors();
         resetGenericErrors();
@@ -183,15 +187,15 @@ public class SecureFormLayout extends LinearLayout {
             }
         }
         if (hasError) {
-            return new Single<TransactionResult<PaymentMethodResult>>() {
+            return new Single<TransactionResult<BankAccountResult>>() {
                 @Override
-                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<PaymentMethodResult>> observer) {
+                protected void subscribeActual(@io.reactivex.rxjava3.annotations.NonNull SingleObserver<? super TransactionResult<BankAccountResult>> observer) {
 
                 }
             };
         }
         BankAccountInfo info = createBankAccountInfo();
-        Single<TransactionResult<PaymentMethodResult>> result = spreedlyClient.createBankPaymentMethod(info);
+        Single<TransactionResult<BankAccountResult>> result = spreedlyClient.createBankPaymentMethod(info);
         return result.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map((transaction) -> {
             if (!transaction.succeeded) {
                 handleErrors(transaction.errors);

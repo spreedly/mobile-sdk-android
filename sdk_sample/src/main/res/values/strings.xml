@@ -15,4 +15,9 @@
     <string name="generic_error">Unexpected Error</string>
     <string name="pay_now_fragment">Pay Now! (fragment)</string>
     <string name="merchant_title">Lucy\'s shop</string>
+    <string name="amount_hint">Amount</string>
+    <string name="threeds_cancelled">Cancelled</string>
+    <string name="threeds_timeout">Timeout</string>
+    <string name="threeds_frictionless_success">Frictionless success</string>
+
 </resources>

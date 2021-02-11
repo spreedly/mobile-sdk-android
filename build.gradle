@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.1.1'
     }
 }
 
@@ -15,14 +15,28 @@ allprojects {
         google()
         jcenter()
     }
+
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    if (!project.ext.has('pubName'))
+        project.ext.set('pubName', false)
+    if (!project.ext.has('pubSources'))
+        project.ext.set('pubSources', true)
+    if (!project.ext.has('pubComponent'))
+        project.ext.set('pubComponent', null)
 }
+
+rootProject.ext.set('pubVersion', '0.1-beta')
+rootProject.ext.set('groupId', 'com.spreedly')
+rootProject.ext.set('groupId', 'com.spreedly')
 
 rootProject.buildDir = 'build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 
-task clean(type: Delete) {
+task clean_all(type: Delete) {
     delete rootProject.buildDir
 }
 
@@ -34,6 +48,55 @@ gradle.projectsEvaluated {
         source exportedProjects.collect { project(it).sourceSets.main.allJava }
         classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
         destinationDir = file("docs")
+    }
+
+    subprojects {
+        if (project.pubName) {
+            print("adding pub info ${project.pubName}")
+            if (project.plugins.hasPlugin('android') && project.pubSources) {
+                task generateSourcesJar(type: Jar) {
+                    archiveClassifier.set('sources')
+                    from android.sourceSets.main.java.srcDirs
+                }
+
+                artifacts {
+                    archives sourcesJar
+                }
+            }
+
+            publishing {
+                publications {
+                    maven(MavenPublication) {
+                        groupId = rootProject.groupId
+                        artifactId = project.pubName
+                        version = rootProject.pubVersion
+
+                        from(project.pubComponent ?: components.findByName('release') ?: components.findByName('java'))
+                    }
+                }
+
+                repositories {
+                    maven {
+                        // change URLs to point to your repos, e.g. http://my.org/repo
+                        def releasesRepoUrl = "${rootProject.buildDir}/repos/releases"
+                        def snapshotsRepoUrl = "${rootProject.buildDir}/repos/snapshots"
+                        url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                    }
+
+                    maven {
+                        name = "github"
+                        url = uri("https://maven.pkg.github.com/spreedly/mobile-sdk-android")
+                        credentials {
+                            def properties = new Properties()
+                            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+                            username = properties.getProperty("gpr.user") ?: System.getenv("USERNAME")
+                            password = properties.getProperty("gpr.key") ?: System.getenv("TOKEN")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
