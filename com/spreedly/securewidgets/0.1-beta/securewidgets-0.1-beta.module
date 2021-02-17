@@ -1,0 +1,182 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.spreedly",
+    "module": "securewidgets",
+    "version": "0.1-beta",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "6.5",
+      "buildId": "f6zajafipvdlpiqhhd75sblbei"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.reactivex.rxjava3",
+          "module": "rxandroid",
+          "version": {
+            "requires": "3.0.0"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "converter-gson",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "converter-scalars",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "retrofit",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.android.support.constraint",
+          "module": "constraint-layout",
+          "version": {
+            "requires": "2.0.4"
+          }
+        },
+        {
+          "group": "com.nimbusds",
+          "module": "nimbus-jose-jwt",
+          "version": {
+            "requires": "8.17.1"
+          }
+        },
+        {
+          "group": "com.madgag.spongycastle",
+          "module": "prov",
+          "version": {
+            "requires": "1.58.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "securewidgets-0.1-beta.aar",
+          "url": "securewidgets-0.1-beta.aar",
+          "size": 280204,
+          "sha512": "fef61f27354bb67a889016c0e4d93e51c0e7c8be59f923814ae2b5ec39931aa673745aeab05686aa6e45e74b45440c162f7e4e2e85e8bf161c2193a1b4c43a59",
+          "sha256": "d6c9fb1b5b5b4e018ca3a6e07fe38bcd91796eb72076c9398edb4da23218ee7c",
+          "sha1": "466e3c5ec3549bbcfd34f163a47a81d19335da03",
+          "md5": "d95c214d7c0b1e92d6ef4b3805281e57"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.spreedly",
+          "module": "client",
+          "version": {
+            "requires": "0.1-beta"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.2.0"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.3.0-alpha03"
+          }
+        },
+        {
+          "group": "io.reactivex.rxjava3",
+          "module": "rxandroid",
+          "version": {
+            "requires": "3.0.0"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "converter-gson",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "converter-scalars",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.squareup.retrofit2",
+          "module": "retrofit",
+          "version": {
+            "requires": "2.9.0"
+          }
+        },
+        {
+          "group": "com.android.support.constraint",
+          "module": "constraint-layout",
+          "version": {
+            "requires": "2.0.4"
+          }
+        },
+        {
+          "group": "com.nimbusds",
+          "module": "nimbus-jose-jwt",
+          "version": {
+            "requires": "8.17.1"
+          }
+        },
+        {
+          "group": "com.madgag.spongycastle",
+          "module": "prov",
+          "version": {
+            "requires": "1.58.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "securewidgets-0.1-beta.aar",
+          "url": "securewidgets-0.1-beta.aar",
+          "size": 280204,
+          "sha512": "fef61f27354bb67a889016c0e4d93e51c0e7c8be59f923814ae2b5ec39931aa673745aeab05686aa6e45e74b45440c162f7e4e2e85e8bf161c2193a1b4c43a59",
+          "sha256": "d6c9fb1b5b5b4e018ca3a6e07fe38bcd91796eb72076c9398edb4da23218ee7c",
+          "sha1": "466e3c5ec3549bbcfd34f163a47a81d19335da03",
+          "md5": "d95c214d7c0b1e92d6ef4b3805281e57"
+        }
+      ]
+    }
+  ]
+}
