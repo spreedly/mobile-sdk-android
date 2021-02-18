@@ -37,17 +37,23 @@ All integration options require a Spreedly account and an environment key. See [
 ## Installation
 We recommend using [Gradle](https://docs.gradle.org/current/userguide/userguide.html) to integrate the Spreedly SDK with your project. the `Spreedly` package provides basic, low-level APIs for custom integrations. The `Express` package provides custom controls and the Spreedly Express workflow, a prebuilt UI for collecting and selecting payment methods.
 
-Add the following dependencies to your [build.gradle file](https://docs.gradle.org/current/userguide/declaring_dependencies.html#declaring-dependencies):
+First add the following to your [repositories section of your build.gradle file](https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:declaring_multiple_repositories):
+
+    maven {
+        url = uri('https://raw.githubusercontent.com/spreedly/mobile-sdk-android/maven/')
+    }
+
+Add the following [dependencies to your build.gradle file](https://docs.gradle.org/current/userguide/declaring_dependencies.html#declaring-dependencies):
 
     dependencies {
 	    // core sdk
-	    implementation com.spreedly.client
+        implementation 'com.spreedly:client:0.1-beta'
 
 	    // Express prebuilt UIs and controls
-	    implementation com.spreedly.express
+        implementation 'com.spreedly:express:0.1-beta'
 
 		// SecureWidget customizable widgets
-		implementation com.spreedly.securewidget
+        implementation 'com.spreedly:securewidgets:0.1-beta'
     }
 ## Express
 Collect and select payment methods with the SDK's Express tools.
