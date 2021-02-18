@@ -134,13 +134,11 @@ task pushMavenBranch(type:Exec, dependsOn: [commitMavenBranch]) {
     commandLine 'git', 'push'
 }
 
-task release(type: GradleBuild) {
-    tasks = ['checkoutMavenBranch', 'publishAllPublicationsToBranchRepository', 'pushMavenBranch']
+task doPub(type: GradleBuild, dependsOn: checkoutMavenBranch) {
+    tasks = ['publishAllPublicationsToBranchRepository']
 }
+addMavenBranch.mustRunAfter doPub
 
-tasks.whenTaskAdded { task ->
-    if (task.name == 'publishAllPublicationsToBranchRepository') {
-        task.mustRunAfter checkoutMavenBranch
-        commitMavenBranch.mustRunAfter task
-    }
+task release(type: GradleBuild) {
+    tasks = ['checkoutMavenBranch', 'doPub', 'pushMavenBranch']
 }
