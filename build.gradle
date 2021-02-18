@@ -94,9 +94,53 @@ gradle.projectsEvaluated {
                             password = properties.getProperty("gpr.key") ?: System.getenv("TOKEN")
                         }
                     }
+
+                    maven {
+                        name = "branch"
+                        url = "${rootProject.buildDir}/maven"
+                    }
                 }
             }
         }
     }
 }
 
+task cleanupMaven(type:Delete) {
+    delete "${rootProject.buildDir}/maven"
+}
+
+task cloneMaven(type:Exec, dependsOn:[cleanupMaven]) {
+    workingDir rootProject.buildDir
+    commandLine 'bash', '-c', 'git clone https://github.com/spreedly/mobile-sdk-android.git --no-checkout maven'
+}
+
+task checkoutMavenBranch(type:Exec, dependsOn: [cloneMaven]) {
+    workingDir "${rootProject.buildDir}/maven"
+    commandLine 'bash', '-c', 'git checkout maven'
+}
+
+task addMavenBranch(type:Exec) {
+    workingDir "${rootProject.buildDir}/maven"
+    commandLine 'bash', '-c', 'git add .'
+}
+
+task commitMavenBranch(type:Exec, dependsOn: [addMavenBranch]) {
+    workingDir "${rootProject.buildDir}/maven"
+    commandLine 'bash', '-c', 'git commit -m maven'
+}
+
+task pushMavenBranch(type:Exec, dependsOn: [commitMavenBranch]) {
+    workingDir "${rootProject.buildDir}/maven"
+    commandLine 'git', 'push'
+}
+
+task release(type: GradleBuild) {
+    tasks = ['checkoutMavenBranch', 'publishAllPublicationsToBranchRepository', 'pushMavenBranch']
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'publishAllPublicationsToBranchRepository') {
+        task.mustRunAfter checkoutMavenBranch
+        commitMavenBranch.mustRunAfter task
+    }
+}
