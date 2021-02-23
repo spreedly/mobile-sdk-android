@@ -4,36 +4,9 @@
 
 # spreedly-android
 
-
-# Lint
-
-Run
-
-    ./gradlew lint
-
-
-# Coverage
-
-A coverage report is regularly posted [here](https://ergonlabs.github.io/spreedly-docs/coverage/java/core-sdk/index.html).
-
-To see this locally run:
-
-    ./gradlew test
-
-Then open [build/core-sdk/reports/jacoco/test/html/index.html](build/core-sdk/reports/jacoco/test/html/index.html)
-
-# Docs
-
-To build docs use:
-
-    rm -rf docs
-    ./gradlew alljavadoc
-
-
-
-
 # Integration
 All integration options require a Spreedly account and an environment key. See [Create Your API Credentials](https://docs.spreedly.com/basics/credentials/#environment-key) for details.
+
 ## Installation
 We recommend using [Gradle](https://docs.gradle.org/current/userguide/userguide.html) to integrate the Spreedly SDK with your project. the `Spreedly` package provides basic, low-level APIs for custom integrations. The `Express` package provides custom controls and the Spreedly Express workflow, a prebuilt UI for collecting and selecting payment methods.
 
@@ -65,7 +38,8 @@ Use this integration if you want a ready-made UI that:
  - Displays full-screen view controllers to select or add payment methods.
 ### Create and Configure `ExpressBuilder`
 To begin the express work flow, create a new instance of `PaymentOptions` and set desired parameters. Next create `SpreedlyClient` with your environment key. Set test to true for test environments, false for production environments. Create and return your `ExpressBuilder`.
-```  java
+
+```jvm
 public ExpressBuilder getExpressBuilder() {
 	//Create payment options
 	PaymentOptions paymentOptions = new PaymentOptions();
@@ -75,8 +49,10 @@ public ExpressBuilder getExpressBuilder() {
 	return new ExpressBuilder(client, options);
 }
 ```
+
 To customize your `ExpressBuilder`, set properties on 	`paymentOptions` before creating the `ExpressBuilder`:
-```java
+
+```
 // sets text on submit button
 paymentOptions.setButtonText("Pay now");
 
@@ -97,7 +73,8 @@ paymentOptions.setBillingAddress(new Address("Street 1", "Street 2", "City", "St
 
 ### Use `ExpressBuilder` to launch payment flow
 In your activity or fragment, create a button to trigger the payment flow. Override `onActivityCreated`, set the on click listener of your button. Create your `ExpressBuilder` by calling your custom `getExpressBuilder()` method.  To launch an express fragment, call `ExpressBuilder.showDialog(@NonNull FragmentManager fm, @Nullable String tag, @NonNull Fragment target, @NonNull int requestCode))`:
-```java
+
+```
 @Override
 public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
@@ -113,7 +90,8 @@ public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
 ### Get response from Spreedly after payment flow is completed
 In your activity or fragment, override `onActivityResult`. Set conditionals checking that `requestCode` matches your set request code in `onActivityCreated`, and that the `resultCode` is `Activity.RESULT_OK`.
-```java
+
+```
 @Override
 public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -125,15 +103,18 @@ public void onActivityResult(int requestCode, int resultCode, @Nullable Intent d
     }
 }
 ```
+
 Express builder has the following StringExtras used to return information:
-`EXTRA_PAYMENT_METHOD_TOKEN` contains the result token.
-`EXTRA_PAYMENT_METHOD_TRANSACTION` contains the serialized transaction result.
-`EXTRA_STORED_PAYMENT_METHOD`contains the serialized stored payment method (`StoredCard`).
+
+- `EXTRA_PAYMENT_METHOD_TOKEN` contains the result token.
+- `EXTRA_PAYMENT_METHOD_TRANSACTION` contains the serialized transaction result.
+- `EXTRA_STORED_PAYMENT_METHOD`contains the serialized stored payment method (`StoredCard`).
 
 ## Customization with `SecureForm`
  The `SecureForm` extends `LinearLayout`. It is useful for collecting payment method information on behalf of an activity or fragment, and handling the create payment method API call to Spreedly.
 
  The `SecureForm` expects expects to use the following custom views:
+
  - `SecureTextField` - An extended `TextInputLayout` with a `getText()` method that returns a `SpreedlySecureOpaqueString` instead of a `String`
  - `SecureCreditCardField` - An extended `SecureTextField` that validates, formats and masks a credit card number.
  - `SecureExpirationDate` - A `LinearLayout` that contains two spinners for month and year. Has a `getMonth()` and `getYear()` method that returns selected values.
@@ -215,7 +196,9 @@ Example Credit Card Payment XML:
 
 </com.spreedly.securewidgets.SecureFormLayout>
 ```
+
 ### SecureForm Methods
+
 The `SecureForm` has the following methods:
  - `public Single<TransactionResult<PaymentMethodResult>> createCreditCardPaymentMethod()`: Captures data from user input (name, credit card number, cvv, expiration date and optionally billing and shipping address) and makes a `create credit card payment request` to the Spreedly API.
  - `Single<TransactionResult<PaymentMethodResult>> createBankAccountPaymentMethod()`: Captures data from user input (name, bank account number, routing number, account type and optionally billing and shipping address), and makes a `create bank account payment request` to the Spreedly API.
@@ -227,15 +210,18 @@ If you prefer a completely customized payment method collection and selection ex
 For example, to create a new credit card payment method with Spreedly, create and configure a `CreditCardInfo` object, and send is using `SpreedlyClient`
 
 Constructors:
-```java
+
+```
 CreditCardInfo(@NonNull String: fullName, @NonNull SpreedlySecureOpaqueString: number, @Nullable SpreedlySecureOpaqueString: verificationValue, @NonNull int: year, @NonNull int: month);
 ```
-```java
+
+```
 SpreedlyClient.newInstance(@NonNull String envKey, @NonNull String envSecret,@NonNull boolean test)
 ```
 
 Example code:
-```java
+
+```jvm
 CreditCardInfo info = new CreditCardInfo("Full Name", new SpreedlySecureOpaqueString("4111111111111111"), new SpreedlySecureOpaqueString("432"), 2025, 12);
 SpreedlyClient client = SpreedlyClient.newInstance("your key", "your secret", true);
 client.createCreditCardPaymentMethod(info, null, null).subscribe(new SingleObserver<TransactionResult<PaymentMethodResult>>() {
@@ -267,11 +253,29 @@ client.createCreditCardPaymentMethod(info, null, null).subscribe(new SingleObser
 });
 ```
 
+# Lint
+
+Run
+
+    ./gradlew lint
 
 
+# Coverage
 
+A coverage report is regularly posted [here](https://ergonlabs.github.io/spreedly-docs/coverage/java/core-sdk/index.html).
 
+To see this locally run:
 
+    ./gradlew test
+
+Then open [build/core-sdk/reports/jacoco/test/html/index.html](build/core-sdk/reports/jacoco/test/html/index.html)
+
+# Docs
+
+To build docs use:
+
+    rm -rf docs
+    ./gradlew alljavadoc
 
 
 
