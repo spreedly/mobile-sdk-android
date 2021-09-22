@@ -10,7 +10,7 @@ All integration options require a Spreedly account and an environment key. See [
 ## Installation
 We recommend using [Gradle](https://docs.gradle.org/current/userguide/userguide.html) to integrate the Spreedly SDK with your project. the `Spreedly` package provides basic, low-level APIs for custom integrations. The `Express` package provides custom controls and the Spreedly Express workflow, a prebuilt UI for collecting and selecting payment methods.
 
-First add the following to your [repositories section of your build.gradle file](https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:declaring_multiple_repositories):
+First add the following to your [repositories section of your build.gradle file](https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:declaring_multiple_repositories), or [settings.gradle file](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration), depending on your preferred setup:
 
     maven {
         url = uri('https://raw.githubusercontent.com/spreedly/mobile-sdk-android/maven/')
@@ -46,7 +46,7 @@ public ExpressBuilder getExpressBuilder() {
 	//Create Spreedly Client
 	SpreedlyClient client = SpreedlyClient.newInstance("your enviroment key", "your secret key", true);
 	//Create and return your ExpressBuilder
-	return new ExpressBuilder(client, options);
+	return new ExpressBuilder(client, paymentOptions);
 }
 ```
 
@@ -62,13 +62,24 @@ paymentOptions.setPaymentType(PaymentType.ALL);
 //pass in a list of StoredCard for previously saved payment methods. Only use with ALL and CARDS_ONLY
 paymentOptions.setStoredCardList(paymentMethodItems);
 
+// set your customized header
+paymentOptions.setHeader(R.layout.your_header);
+
 //set merchant customizations such as page title, icon, and footer text (html)
-paymentOptions.setMerchantTitle("Lucy's Shop");
-paymentOptions.setMerchantIcon(R.drawable.your_icon);
 paymentOptions.setMerchantText("<div style=\"text-align: center;\">\n" +  "Pass in your customized merchant text.</div>");
 
 //set billing address
-paymentOptions.setBillingAddress(new Address("Street 1", "Street 2", "City", "State", "Zip", "Country", null));
+CreditCardInfo ccInfo = CreditCardInfo()
+ccInfo.address =  Address(
+            "Street 1",
+            "Street 2",
+            "City",
+            "State",
+            "Zip",
+            "Country",
+            null
+);
+paymentOptions.setPaymentMethodDefaults(ccInfo);
 ```
 
 ### Use `ExpressBuilder` to launch payment flow
