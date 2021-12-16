@@ -43,4 +43,8 @@ public interface SpreedlyClient {
     @NonNull Single<TransactionResult<PaymentMethodResult>> recache(@NonNull String token, @NonNull SpreedlySecureOpaqueString cvv);
 
     @Nullable String getCredentials();
+
+    @NonNull String getPlatformData();
+
+    void setPlatformData(@Nullable String value);
 }

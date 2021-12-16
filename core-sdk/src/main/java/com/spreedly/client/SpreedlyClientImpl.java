@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Properties;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.annotations.Nullable;
@@ -45,6 +47,9 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     private final String key;
     @Nullable
     private final String secret;
+    @Nullable
+    private String platformData;
+
     private final String authenticatedURL = "/payment_methods.json";
     private final String unauthenticatedURL = "/payment_methods/restricted.json";
 
@@ -216,6 +221,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
         } else {
             builder.header("Authorization", getCredentials());
         }
+        requestBody.put("platform-meta", getPlatformData());
         Call call = new OkHttpClient().newCall(builder
                 .method("POST", RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
                 .build());
@@ -270,5 +276,56 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     public String getCredentials() {
         String raw = key + ":" + secret;
         return "Basic " + safeBase64(raw.getBytes());
+    }
+
+    @NonNull
+    public String getPlatformData() {
+        if (platformData != null)
+            return platformData;
+
+        final JSONObject data = new JSONObject();
+
+        data.put("core-version", BuildInfo.VERSION);
+        data.put("platform", "java");
+
+        Properties properties = System.getProperties();
+        setFromProperty(data, properties, "locale", "user.locale");
+
+        JSONObject os = new JSONObject();
+        setFromProperty(os, properties, "name", "os.name");
+        setFromProperty(os, properties, "arch", "os.arch");
+        setFromProperty(os, properties, "version", "os.version");
+        data.put("os", os);
+
+        JSONObject git = new JSONObject();
+        git.put("branch", BuildInfo.GIT_BRANCH);
+        git.put("tag", BuildInfo.GIT_TAG);
+        git.put("commit", BuildInfo.GIT_COMMIT);
+        data.put("git", git);
+
+        try {
+            Class Build = Class.forName("android.os.Build");
+            JSONObject device = new JSONObject();
+            device.put("model", Build.getField("MODEL").get(null));
+            device.put("manufacturer", Build.getField("MANUFACTURER").get(null));
+            device.put("device", Build.getField("DEVICE").get(null));
+            device.put("brand", Build.getField("BRAND").get(null));
+            data.put("device", device);
+        } catch (Exception e) {
+        }
+
+        final byte[] bytes = StandardCharsets.UTF_8.encode(data.toString()).array();
+        return safeBase64(bytes);
+    }
+
+    public void setFromProperty(JSONObject data, Properties properties, String jskey, String propkey) {
+        try {
+            data.put(jskey, properties.getProperty(propkey, "unknown"));
+        } catch (Exception e) {
+        }
+    }
+
+    public void setPlatformData(@Nullable String data) {
+        platformData = data;
     }
 }
