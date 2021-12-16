@@ -1,4 +1,3 @@
-
 apply plugin: 'java-library'
 apply plugin: 'com.android.lint'
 apply plugin: 'jacoco'
@@ -10,13 +9,33 @@ java {
     withSourcesJar()
 }
 
+final gitBranch = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+final gitTag = "git tag -l --points-at HEAD".execute().text.trim()
+final gitCommitId = "git rev-parse HEAD".execute().text.trim()
+file("src/main/java/com/spreedly/client/BuildInfo.java").write("""
+package com.spreedly.client;
+
+public class BuildInfo {
+    public static final String VERSION = "${rootProject.pubVersion}";
+    public static final String GIT_BRANCH = "${gitBranch}";
+    public static final String GIT_TAG = "${gitTag}";
+    public static final String GIT_COMMIT = "${gitCommitId}";
+}
+""")
+
+jar {
+    manifest {
+        attributes("Implementation-Version": rootProject.pubVersion)
+    }
+}
+
 dependencies {
     api 'io.reactivex.rxjava3:rxjava:3.0.4'
 
-    implementation "com.squareup.okhttp3:okhttp:4.7.2"
+    implementation "com.squareup.okhttp3:okhttp:4.9.0"
     implementation 'org.json:json:20200518'
 
-    testImplementation "junit:junit:4.13.1"
+    testImplementation "junit:junit:4.13.2"
     implementation 'org.jetbrains:annotations:19.0.0'
 }
 

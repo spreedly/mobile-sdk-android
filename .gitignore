@@ -7,3 +7,4 @@ pom.xml
 build
 
 .gradle
+/core-sdk/src/main/java/com/spreedly/client/BuildInfo.java
