@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:7.0.3'
     }
 }
 
@@ -110,28 +110,23 @@ task cleanupMaven(type:Delete) {
 }
 
 task cloneMaven(type:Exec, dependsOn:[cleanupMaven]) {
-    workingDir rootProject.buildDir
-    commandLine 'bash', '-c', 'git clone https://github.com/spreedly/mobile-sdk-android.git --no-checkout maven'
+    commandLine 'sh', '-c', "cd ${rootProject.buildDir}; git clone https://github.com/spreedly/mobile-sdk-android.git --no-checkout maven"
 }
 
 task checkoutMavenBranch(type:Exec, dependsOn: [cloneMaven]) {
-    workingDir "${rootProject.buildDir}/maven"
-    commandLine 'bash', '-c', 'git checkout maven'
+    commandLine 'sh', '-c', "cd ${rootProject.buildDir}/maven; git checkout maven"
 }
 
 task addMavenBranch(type:Exec) {
-    workingDir "${rootProject.buildDir}/maven"
-    commandLine 'bash', '-c', 'git add .'
+    commandLine 'sh', '-c', "cd ${rootProject.buildDir}/maven; git add ."
 }
 
 task commitMavenBranch(type:Exec, dependsOn: [addMavenBranch]) {
-    workingDir "${rootProject.buildDir}/maven"
-    commandLine 'bash', '-c', 'git commit -m maven'
+    commandLine 'sh', '-c', "cd ${rootProject.buildDir}/maven; git commit -m maven"
 }
 
 task pushMavenBranch(type:Exec, dependsOn: [commitMavenBranch]) {
-    workingDir "${rootProject.buildDir}/maven"
-    commandLine 'git', 'push'
+    commandLine 'sh', '-c', "cd ${rootProject.buildDir}/maven; git push"
 }
 
 task doPub(type: GradleBuild, dependsOn: checkoutMavenBranch) {
@@ -141,4 +136,9 @@ addMavenBranch.mustRunAfter doPub
 
 task release(type: GradleBuild) {
     tasks = ['checkoutMavenBranch', 'doPub', 'pushMavenBranch']
+}
+
+task environment(type: Exec) {
+    //environment 'PATH', "${environment.PATH}:/bin"
+    commandLine 'sh'
 }
