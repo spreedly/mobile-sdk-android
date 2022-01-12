@@ -108,9 +108,11 @@ gradle.projectsEvaluated {
 task cleanupMaven(type:Delete) {
     delete "${rootProject.buildDir}/maven/"
     followSymlinks = true
-    def build = new File("${rootProject.buildDir}/maven/")
-    doLast{
-        build.deleteDir()
+
+    doFirst {
+        def buildDir = new File(rootProject.buildDir)
+        if (!buildDir.exists())
+            buildDir.mkdirs()
     }
 }
 
