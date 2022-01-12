@@ -111,10 +111,18 @@ task cleanupMaven(type:Delete) {
 
 task cloneMaven(type:Exec, dependsOn:[cleanupMaven]) {
     commandLine 'sh', '-c', "cd ${rootProject.buildDir}; git clone https://github.com/spreedly/mobile-sdk-android.git --no-checkout maven"
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString()
+    }
 }
 
 task checkoutMavenBranch(type:Exec, dependsOn: [cloneMaven]) {
     commandLine 'sh', '-c', "cd ${rootProject.buildDir}/maven; git checkout maven"
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString()
+    }
 }
 
 task addMavenBranch(type:Exec) {
