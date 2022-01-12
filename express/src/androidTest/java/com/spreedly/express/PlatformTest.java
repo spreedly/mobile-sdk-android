@@ -25,7 +25,7 @@ public class PlatformTest {
             Log.i("ENV", key + ": " + x.getProperty(key));
 
         SpreedlyClient spreedlyClient = SpreedlyClient.newInstance("", "", true);
-        final String json = new String(Base64.getDecoder().decode(spreedlyClient.getPlatformData()));
+        final String json = new String(Base64.getDecoder().decode(spreedlyClient.getPlatformLocalData()));
         JSONObject data = new JSONObject(json);
         Log.i("TEST", data.toString(2));
 

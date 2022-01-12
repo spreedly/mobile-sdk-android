@@ -279,10 +279,14 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     }
 
     @NonNull
-    public String getPlatformData() {
+    public String getPlatformLocalData() {
         if (platformData != null)
             return platformData;
+        return platformData = SpreedlyClientImpl.getPlatformData();
+    }
 
+    @NonNull
+    static public String getPlatformData() {
         final JSONObject data = new JSONObject();
 
         data.put("core-version", BuildInfo.VERSION);
@@ -318,7 +322,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
         return safeBase64(bytes);
     }
 
-    public void setFromProperty(JSONObject data, Properties properties, String jskey, String propkey) {
+    static void setFromProperty(JSONObject data, Properties properties, String jskey, String propkey) {
         try {
             data.put(jskey, properties.getProperty(propkey, "unknown"));
         } catch (Exception e) {
