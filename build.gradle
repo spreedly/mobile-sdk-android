@@ -107,6 +107,7 @@ gradle.projectsEvaluated {
 
 task cleanupMaven(type:Delete) {
     delete "${rootProject.buildDir}/maven"
+    setFollowSymlinks true
 }
 
 task cloneMaven(type:Exec, dependsOn:[cleanupMaven]) {
