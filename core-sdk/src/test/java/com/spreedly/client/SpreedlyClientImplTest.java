@@ -20,7 +20,10 @@ public class SpreedlyClientImplTest {
     @Test
     public void testGetPlatformData() {
         SpreedlyClientImpl spreedlyClient = new SpreedlyClientImpl(TestCredentials.getUser(), TestCredentials.getPassword(), true);
-        final String json = new String(Base64.getDecoder().decode(spreedlyClient.getPlatformData()));
+        final String json = new String(Base64.getDecoder().decode(spreedlyClient.getPlatformLocalData()));
+        System.out.println("-------");
+        System.out.println(json);
+        System.out.println("-------");
         JSONObject data = new JSONObject(json);
         System.out.println(data.toString(2));
 

@@ -65,11 +65,19 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
             return (String) dtc.getMethod("encodeToString", byte[].class, int.class).invoke(null, source, 2);
         } catch (ReflectiveOperationException e) {
             try {
-                Class<?> dtc = Class.forName("javax.xml.bind.DatatypeConverter");
-                return (String) dtc.getMethod("printBase64Binary", byte[].class).invoke(null, new Object[]{
+                Class<?> dtc = Class.forName("java.util.Base64");
+                Object encoder = dtc.getMethod("getEncoder").invoke(null);
+                Object r = encoder.getClass().getMethod("encodeToString", byte[].class).invoke(encoder, new Object[]{
                         source
                 });
+                if (r instanceof String)
+                    return (String) r;
+                else {
+                    byte[] bytes = (byte[])r;
+                    return new String(bytes, 0, 0, bytes.length);
+                }
             } catch (ReflectiveOperationException e2) {
+                System.out.println(e2);
                 return "";
             }
         }
