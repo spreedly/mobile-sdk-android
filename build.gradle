@@ -29,7 +29,7 @@ allprojects {
         project.ext.set('pubComponent', null)
 }
 
-rootProject.ext.set('pubVersion', '0.1-beta10')
+rootProject.ext.set('pubVersion', '0.9.14')
 rootProject.ext.set('groupId', 'com.spreedly')
 rootProject.ext.set('groupId', 'com.spreedly')
 
