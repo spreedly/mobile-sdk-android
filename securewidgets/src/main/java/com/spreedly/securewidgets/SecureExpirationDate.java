@@ -41,7 +41,7 @@ public class SecureExpirationDate extends LinearLayout {
 
     private void init() {
         this.setOrientation(VERTICAL);
-        String[] monthArr = new String[]{"01", "02", "03", "04", "05", "06", "07", "06", "09", "10", "11", "12"};
+        String[] monthArr = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
         Calendar c = Calendar.getInstance();
         int currentYear = c.get(Calendar.YEAR);
         String[] yearArr = new String[20];

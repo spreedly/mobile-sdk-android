@@ -65,11 +65,19 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
             return (String) dtc.getMethod("encodeToString", byte[].class, int.class).invoke(null, source, 2);
         } catch (ReflectiveOperationException e) {
             try {
-                Class<?> dtc = Class.forName("javax.xml.bind.DatatypeConverter");
-                return (String) dtc.getMethod("printBase64Binary", byte[].class).invoke(null, new Object[]{
+                Class<?> dtc = Class.forName("java.util.Base64");
+                Object encoder = dtc.getMethod("getEncoder").invoke(null);
+                Object r = encoder.getClass().getMethod("encodeToString", byte[].class).invoke(encoder, new Object[]{
                         source
                 });
+                if (r instanceof String)
+                    return (String) r;
+                else {
+                    byte[] bytes = (byte[])r;
+                    return new String(bytes, 0, 0, bytes.length);
+                }
             } catch (ReflectiveOperationException e2) {
+                System.out.println(e2);
                 return "";
             }
         }
@@ -279,10 +287,14 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
     }
 
     @NonNull
-    public String getPlatformData() {
+    public String getPlatformLocalData() {
         if (platformData != null)
             return platformData;
+        return platformData = SpreedlyClientImpl.getPlatformData();
+    }
 
+    @NonNull
+    static public String getPlatformData() {
         final JSONObject data = new JSONObject();
 
         data.put("core-version", BuildInfo.VERSION);
@@ -318,7 +330,7 @@ class SpreedlyClientImpl implements SpreedlyClient, Serializable {
         return safeBase64(bytes);
     }
 
-    public void setFromProperty(JSONObject data, Properties properties, String jskey, String propkey) {
+    static void setFromProperty(JSONObject data, Properties properties, String jskey, String propkey) {
         try {
             data.put(jskey, properties.getProperty(propkey, "unknown"));
         } catch (Exception e) {

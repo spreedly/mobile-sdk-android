@@ -44,7 +44,12 @@ public interface SpreedlyClient {
 
     @Nullable String getCredentials();
 
-    @NonNull String getPlatformData();
+    @NonNull String getPlatformLocalData();
+
+    @NonNull
+    static String getPlatformData() {
+        return SpreedlyClientImpl.getPlatformData();
+    }
 
     void setPlatformData(@Nullable String value);
 }
