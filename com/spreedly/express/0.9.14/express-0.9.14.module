@@ -1,0 +1,125 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.spreedly",
+    "module": "express",
+    "version": "0.9.14",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.0.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.reactivex.rxjava3",
+          "module": "rxandroid",
+          "version": {
+            "requires": "3.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "express-0.9.14.aar",
+          "url": "express-0.9.14.aar",
+          "size": 68990,
+          "sha512": "9c7303c1cb432f91002bd362a28e92fbfc9453ae64ca2fb6a80d5755a2a3712c0957358a2a93111560086b07ddb09202a7f7af0ca25b6bf30caf367cd7043212",
+          "sha256": "2988f841a897e9d2d04b0c31d590c5a215ffe92955cc2fe5d990d2c18825f0ac",
+          "sha1": "30149a1c585f17503d7a1a8d453ccdcfbb1d4a74",
+          "md5": "527cc90a0bbb6ad5d4d4a638a971b73d"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.spreedly",
+          "module": "client",
+          "version": {
+            "requires": "0.9.14"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.4.0"
+          }
+        },
+        {
+          "group": "androidx.legacy",
+          "module": "legacy-support-v4",
+          "version": {
+            "requires": "1.0.0"
+          }
+        },
+        {
+          "group": "androidx.lifecycle",
+          "module": "lifecycle-extensions",
+          "version": {
+            "requires": "2.2.0"
+          }
+        },
+        {
+          "group": "androidx.constraintlayout",
+          "module": "constraintlayout",
+          "version": {
+            "requires": "2.1.2"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.6.0-alpha01"
+          }
+        },
+        {
+          "group": "com.spreedly",
+          "module": "securewidgets",
+          "version": {
+            "requires": "0.9.14"
+          }
+        },
+        {
+          "group": "io.reactivex.rxjava3",
+          "module": "rxandroid",
+          "version": {
+            "requires": "3.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "express-0.9.14.aar",
+          "url": "express-0.9.14.aar",
+          "size": 68990,
+          "sha512": "9c7303c1cb432f91002bd362a28e92fbfc9453ae64ca2fb6a80d5755a2a3712c0957358a2a93111560086b07ddb09202a7f7af0ca25b6bf30caf367cd7043212",
+          "sha256": "2988f841a897e9d2d04b0c31d590c5a215ffe92955cc2fe5d990d2c18825f0ac",
+          "sha1": "30149a1c585f17503d7a1a8d453ccdcfbb1d4a74",
+          "md5": "527cc90a0bbb6ad5d4d4a638a971b73d"
+        }
+      ]
+    }
+  ]
+}

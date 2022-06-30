@@ -1,0 +1,97 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.spreedly",
+    "module": "securewidgets",
+    "version": "0.9.14",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.0.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.reactivex.rxjava3",
+          "module": "rxandroid",
+          "version": {
+            "requires": "3.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "securewidgets-0.9.14.aar",
+          "url": "securewidgets-0.9.14.aar",
+          "size": 334825,
+          "sha512": "d6078780c15c5cbdf2ce3f0077904eaa16d358ea63e7e03f9784efdffc61ea4f79b3e68943eed6c3f22a200861494e9109fe5d4708e6f4b4ded755b95a415a14",
+          "sha256": "4a7a6104ae62d00e8dea8b671d97bd0be1cf70a17dc7fbd9f479ef3a9610e8f4",
+          "sha1": "89db2b62062a218a41c6f992a0bf772db43362a7",
+          "md5": "a1750619b5bd59eb588dd0635ed32e5f"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.spreedly",
+          "module": "client",
+          "version": {
+            "requires": "0.9.14"
+          }
+        },
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat",
+          "version": {
+            "requires": "1.4.1"
+          }
+        },
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.6.0-alpha01"
+          }
+        },
+        {
+          "group": "io.reactivex.rxjava3",
+          "module": "rxandroid",
+          "version": {
+            "requires": "3.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "securewidgets-0.9.14.aar",
+          "url": "securewidgets-0.9.14.aar",
+          "size": 334825,
+          "sha512": "d6078780c15c5cbdf2ce3f0077904eaa16d358ea63e7e03f9784efdffc61ea4f79b3e68943eed6c3f22a200861494e9109fe5d4708e6f4b4ded755b95a415a14",
+          "sha256": "4a7a6104ae62d00e8dea8b671d97bd0be1cf70a17dc7fbd9f479ef3a9610e8f4",
+          "sha1": "89db2b62062a218a41c6f992a0bf772db43362a7",
+          "md5": "a1750619b5bd59eb588dd0635ed32e5f"
+        }
+      ]
+    }
+  ]
+}
