@@ -5,7 +5,7 @@ If you want to familiarize yourself with the code base, you are just in the righ
 
 ## Bird's Eye View
 
-On the highest level, the sdks is broken into 4 libraries. 3 libraries that build on each other and a 3D Secure library.
+On the highest level, the sdks is broken into 4 libraries. 3 libraries that build on each other and a [3D Secure library](https://github.com/spreedly/spreedly-android-3ds).
 
 The `core-sdk` provides the communication faoundation for the rest of the library. It provides no UI, and the `express` and `securewidgets` libraries provide UI commonents for use on android.
 
@@ -41,13 +41,15 @@ This directory contains html files generated from the javadocs throughout the pr
 
 This is an android app that provides the ability to test and demonstrate all aspects of the above libraries.
 
+NOTE: A copy of this directory lives in [the 3DS library](https://github.com/spreedly/spreedly-android-3ds) and a [repository by itself](https://github.com/spreedly/spreedly-android-sample). This is to enable testing the 3ds library and the use of the libraries via dependencies.
+
 ## Cross-Cutting Concerns
 
 This sections talks about the things which are everywhere and nowhere in particular.
 
 ### 3D Secure
 
-This live in a separate repository. Originally all of these libraries were developed together in one repository. This means the sample app lives here, there, and in a standalone repository. The stand-alone repository exists mainly to test pulling all the libraries in as gradle dependencies rather than as peer libraries.
+This live in a [separate repository](https://github.com/spreedly/spreedly-android-3ds). Originally all of these libraries were developed together in one repository. This means the sample app lives here, there, and in a standalone repository. The stand-alone repository exists mainly to test pulling all the libraries in as gradle dependencies rather than as peer libraries.
 
 ### Testing
 
