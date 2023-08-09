@@ -4,7 +4,7 @@
 
 # spreedly-android
 
-> **Warning**
+> # **Warning**
 > Not actively maintained at this time. Contact Support with questions.
 
 # Integration
